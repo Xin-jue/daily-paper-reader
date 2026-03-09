@@ -26,10 +26,15 @@
 
 ## 🖼️ 界面预览
 
-![Daily Paper Reader 界面预览](others/demo2.png)
+<p align="center">
+  <img src="others/demo1.png" alt="Daily Paper Reader 界面预览 1" width="31%" />
+  <img src="others/demo2.png" alt="Daily Paper Reader 界面预览 2" width="31%" />
+  <img src="others/demo3.png" alt="Daily Paper Reader 界面预览 3" width="31%" />
+</p>
 
 ## 📰 News
 
+- **2026-03-09** 🖼️ 更新 README 多图界面预览与新手引导文案，并修复 gist 分享时摘要前的格式异常。
 - **2026-03-08** 🛡️ 优化 `daily pipeline` 提交与推送逻辑，提交后先同步远端再 push，降低用户更新配置时的冲突概率。
 - **2026-03-07** 🎨 更新首页与 README 展示文案，补充界面预览图，完善项目对外说明。
 - **2026-03-06** 🛠️ 修复 LLM refine 补分与组合 query 打分逻辑，并补上回归测试；新增首页使用教程入口并修复移动端导航与教程路由。
@@ -58,31 +63,19 @@
 
 ## ✨ Why Daily Paper Reader?
 
+- **🎓 个人论文雷达**：持续追踪自己研究方向的新论文
+- **📚 日常阅读工作台**：把发现、阅读、问答、总结集中到一个入口
 - **🔎 Daily Paper Radar**：每日自动抓取 arXiv / OpenReview 新论文，持续追踪研究前沿。
 - **🎯 Personalized Feed**：基于关键词、研究方向与兴趣生成个性化推荐流。
 - **💬 Read + Ask in One Place**：支持沉浸式阅读与 AI 论文问答，边读边问。
 - **🚀 Zero-Server Deployment**：依托 GitHub Actions 自动更新、GitHub Pages 部署，无需额外服务器。
 - **🛠️ Fork-and-Run**：Fork 后完成少量配置，即可上线自己的论文主页。
 
-## 🧭 你可以把它用在哪里？
 
-- **🎓 个人论文雷达**：持续追踪自己研究方向的新论文
-- **📚 日常阅读工作台**：把发现、阅读、问答、总结集中到一个入口
 
 ## ⚙️ Workflow Architecture
 
 ![Daily Paper Reader 双链路工作流图](others/structure.png)
-
-## ⚡ 5 分钟内你能得到什么
-
-| 能力 | 说明 |
-| --- | --- |
-| 🔎 每日新论文发现 | 自动抓取 arXiv / OpenReview 最新论文 |
-| 🎯 个性化推荐流 | 按研究方向、关键词、兴趣推送 |
-| 📖 沉浸式阅读 | 快速查看摘要、链接与关键信息 |
-| 🤖 AI 论文问答 | 支持边读边问，辅助理解论文 |
-| 🔄 自动更新 | GitHub Actions 定时运行，无需手动维护 |
-| 🚀 一键部署 | GitHub Pages 发布，无需单独服务器 |
 
 ## 🚀 5 分钟快速启动
 
@@ -99,7 +92,7 @@
 
 ### 2) 🪪 准备 GitHub PAT
 
-打开 [GitHub 新建 PAT 页面](https://github.com/settings/tokens/new?type=beta&scopes=repo,workflow,gist)，勾选以下权限：
+打开 [GitHub 新建 PAT 页面](https://github.com/settings/tokens/new?type=beta&scopes=repo,workflow,gist)，勾选以下权限（默认已勾选）：
 
 - ✅ `repo`
 - ✅ `workflow`
@@ -115,7 +108,7 @@ Fork 到自己的 GitHub 账号下，建议仓库名保持 `daily-paper-reader` 
 
 ### 5) 🌍 开启 GitHub Pages
 
-进入 `Settings → Pages`：
+进入你 Fork 的仓库，进入 `Settings → Pages`：
 
 - ⚙️ Source 选择 `Deploy from a branch`
 - 🌿 Branch 选择 `main`
@@ -146,6 +139,10 @@ https://<你的用户名>.github.io/daily-paper-reader
 ### 👨‍🔬 适合实验室或团队一起用吗？
 
 可以。它很适合做实验室公共论文面板，或者作为团队内部的论文发现与阅读入口。
+
+## 👗 欢迎入群交流
+QQ 群：583867967（欢迎交流，现有1140人）
+
 
 ## ⭐ Star History
 
