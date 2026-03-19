@@ -1,0 +1,482 @@
+Title: Octopus-inspired Distributed Control for Soft Robotic Arms: A Graph Neural Network-Based Attention Policy with Environmental Interaction
+
+URL Source: https://arxiv.org/pdf/2603.10198v1
+
+Published Time: Thu, 12 Mar 2026 00:15:58 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Octopus-inspired Distributed Control for Soft Robotic Arms: A Graph Neural Network–Based Attention Policy with Environmental Interaction 
+
+Linxin Hou ∗, Qirui Wu †, Zhihang Qin ‡, Yongxin Guo ∗, Cecilia Laschi ‡∗Department of Electrical and Computer Engineering, National University of Singapore 
+
+> †
+
+Department of Computer Science, National University of Singapore 
+
+> ‡
+
+Department of Mechanical Engineering, National University of Singapore 
+
+Abstract —This paper proposes SoftGM, an octopus-inspired distributed control architecture for segmented soft robotic arms that learn to reach targets in contact-rich environments using online obstacle discovery without relying on global obstacle geometry. SoftGM formulates each arm section as a cooperative agent and represents the arm-environment interaction as a graph. SoftGM uses a two-stage graph attention message passing scheme following a Centralised Training Decentralised Execution (CTDE) paradigm with a centralised critic and decentralised actor. We evaluate SoftGM in a Cosserat-rod simulator (PyElastica) across three tasks that increase the complexity of the environment: obstacle-free, structured obstacles, and a wall-with-hole scenario. Compared with six widely used MARL baselines (IDDPG, IPPO, ISAC, MADDPG, MAPPO, MASAC) under identical information content and training conditions, SoftGM matches strong CTDE methods in simpler settings and achieves the best performance in the wall-with-hole task. Robustness tests with observation noise, single-section actuation failure, and transient disturbances show that SoftGM preserves success while keeping control effort bounded, indicating resilient coordination driven by selective contact-relevant information routing. 
+
+Index Terms —Soft robotics, distributed control, multi-agent reinforcement learning. 
+
+I. I NTRODUCTION 
+
+Soft robotic arms are often idealised as continuum bodies, where deformation is described by continuous state fields [1]–[3]. In practice, tractable modelling and control rely on piecewise or multi-segment approximations of this contin-uum description, reducing the infinite-dimensional morphol-ogy to a finite set of segment states [4]. Although finite-dimensional, the resulting system remains strongly coupled, such that local actuation or contact can influence neighbouring segments and propagate through the entire body [5]–[7]. Consequently, achieving accurate dynamics under real-time constraints is challenging. Coupling increases computational demands, and external contact introduces non-smooth, state-dependent forces, leading to an inherent trade-off between fidelity and tractability. The octopus’ nervous system represents one of the most promising frontiers in soft robotics, offering bio-inspired so-lutions to the soft robotic control challenges. The majority of octopus neurones are distributed in their arms rather than cen-tralised in the brain. Their high-dimensional arm behaviours 
+
+> Corresponding author: Linxin Hou (Email: hou.linxin@u.nus.edu)
+
+are coordinated through distributed sensing and local reflexes rather than a single centralised controller [8]. Neurobiologi-cal and robotics-oriented analyses show that such distributed architectures help manage extremely high-dimensional limb control by focusing on local sensing, local actuation, and local reflex-like behaviours that coordinate through neighbour com-munication [8]–[10]. Translating this insight into segmented soft robots, each segment can compute a local action or local policy output using its own observations and neighbouring messages, reducing the burden on any single centralised mod-ule and improving robustness under partial observability [11]– [14]. Inter-agent message passing mirrors neural signalling among arm ganglia, while the central processor plays the role of the integrative brain, enabling coordinated behaviour. In complex environments, control extends beyond nominal geometric trajectory tracking. In nature, the octopus uses arms to explore the environment by performing actions such as probing, sweeping, and conforming. These actions create in-formative contacts, which re-shape subsequent motions, using rich peripheral feedback from the arm and suckers [8], [15], [16]. This biological strategy motivates our emphasis on an online environmental exploration for segmented soft robotic arms. Since contact is local, its implications must be integrated across neighbouring segments through the interaction path-ways of the body [17]. Previous work has shown that physical interaction can support informative environmental inference, but complexity increases rapidly with robot length, sensing density, and the number of simultaneous contacts [18], [19]. Many existing approaches rely on centralised representations and fixed-dimensional inputs, which can lead to information bottlenecks [4], [5], [20]. Moreover, under intermittent contact with multiple obstacles, an online controller must decide which contacts are most relevant at any given time. Therefore, this paper proposes SoftGM, an octopus-inspired distributed Multi-agent Reinforcement Learning (MARL) con-trol architecture using online environmental interaction. The proposed method is based on a Graph Neural Network (GNN) which aligns with the intrinsic structure of segmented soft bodies and the environment [21]. We represent the soft arm as a graph whose nodes correspond to continuum segments and edges encode physical adjacency and potential interactions between segments. Node features encode local proprioceptive  
+
+> arXiv:2603.10198v1 [cs.RO] 10 Mar 2026 Fig. 1. Overview of the SoftGM framework with graph construction and attention-based message passing.
+
+and tactile observations, while contact events are incorporated as additional interaction features in the graph. Building on the message-passing mechanism, the proposed architecture added Graph Attention Networks (GAT) to provide learnable attention weights that prioritise the most relevant neighbours [22]. In complex environments, this mechanism enables the controller to focus on the dominant nodes at a given time while suppressing irrelevant information. The overall design of the SoftGM framework is shown in Figure 1. The main contributions of SoftGM are:  
+
+> •
+
+A bio-inspired MARL distributed control formulation for segmented soft arms that supports contact-centric operation and environmental interaction.  
+
+> •
+
+A graph-based control architecture that preserves physical topology and local interactions while maintaining global consistency through the passing of graph messages.  
+
+> •
+
+A 2-stage attention-based message passing mechanism that adaptively prioritises contact information in dynamic environments. II. R ELATED WORK 
+
+A. Soft Robotic Arm Control 
+
+Previous work on soft/continuum robotic arm control spans model-based and learning-based approaches. Model-based controllers typically rely on reduced-order kinemat-ics/dynamics coupled with robust designs. Although these methods offer interpretability and stability, their computational and modelling burdens grow rapidly with high-dimensional dynamics, contact, and self-collision, motivating reduced-order modelling alternatives. [4], [6], [7], [23], [24]. Learning-based methods such as supervised models, Koop-man learning, recurrent model-based Model Predictive Control (MPC), and deep reinforcement learning (RL), provide flexible alternatives and have achieved closed-loop control and contact-involving manipulation behaviours. However, they consistently expose challenges in data efficiency, robustness and safety under distribution shift and sim-to-real transfer, particularly as the number of controllable sections increases [5], [20], [25]– [29]. Moreover, many learning pipelines still assume a fixed-dimensional global state, making it difficult to transfer across discretization or modular configurations without retraining. Cluttered manipulation motivates a parallel thread that integrates tactile sensing and contact estimation, including contact detection, tactile sensing, and vision-free perception [17]–[19], [30], [31]. However, a persistent gap is that many controllers remain centralised and fixed-dimensional, which create information bottlenecks and degrade scalability as the number of simultaneous contacts grows [4], [5], [14], [23]. In changing environments rich in obstacles, contact information is sparse, local, and time-varying, and must be integrated with a globally coupled body for representations that preserve local–global consistency while allowing localised distributed decision making. Recent work has also begun to address scal-ability via modular multi-agent policies for hyper-redundant continuum robots [32]. Although the results support the value of attention-enhanced modular control, it focuses primarily on agent-to-agent coordination and does not explicitly model external obstacles as discovered entities that enter and leave the robot’s information pool. 
+
+B. Graph Attention in MARL for Conventional Robot 
+
+Graph attention has already been used successfully in con-ventional robotic tasks where agents must coordinate under partial observability, dynamic interaction graphs, and variable numbers of agents. In multi-robot exploration, MARVEL learns a decentralised policy with graph attention to fuse spatial structure with agent state, improving coordination and generalising across team sizes [33]. For multi-agent navigation with obstacles, InforMARL builds an agent–entity interaction graph and applies attention-based message passing for ac-tor/critic, showing improved sample efficiency and scaling to arbitrary numbers of agents and obstacles [34]. In dense crowd navigation, MultiSoc combines attention-based edge selection with GAT aggregation to simplify interactions, allowing scal-able coordination between different robot–human ratios and behaviour models [35]. MAGEC supports relational inductive biases for robustness in cooperative control. [36]. III. M ETHODOLOGY 
+
+A. Distributed Control Policy 
+
+SoftGM formulates a soft robotic arm control as a Decen-tralised Partially Observable Markov Decision Process (Dec-POMDP) with N agents [37], where each agent corresponds to one actuator control point. The underlying state of the simulator at time t is st ∈ S , where S includes the complete state of the Cosserat-rod of any fixed obstacle geometry. The joint action of the arm is at = ( a1 
+
+> t
+
+, . . . , a Nt ). The agent i
+
+outputs a continuous action ait ∈ [−1, 1] da , where da = 2 
+
+(normal and binormal). The simulator applies a physical torque vector uit = τmax ⊙ ait, where τmax ∈ Rda 
+
+> >0
+
+denotes per-axis torque limits and ⊙ is the element-wise product. Each agent controls a local B-spline coefficient along the rod. Denoting the normalised arc-length by s ∈ [0 , 1] and the basis of the B-spline by bi(s), the couple-torque coefficient for the director k is scaled from the normalised action as α(k) 
+
+> i,t
+
+=
+
+τ (k)max a(k) 
+
+> i,t
+
+[38], The resulting distributed torque field can be written in compact form as τ (k) 
+
+> t
+
+(s) = PNi=1 bi(s) α(k) 
+
+> i,t
+
+. In the MARL implementation, the actor network is shared among agents using parameter sharing, and produces N actions in one forward pass from a shared graph observation. All agents receive the same team reward rt = r(st, a t), and the goal is to maximise the discounted return J(π) = Eπ,P 
+
+ P T −1 
+
+> t=0
+
+γtrt
+
+.SoftGM adopts the CTDE paradigm [39]. During execution, each agent acts using a decentralised policy, while during training, a centralised value function is learnt to reduce vari-ance. Specifically, the actor is a squashed Gaussian policy. Given an agent embedding gi,t from the GNN, the policy mean is μi,t = fπ
+
+ [oit ∥ gi,t ], then zi,t ∼ N (μi,t , diag( σ2)) ,where σ denotes the action standard deviation, and the final action is the bounded output ait = tanh( zi,t ). The critic views the full graph with all nodes and edges and pools only over agent-node embeddings to obtain a single state summary, ¯gt = 1
+
+> N
+
+PNi=1 gi,t , then predicts the state value as 
+
+Vϕ(st) ≈ fV (¯ gt). The critic uses global information during training, while the actor remains distributed at execution. The end-effector (arm tip) position is defined as xtip  
+
+> t
+
+and the goal is defined as x⋆. The distance between them is thus dt =
+
+∥xtip  
+
+> t
+
+− x⋆∥2 and the one-step progress is ∆dt = dt−1 − dt.The total reward used by the training wrapper is 
+
+rt = (−dt)
+
+| {z } 
+
+> base shaping
+
++ λp ∆dt
+
+| {z } 
+
+> progress bonus
+
+− λ∆a
+
+1
+
+N d aNX
+
+> i=1
+
+∥ait − ait−1∥22
+
+| {z }
+
+> action smoothness
+
+− λt
+
+|{z} 
+
+> time
+
++ λc I[Ct > 0] + λc,n Ct
+
+| {z }
+
+> collision shaping
+
++ λd min {N new  
+
+> t
+
+, K max }
+
+| {z }
+
+> discovery bonus
+
+− λs I[Ct > 0] I[|∆dt| < ε ]
+
+| {z }
+
+> stuck penalty
+
++ λsucc I[dt < r succ ]
+
+| {z }
+
+> success bonus
+
+.
+
+Here, Ct is the number of rod nodes in contact with obsta-cles computed geometrically, N new  
+
+> t
+
+is the number of newly discovered obstacle segments at time t, and Kmax caps how many discoveries can be rewarded per step. All terms in the reward function are scalar and are broadcast to every agent, making the task fully cooperative. 
+
+B. Graph Construction 
+
+At each timestep, the multi-agent observation is converted into a directed graph Gt = ( V, E t) so that the policy can rea-son jointly about agent coordination, goal-reaching, and local proximity sensing. The algorithm uses a fixed node budget 
+
+|V | = N + Nobs ,max . The first N nodes are the agent nodes, which are always present. The remaining Nobs ,max slots are reserved for the nodes of the obstacle-segment entity. Those nodes are treated as PAD nodes before they are discovered. A discrete node type τv ∈ { AGENT , OBST , PAD } is assigned and it learns a type embedding e(τv ) that will be concatenated to node features before message passing. Each node has a feature vector xv,t ∈ R22 . For an agent node i, the feature contains local kinematics and relative geometry of the goal or tip: 
+
+xagent  
+
+> i,t
+
+= pi,t , v i,t , ˜ait−1, (x⋆ − pi,t ), (xtip  
+
+> t
+
+− pi,t ), 06, 0,
+
+where pi,t , v i,t ∈ R3 are the position and velocity of the rod node assigned to agent i, and ˜ait−1 ∈ R3 is the previous action. Obstacle geometry is intentionally omitted, so that obstacle awareness must come through discovered entity nodes. For a discovered obstacle-segment node k, its geometric proxy, cylinder parameters, and its relative geometry to the goal and arm tip are encoded as: 
+
+xobst  
+
+> k,t
+
+= ck, d k, (rk, L k, s k), (x⋆ − ck), (xtip  
+
+> t
+
+− ck), 06, 0,
+
+where ck ∈ R3 is the obstacle segment centre, dk ∈ R3 is the obstacle axis direction, (rk, L k) are the cylinder radius and length, and sk ∈ [0 , 1] is the normalised axial position of the segment centre. Lastly, the PAD node is xv,t = 0.To represent extended obstacles, each cylindrical obstacle is discretised along its axis into bins of length ℓseg . A bin is discovered when any agent comes within a sensing radius ρ
+
+of that bin. The newly discovered bins are assigned to the first PAD slot available and then persist for the rest of the episode. The count of new bins at time t is N new  
+
+> t
+
+, which directly feeds the discovery bonus in the reward function. The algorithm stores a dense incoming adjacency matrix 
+
+At ∈ { 0, 1}|V |×| V |, where (At)u,v = 1 means that a message is allowed from the source node v to the target node u (i.e., 
+
+v → u). To encode the arm’s kinematic chain, the neigh-bouring actuators are connected bidirectionally: (At)i,i +1 =(At)i+1 ,i = 1 for i = 1, . . . , N − 1. Finally, proximity sensing is modelled by directed entity →agent edges. An active obstacle node k with centre ck and radius rk adds (At)i,k = 1 
+
+whenever ∥pi,t − ck∥2 − rk < ρ . Importantly, obstacle nodes do not receive messages from agents, they only broadcast to agents when sensed. 
+
+C. Attention-based Message Passing 
+
+Given the constructed graph Gt, SoftGM uses a two-stage graph attention network to compute a context-aware embed-ding for each agent. Firstly, each node feature is augmented with its type embedding, which is ˜xv,t = [xv,t ∥ e(τv )] ,and project it to the hidden space h(0)  
+
+> v,t
+
+= Win ˜xv,t . The algorithm then split message passing into two explicit stages: (i) entity →agent propagation to inject obstacle information into agents, and (ii) agent ↔agent propagation to enable coor-dination. Using node-type indicator masks, two stage-specific adjacencies are formed: 
+
+AE→At = At ⊙ (1A1⊤ 
+
+> E
+
+) + I, AA↔At = At ⊙ (1A1⊤ 
+
+> A
+
+) + I, 
+
+where 1A and 1E select the agent and entity nodes, respec-tively, and I is the identity. Within each stage, the algorithm applies L layers of multi-head attention over the permitted neighbours. For a directed edge j → i and head h ∈ {1, . . . , H }, the features are linearly transformed as u(h) 
+
+> i
+
+= W (h)hi and u(h) 
+
+> j
+
+= W (h)hj .Then a renormalised compatibility score is calculated using the standard GAT mechanism [20], 
+
+e(h) 
+
+> ij
+
+= LeakyReLU 
+
+
+
+(a(h))⊤[u(h) 
+
+> i
+
+∥ u(h) 
+
+> j
+
+]
+
+
+
+.
+
+Normalisation in the incoming neighbours N (i) of node i
+
+yields attention weights α(h) 
+
+> ij
+
+= softmax j∈N (i)(e(h) 
+
+> ij
+
+). The updated representation aggregates neighbour information as 
+
+m(h) 
+
+> i
+
+= X 
+
+> j∈N (i)
+
+α(h) 
+
+> ij
+
+u(h) 
+
+> j
+
+.
+
+Attention weights α(h) 
+
+> ij
+
+allow the policy to suppress irrelevant nodes such as distant or uninformative obstacle segments, and emphasise only the most relevant interactions related to the task. gi,t is taken as the final embedding of an agent node i
+
+after the 2-stage attention network. These gi,t are concatenated with local observations inside the actor, while the critic uses the mean pooled summary ¯gt = 1
+
+> N
+
+P 
+
+> i
+
+gi,t to estimate Vϕ(st)
+
+under CTDE. IV. E XPERIMENTS 
+
+All experiments are conducted in simulation using PyElas-tica, which implements the Cosserat-rod theory to simulate the continuous mechanics of the soft arm [40]. The soft robotic arm is simulated as a single Cosserat rod with 60 elements, base length 1.0 m and base radius 0.05 m . The material parameters are set to density ρ = 1000 .0 kg m −3, Young’s modulus E = 5 × 10 5 Pa , and shear modulus G = 2 × 10 5 Pa .We use an analytical linear damper with damping constant 0.3.The contact is modelled with stiffness k = 5 × 10 4 N m −1
+
+and damping ν = 50 .0 N s m −1. The simulator was wrapped in an OpenAI Gym interface to enable on-policy rollouts and parallel evaluation under identical control and training conditions [41]. 
+
+A. Simulation Setup 
+
+The experiment evaluates three environment instances that share the same Cosserat-rod soft-arm model and goal-reaching objective, but with the presence of increasingly complex external obstacles.   
+
+> Fig. 2. Snapshots of the simulated soft robotic arm (blue) in the three task scenarios. (a) Basic (no obstacle). (b) Structured obstacles. (c) Wall-with-hole.
+> •
+
+Basic (no obstacle). The workspace contains only the soft arm and the goal. This setting limits the learning difficulty to high-dimensional, coupled soft-body dynamics without additional constraints from external contact.  
+
+> •
+
+Structured obstacles. Two fixed rigid cylindrical rods are placed between the arm and the goal region. This re-quires the controller to coordinate the arm while avoiding contacts.  
+
+> •
+
+Wall-with-hole. A rigid wall is formed by an array of fixed cylindrical elements arranged to create a planar barrier with an opening. The target lies behind the wall, so the arm must pass through the opening to succeed. This setting induces intensive exploration because the passage location cannot be inferred from free-space kinematics alone and must be discovered through interaction during execution. The three testing scenarios are shown in Figure 2. The task of the arm in every episode is to move its end-effector (tip) to a randomly sampled target position x⋆ ∈ R3. We denote the end-effector position by xtip  
+
+> t
+
+and define the tip-to-target distance as dt = ∥xtip  
+
+> t
+
+− x⋆∥2. An episode is considered successful when dt < r succ , where rsucc is a fixed success radius. Episodes terminate upon success or when the maximum horizon is reached. This randomised target-reaching protocol encourages policies that generalise beyond a single memorised goal and provides a consistent performance across the three obstacle configurations. 
+
+B. Comparisons with Baselines a) Baseline algorithms: To evaluate the benefits of SoftGM, we compare it against six widely used MARL actor-critic baselines that cover both independent learners (IDDPG, IPPO, and ISAC) and CTDE methods (MADDPG, MAPPO, and MASAC). To ensure a fair comparison, all baseline methods and SoftGM are trained and evaluated in the same simulator environments with identical termination conditions, reward computation, action bounds, and evaluation protocol. Most importantly, each method receives exactly the same information content. The per-agent observation vector provided by the environment is identical across algorithms. The only difference lies in how each method processes these observations, not in what is observed. All benchmarks are implemented and executed using the BenchMARL pipeline, which standardises rollout collection, training and evaluation scheduling, and logging, thereby minimising implementation-induced discrepancies across methods [42]. 
+
+b) Evaluation metrics and rationale: We evaluate each method using complementary metrics that jointly capture task completion, solution quality, and control efficiency:  
+
+> •
+
+Episodic reward. We report the discounted return R =PT −1 
+
+> t=0
+
+γtrt, which directly reflects the training objective.  
+
+> •
+
+Evaluation success rate. We report the evaluation suc-cess rate SR = 1
+
+> M
+
+PMm=1 I[d(m) 
+
+> T
+
+< rsucc ] over M
+
+evaluation episodes, measuring the fraction of trials that reach the target within the success radius.  
+
+> •
+
+Mean episode length. We report the mean episode length 
+
+¯T = 1
+
+> M
+
+PMm=1 Tm, where Tm is the number of control steps taken before the termination of episode m. Shorter episodes typically indicate faster goal attainment, and thus provide a measure of reaching efficiency in addition to success.  
+
+> •
+
+Mean tip travel distance. We measure motion efficiency by the total path length travelled by the soft rod’s end-effector during an episode. Lower values indicate more direct and efficient reaching behaviour, while higher values reflect detours due to exploration, obstacle inter-actions, or oscillatory motions.  
+
+> •
+
+Mean torque magnitude. Finally, to characterise the control effort and aggressiveness of actuation, we report the mean torque magnitude as the average of the agent time ¯a = 1
+
+> M
+
+PMm=1 1
+
+> TmN
+
+PTm−1
+
+> t=0
+
+PNi=1 ∥ui, (m) 
+
+> t
+
+∥2. This metric helps to assess control feasibility under actuator limits, as well as robustness in contact-rich interactions. Together, these metrics provide a balanced comparison that measures learning dynamics, task performance, and control effort. 
+
+C. Results 
+
+For training, we used actor and critic learning rates of 1 ×
+
+10 −4 and 3 × 10 −4. The discount factor and GAE parameters are set to γ = 0 .99 and λGAE = 0 .95 . The clipping epsilon is 
+
+ϵ = 0 .2, with entropy coefficient 0.05 and maximum gradient norm 0.5. For the GAT network, we use hidden dimension 128 with 4 attention heads and 2 GNN layers, with a node-type embedding of dimension 8. Figure 3 reports the learning curves for the mean episodic reward, the evaluation success rate, and the mean episode length for SoftGM and six MARL baselines for the three scenarios of increasing contact complexity. All curves are aver-aged over three random seeds, with shaded regions indicating the standard error. In the obstacle-free task, most methods quickly achieve high success rates and short episodes once they learn stable actuation in the coupled soft-body dynamics. SoftGM converges rapidly and stable, matching the strong CTDE baselines (MADDPG/MASAC) in both success rate and episode length. The PPO-based methods exhibit notable late-training degradation indicating that, even in the simple setting, PPO-based optimisation can become unstable at later stages of training in highly coupled soft-body control. When structured obstacles are introduced, reliable coordination under contact  
+
+> Fig. 3. Learning curves of episodic rewards, evaluation success rates and mean episode lengths for SoftGM and the six MARL benchmarks in the three task scenarios over 3 random seeds.
+
+becomes critical. SoftGM maintains near-perfect performance compared to strong CTDE baselines and has slightly shorter mean episode length. IDDP and ISAC has a much poorer performance and PPO-based methods perform very badly in this setting. PPO’s entropy-regularised, clipped updates can be hard to tune in contact-rich, long soft body tasks. Sustained ex-ploration may destabilise the learning, leading to performance collapse. Eventually, extreme actions break the simulation model. The wall-with-hole task magnifies the difference the most. SoftGM achieves the best overall performance among all methods, attaining the highest reward and the highest success rate while also reducing episode length substantially below the horizon, indicating more efficient searching be-haviour. MADDPG shows delayed partial improvement later in training, whereas the remaining baselines achieve near-zero success and remain at horizon-length episodes. Overall, these curves support that SoftGM’s online obstacle discovery and graph-attention message passing enable it to focus on the few contact-relevant interactions at each moment, yielding better coordinated control in complex, contact-rich environments. V. E VALUATION AND DISCUSSION 
+
+A. Comparison against MARL baselines 
+
+Table I summarises the evaluation performance of SoftGM against six MARL baselines across three scenarios of in-creasing contact complexity. We compare success rate, mean episode length, tip travel distance, and mean torque magnitude. In scenario (a), most of the methods achieve 100% success with short episodes ( ≈ 12 –18 steps). SoftGM also reaches 
+
+100% success, with a comparable episode length ( 17 .1±17 .2)and bounded control effort ( 80 .01 ± 1.59 ). In contrast, PPO-based methods (IPPO/MAPPO) already show poor perfor-mance in the basic setting. With increasingly complex en-Fig. 4. Visualisation of the attention matrices of the soft rod in three task scenarios. Each row shows the change of the attention matrix throughout one successful episode in the three scenarios. The higher the attention score is, the darker the colour. TABLE I EVALUATION RESULTS (MEAN ± STD OVER 3 SEEDS × 100 EPISODES ) ACROSS THREE SCENARIOS . T IP TRAVEL DISTANCE DENOTES THE TOTAL DISTANCE TRAVELLED BY THE END -EFFECTOR (TIP ) DURING AN EPISODE . M EAN TORQUE MAGNITUDE IS COMPUTED ON THE APPLIED TORQUES uit .                                                                                                                                                                                                     
+
+> Basic Structured Obstacles Wall-with-hole Algorithm Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate
+> IDDPG 15 .0±0.01.0718 ±0.0013 71 .36 ±0.12 100.00% 904 .1±558 .542 .9560 ±30 .9425 72 .53 ±1.83 82.00% 1913 .8±306 .8109 .2686 ±32 .5673 81 .33 ±6.05 11.00% IPPO 831 .9±884 .515 .3576 ±24 .1946 71 .71 ±10 .48 65.67% 2000 .0±0.0——0.00% 2000 .0±0.0——0.00% ISAC 18 .4±1.81.1765 ±0.0696 60 .49 ±0.87 100.00% 1372 .1±886 .442 .2383 ±29 .7148 62 .19 ±1.10 33.67% 2000 .0±0.055 .1215 ±10 .7395 58 .00 ±2.59 0.00% MADDPG 12 .0±0.01.0506 ±0.0006 81 .00 ±0.04 100.00% 12 .3±0.50.9763 ±0.0134 80 .08 ±0.68 100.00% 1487 .6±865 .459 .5494 ±40 .2890 79 .66 ±3.94 26.15% MAPPO 1512 .3±725 .029 .2250 ±22 .2442 78 .21 ±0.24 33.33% 2000 .0±0.0——0.00% 2000 .0±0.0——0.00% MASAC 12 .9±0.21.0605 ±0.0143 66 .79 ±1.21 100.00% 12 .5±0.60.9444 ±0.0201 63 .59 ±1.48 100.00% 2000 .0±0.019 .5661 ±11 .0627 64 .13 ±3.52 0.00%
+> SoftGM 17 .1±17 .21.2555 ±0.8521 80 .01 ±1.59 100.00% 16 .1±2.91.1161 ±0.1489 76 .17 ±1.40 100.00% 1297 .5±907 .066 .4659 ±46 .5124 72 .24 ±1.64 41.33%
+
+TABLE II SOFT GM ROBUSTNESS EVALUATION (MEAN ± STD OVER 3 SEEDS × 100 EPISODES ) UNDER THREE NON -IDEAL CONDITIONS IN SCENARIO (C).                                  
+
+> Noise One-section Failure Disturbance Algorithm Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate Mean Ep. Len Mean Tip Travel Dist (m) Mean Torque Mag Success Rate
+> SoftGM 1312 .7±905 .466 .9108 ±46 .3512 72 .33 ±1.61 37.33% 1464 .5±772 .068 .6340 ±39 .0639 73 .17 ±0.63 36.00% 1334 .5±857 .766 .6386 ±43 .0307 72 .12 ±1.22 40.33%
+
+Fig. 5. Illustration of the ideal and three non-ideal situations for robustness evaluation of SoftGM. (a) Ideal situation. (b) Noisy Environment. (c) One section of the soft arm fails. (d) Disturbance. 
+
+vironments in scenario (b), differences in coordination and interaction handling become pronounced. SoftGM maintains perfect success ( 100% ) with short episodes ( 16 .1 ± 2.9) and low tip travel distance ( 1.1161 ±0.1489 ), while keeping control effort bounded ( 76 .17 ± 1.40 ). The strongest CTDE baselines (MADDPG/MASAC) also achieve 100% success with slightly shorter episodes ( 12 .3 ± 0.5 and 12 .5 ± 0.6), but SoftGM remains competitive despite executing a distributed graph-structured policy. In contrast, independent learners degrade substantially, suggesting inefficient detours and prolonged interaction. PPO-based methods fail entirely ( 0% ), consistent with their training tendency to break down under continuous contact-rich control. Scenario (c) requires exploration through contact to locate and traverse the opening. SoftGM achieves the highest success rate ( 41 .33% ) and reduces the episode length well below the horizon ( 1297 .5±907 .0), demonstrating more effective search and passage behaviour than all baselines. The closest competitor, MADDPG, achieves only a success rate of 26 .15% with longer episodes ( 1487 .6 ± 865 .4), while IDDPG reaches a success rate of 11% with a very large tip travel distance (1913 .8 ± 306 .8), indicating inefficient exploration. All remaining baselines (IPPO, ISAC, MAPPO, MASAC) fail to solve the task ( 0% ). In particular, SoftGM achieves its improved success while keeping the mean torque magnitude moderate ( 72 .24 ± 1.64 ), suggesting that the gains come from better contact-relevant information routing of the online obstacle discovery and attention message passing rather than overly aggressive actuation. Across failed rollouts, the most common failure occurs when the rod tip fail to align with the hole within the finite horizon. These failures are typically characterised by prolonged contact with near-zero progress, indicating that exploration remains insufficient to trigger the whole-arm reconfiguration required to find the hole. In general, Table I shows that SoftGM matches strong CTDE baselines in simpler settings, while providing the best performance in the most complex environment, where successful behaviour de-pends on selectively focusing on time-varying environmental interactions and coordinated whole-arm control. B. Qualitative Visualization 
+
+Figure 4 visualises the heatmap of the attention matrix for the soft rod in the three scenarios. The learnt attention patterns evolve from broadly distributed, kinematically local to highly selective interaction focusing when contacts become sparse and task-critical. In scenario (a), the attention weights remain spread around the main diagonal across time, consistent with the fact that the primary challenge is coordinating with neighbours in the coupled soft-body dynamics. In scenario (b), the agents attend to the obstacles and only to the relevant obstacles as time steps forward, indicating that SoftGM in-creasingly relies on a small subset of neighbouring segments to stabilise motion and avoid inefficient detours. In scenario (c), the attention becomes the most selective and time-varying. In earlier time steps, the agents at the tip of the rod attended to the bottom part of the wall, whereas the agents at the base attended to the top part of the wall as those obstacles were near their initial positions. As the rod explores the wall and approaches the hole, agents at the tip attend more to the obstacles around the hole. As the tip of the rod passes through the hole, the agents at the middle part of the rod attend to the obstacle around the hole, and the agent at the tip attends more to the top part of the wall as the target is positioned near the top of the wall. In general, the visualised attention dynamics aligns with SoftGM’s design goal of suppressing irrelevant interactions and focusing on the few momentarily dominant contacts, which is particularly critical in complex environments where contact information is local and changes over time. 
+
+C. Robustness evaluation 
+
+To assess robustness beyond idealised simulation conditions, we evaluate SoftGM in three non-ideal settings illustrated in Figure 5. All conditions are applied only during the evaluation.  
+
+> •
+
+Noisy observations. Zero-mean Gaussian noise is added independently to selected observation channels: position noise with standard deviation 0.1, velocity noise with standard deviation 0.1, and torque-related observation noise with standard deviation 0.2. 
+
+> •
+
+One-section failure. The actuator (agent) with index 2
+
+is forced to output zero actuation throughout the episode. This section does not exert any torque regardless of the policy output, emulating a hard loss of actuation at one segment.  
+
+> •
+
+Disturbance. A transient external force of 15 N is applied to 6 consecutive frames starting at step 5, representing an impulsive disturbance during early motion. This robustness evaluation probes the sensitivity to ob-servation corruption, partial loss of actuation authority, and impulsive external perturbations in contact-rich soft robotic arm operation. Table II reports the result in mean ± std over 3 seeds × 100 episodes. In a noisy environment, SoftGM achieves a 37.33% success rate with mean episode length 1312 .7 ± 905 .4 and mean tip travel distance 66 .9108 ± 46 .3512 , which remains  
+
+> Fig. 6. The comparison of SoftGM with its ablations (SoftGM without stage 1 attention and SoftGM without stage 2 attention) in the three task scenarios.
+
+close to the nominal travel distance in ideal conditions. Under One-section failure condition, the success rate remains compa-rable at 36.00%, with slightly longer episodes ( 1464 .5±772 .0)and similar tip travel distance ( 68 .6340 ± 39 .0639 ), indicat-ing that the distributed message-passing policy can partially compensate for the loss of a local actuator by coordinating the remaining sections. Under Disturbance, SoftGM maintains the best robustness, achieving 40.33% success with episode length 
+
+1334 .5 ± 857 .7 and tip travel distance 66 .6386 ± 43 .0307 ,suggesting that transient external perturbations are effectively rejected once contact-relevant information is re-integrated through the graph. Importantly, the mean torque magnitude remains stable across all three conditions (72 .33 ± 1.61 ,
+
+73 .17 ± 0.63 , and 72 .12 ± 1.22 ), closely matching the nominal control effort. This indicates that robustness is not achieved by overly aggressive actuation, but rather by SoftGM’s ability to reweigh and propagate environmental interactions. This sustains the soft arm’s goal-directed behaviour even when observations are noisy, an actuator fails, or external forces disrupt the motion. 
+
+D. Ablation study: 2-staged Attention-based Message Passing 
+
+Figure 6 compares SoftGM with two ablations that re-move stage 1 attention (entity →agent) or stage 2 attention (agent ↔agent), while keeping the remaining components un-changed. In scenario (c), all three variants quickly converge to 
+
+100% success rate with short episode lengths. Removing stage-1 attention has a negligible effect because there are no obstacle entities to attend to. Removing stage-2 attention slightly slows convergence, indicating that explicit agent-to-agent coordi-nation is still beneficial even in obstacle-free reaching. In scenario (b), the full SoftGM converges to perfect success in short episodes earlier than both ablations. Removing stage 2 attention notably slows down learning and introduces transient instability, suggesting that agent-to-agent attention is important for propagating locally sensed interaction cues along the arm to maintain coordinated, contact-aware motion. Scenario (c) highlights that stage 1 attention is essential for exploration in complex environment, without which success remains near zero. Overall, the ablation study supports that stage 1 attention is the key mechanism for environment discovery, while stage-2 attention supports stable distributed coordination in a complex environment. VI. C ONCLUSION 
+
+In conclusion, this paper presented SoftGM, an octopus-inspired GNN-based distributed control architecture for Cosserat-rod soft robotic arms under complex environment. SoftGM formulates segmented soft-arm control as a coop-erative MARL problem and represents the arm-environment interaction as a graph through online obstacle discovery. A two-stage graph attention mechanism enables the policy to selectively prioritise task-relevant contacts while preserving local-global consistency in the highly coupled soft-body dy-namics. Despite the encouraging results, several limitations remain. Firstly, all evaluations are conducted in simulation, and performance under real-world sensing noise, actuation latency, modelled frictional effects, and hardware constraints has not yet been validated. Secondly, obstacle discovery and interaction modelling rely on an idealised proximity/contact computation and simplified obstacle representations as discre-tised rigid elements This may not fully capture the complex contact phenomena encountered in real physical environments. Finally, while SoftGM is designed to be scalable via graph representations, the present study focuses on a fixed arm morphology and does not fully quantify generalisation across different robot geometries. Future work will focus on ex-tending SoftGM to more realistic and general deployment settings. A primary direction is sim-to-real transfer through domain randomisation, actuator/sensor calibration, and safety-aware training to handle contact uncertainty and modelled dynamics. On the algorithmic side, future work includes in-vestigating adaptive graph construction for dynamic obstacles, generalisation across different segment counts, and modular arm configurations. ACKNOWLEDGMENT 
+
+This work was supported by Start-up grant RoboLife (Soft Robots with morphological adaptation and life-like abilities), DESTRO (Dextrous, strong yet soft robots), ITALY–SINGAPORE grant, MAE (Italy) and A*STAR (Sin-gapore), Grant #R22I0IR124, and Bridging fund (AI-Driven Soft Robots for Marine and Unstructured Environments). Some sentences in the paper have been paraphrased and improved using AI tools. REFERENCES [1] C. Laschi and M. Cianchetti, ”Soft Robotics: New Perspectives for Robot Bodyware and Control,” Frontiers in Bioengineering and Biotechnology, 2014. [2] Oncay Yasa et al., ”An Overview of Soft Robotics,” Annual review of control, robotics, and autonomous systems, vol. 6, no. 1, pp. 1–29, May. 2023. [3] B. Mazzolai et al., ”Roadmap on soft robotics: multifunctionality, adaptability and growth without borders,” Multifunctional materials, vol. 5, no. 3, pp. 032001–032001, Jan. 2022. [4] T. G. Thuruthel, Y. Ansari, E. Falotico, and C. Laschi, ”Control Strategies for Soft Robotic Manipulators: A Survey,” Soft Robotics, vol. 5, no. 2, pp. 149–163, 2018. [5] X. Wang, Y. Li, and K.-W. Kwok, ”A Survey for Machine Learning-Based Control of Continuum Robots,” Frontiers in Robotics and AI, vol. 8, 730330, 2021. [6] L. Qin et al., ”Modeling and Simulation of Dynamics in Soft Robotics: a Review of Numerical Approaches,” Current Robotics Reports, 2024. [7] J. Zhang et al., ”A Survey on Design, Actuation, Modeling, and Control of Continuum Robot,” 2022. [8] B. Hochner, ”An Embodied View of Octopus Neurobiology,” Current biology 22.20: R887-R892, 2012. [9] Y.Gutfreund, HenryMatzner, T.Flash, and B.Hochner, ”Patterns of Motor Activity in the Isolated Nerve Cord of the Octopus Arm,” Biological Bulletin, vol. 211, no. 3, pp. 212–222, 2006. [10] J. Z. Young, ”The Anatomy of the Nervous System of Octopus Vulgaris,” Oxford: Clarendon Press, 1971. [11] D. M. Sivitilli et al., ”Lessons for Robotics From the Control Architec-ture of the Octopus,” Frontiers in Robotics and AI, 2022. [12] T. Li et al., ”From the Octopus to Soft Robots Control: An Octopus-Inspired Behaviour Control Architecture for Soft Robots,” Vie et Milieu, 2012. [13] T. Yue et al., ”Embodying Soft Robots with Octopus-inspired Hierar-chical Suction Intelligence,” Science Robotics, vol. 10, no. 102, May. 2025. [14] L. Hou, Q. Wu, Z. Qin, N. Banerjee, Y. Guo, and C. Laschi, ”A Quantita-tive Comparison of Centralised and Distributed Reinforcement Learning-Based Control for Soft Robotic Arms,” arXiv preprint arXiv:2511.02192, Nov. 2025. [15] L. van Giesen, P. B. Kilian, C. A. H. Allard, and N. W. Bellono, ”Molecular Basis of Chemotactile Sensation in Octopus,” Cell, vol. 183, no. 3, pp. 594-604.e14, Oct. 2020. [16] T. Gutnick, L. Zullo, B. Hochner, and M. J. Kuba, ”Use of Peripheral Sensory Information for Central Nervous Control of Arm Movement by Octopus vulgaris,” Current Biology, vol. 30, no. 21, pp. 4322-4327.e3, Nov. 2020. [17] C. Hegde et al., ”Sensing in Soft Robotics,” ACS nano, 17(16), 15277-15307, 2023. [18] A. Bajo and N. Simaan, ”Finding Lost Wrenches: Using Continuum Robots for Contact Detection and Estimation of Contact Location,” IEEE ICRA, 2010. [19] W. Ouyang et al., ”A Modular Soft Robotic Arm with Embedded Tactile Sensors for Proprioception,” IEEE RoboSoft, 2022. [20] A. Centurelli et al., ”Closed-loop Dynamic Control of a Soft Manipulator using Deep Reinforcement Learning,” IEEE Robotics and Automation Letters, vol. 7, no. 2, pp. 4741–4748, 2022. [21] F. Scarselli, M. Gori, Ah Chung Tsoi, M. Hagenbuchner, and G. Monfardini, ”The Graph Neural Network Model,” IEEE transactions on neural networks 20, no. 1 (2008): 61-80. 2008. [22] P. Veliˇ ckovi´ c, G. Cucurull, A. Casanova, A. Romero, P. Li` o, and Y. Bengio, ”Graph Attention Networks,” ICLR, 2018. [23] Della Santina, Duriez, Rus, ”Model-Based Control of Soft Robots: A Survey of the State of the Art and Open Challenges,” IEEE control systems magazine, 43(3), pp.30-65, 2023. [24] Haggerty et al., ”Control of Soft Robots with Inertial Dynamics,” Science Robotics, 8(81), p.eadd6864, Aug. 2023. [25] Laschi, Thuruthel, Iida, ”Learning-Based Control Strategies for Soft Robots: Theory, Achievements, and Future Challenges,” IEEE Control Systems Magazine, 43(3), pp.100-113, May. 2023. [26] Bruder et al., ”Koopman-Based Control of a Soft Continuum Manipula-tor Under Variable Loading Conditions,” IEEE robotics and automation letters, 6(4), pp.6852-6859, July. 2021. [27] H. Sch¨ afke, T.-L. Habich, C. Muhmann, S. F. G. Ehlers, T. Seel, and M. Schappler, ”Learning-Based Nonlinear Model Predictive Control of Articulated Soft Robots Using Recurrent Neural Networks,” IEEE Robotics and Automation Letters, vol. 9, no. 12, pp. 11609–11616, Dec. 2024. [28] Alessi et al., ”Pushing with Soft Robotic Arms via Deep Reinforcement Learning,” Advanced Intelligent Systems, 6(8), p.2300899, Aug. 2024. [29] Garg et al., ”Autonomous control of soft robots using safe reinforcement learning and covariance matrix adaptation,” Engineering Applications of Artificial Intelligence, 153, p.110791, Aug. 2025. [30] Nguyen et al., ”ConTac: Continuum-Emulated Soft Skinned Arm with Vision-based Shape Sensing and Contact-aware Manipulation,” In Robotics: Science and Systems (Vol. 20, pp. 1-12), July. 2024. [31] Wang et al., ”Sensing expectation enables simultaneous proprioception and contact detection in an intelligent soft continuum robot,” Nature Communications, 15(1), p.9978, Nov. 2024. [32] Y. Zhang, Y. Niu, X. Liu, and D. Zhao, ”COMPOSER: Scalable and Robust Modular Policies for Snake Robots,” IEEE ICRA, May. 2024. [33] J. Chiun, S. Zhang, Y. Wang, Y. Cao, and G. Sartoretti, ”MARVEL: Multi-Agent Reinforcement Learning for constrained field-of-View multi-robot Exploration in Large-scale environments,” IEEE ICRA, Feb. 2025. [34] S. Nayak, K. Choi, W. Ding, S. Dolan, K. Gopalakrishnan, and H. Balakrishnan, ”Scalable Multi-Agent Reinforcement Learning through Intelligent Information Aggregation,” ICML, July. 2023. [35] E. Escudie, L. Matignon, and J. Saraydaryan, ”Attention Graph for Multi-Robot Social Navigation with Deep Reinforcement Learning.” arXiv preprint arXiv:2401.17914, Jan. 2024. [36] A. Goeckner, Y. Sui, N. Martinet, X. Li, and Q. Zhu, ”Graph Neural Network-based Multi-agent Reinforcement Learning for Resilient Dis-tributed Coordination of Multi-Robot Systems,” IEEE IROS, Oct. 2024. [37] F. A. Oliehoek and C. Amato, ”A Concise Introduction to Decentralized POMDPs,” Cham Springer International Publishing, 2016. [38] W. J. Gordon and R. F. Riesenfeld, ”B-spline Curves and Surfaces,” Computer aided geometric design (pp. 95-126). Academic Press, Jan. 1974. [39] V. Konda and J. Tsitsiklis, ”Actor-critic algorithms,” Advances in neural information processing systems, 12, 1999. [40] N Naughton et al., ”Elastica: A compliant mechanics environment for soft robotic control,” IEEE Robotics and Automation Letters, 6(2), pp.3389-3396, Mar. 2021. [41] G. Brockman et al., ”OpenAI Gym”, arXiv preprint arXiv:1606.01540, June. 2016. [42] M Bettini, A Prorok, and V Moens, ”BenchMARL: Benchmarking Multi-Agent Reinforcement Learning,” Journal of Machine Learning Research, 25(217), pp.1-10, 2024.

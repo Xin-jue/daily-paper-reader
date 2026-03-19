@@ -25,3 +25,64 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: 具身智能
+      description: 机械臂操作任务相关的场景生成、仿真及VLA模型论文检索
+      enabled: true
+      keywords:
+        - keyword: Robot Simulation
+          keyword_cn: 机器人仿真
+          query: E
+        - keyword: robotic arm manipulation
+          keyword_cn: 机械臂操作
+          query: robotic arm manipulation tasks and control
+        - keyword: scene generation
+          keyword_cn: 场景生成
+          query: automated scene generation for robotic simulation
+        - keyword: VLA models
+          keyword_cn: VLA模型
+          query: Vision-Language-Action models for robotics
+        - keyword: synthetic data
+          keyword_cn: 合成数据
+          query: synthetic data generation for robotic training
+        - keyword: digital twin
+          keyword_cn: 数字孪生
+          query: digital twin environments for robotic manipulation
+        - keyword: foundation models
+          keyword_cn: 机器人基础模型
+          query: robotic foundation models for manipulation
+        - keyword: sim-to-real
+          keyword_cn: 虚实迁移
+          query: sim-to-real transfer for robotic arm manipulation
+      intent_queries:
+        - query: recent advances in scene generation for embodied AI simulation
+          query_cn: 具身智能仿真场景生成的最新进展
+          enabled: true
+          source: manual
+          note: ''
+        - query: Vision Language Action models for robotic arm manipulation tasks
+          query_cn: 用于机械臂操作任务的视觉 语言 动作模型
+          enabled: true
+          source: manual
+          note: ''
+        - query: automated environment synthesis for training robotic agents
+          query_cn: 用于训练机器人智能体的自动化环境合成
+          enabled: true
+          source: manual
+          note: ''
+        - query: state of the art VLA architectures in robotics
+          query_cn: 机器人领域最先进的VLA架构
+          enabled: true
+          source: manual
+          note: ''
+        - query: generative models for robotic simulation and task planning
+          query_cn: 用于机器人仿真和任务规划的生成式模型
+          enabled: true
+          source: manual
+          note: ''
+        - query: benchmarking robotic manipulation in simulated environments
+          query_cn: 仿真环境下机械臂操作的基准测试
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-03-19T04:18:35.041Z'

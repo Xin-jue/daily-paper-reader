@@ -1,0 +1,366 @@
+Title: RoCo Challenge at AAAI 2026: Benchmarking Robotic Collaborative Manipulation for Assembly Towards Industrial Automation
+
+URL Source: https://arxiv.org/pdf/2603.15469v1
+
+Published Time: Tue, 17 Mar 2026 06:30:52 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# RoCo Challenge at AAAI 2026: Benchmarking Robotic Collaborative Manipulation for Assembly Towards Industrial Automation 
+
+Haichao Liu 1, Yuheng Zhou 1, Zhenyu Wu 2, Ziheng Ji 1, Ziyu Shan 1, Qianzhun Wang 1,Ruixuan Liu 3, Zhiyuan Yang 4, Yejun Gu 4, Shalman Khan 4, Shijun Yan 4, Jun Liu 4,Haiyue Zhu 4, Changliu Liu 3, Jianfei Yang 1, Jingbing Zhang 4, and Ziwei Wang 1∗
+
+> 1
+
+Nanyang Technological University, Singapore 
+
+> 2
+
+Beijing University of Posts and Telecommunications, Beijing, China 
+
+> 3
+
+Carnegie Mellon University, Pittsburgh, USA 
+
+> 4
+
+Agency for Science, Technology and Research (A*STAR), Singapore 
+
+## Abstract 
+
+Embodied Artificial Intelligence (EAI) is rapidly developing, gradually subverting previous autonomous systems’ paradigms from isolated perception to integrated, continuous action. This transition is highly significant for industrial robotic manip-ulation, promising to free human workers from repetitive, dangerous daily labor. To benchmark and advance this capability, we introduce the Robotic Collaborative Assembly Assistance (RoCo) Challenge with a dataset towards simulation and real-world assembly manipulation. Set against the backdrop of human-centered manufacturing, this challenge focuses on a high-precision planetary gearbox assem-bly task, a demanding yet highly representative operation in modern industry. Built upon a self-developed data collection, training, and evaluation system in Isaac Sim, and utilizing the Galaxea R1 Lite dual-arm robot for real-world deployment, the challenge operates in two phases. The Simulation Round defines fine-grained task phases for step-wise scoring to handle the long-horizon nature of the assembly. The Real-World Round mirrors this evaluation with physical gearbox components and high-quality teleoperated datasets. The core tasks require assembling an epicyclic gearbox from scratch, including mounting three planet gears, a sun gear, and a ring gear. Attracting over 60 teams and 170+ participants from more than 10 countries, the challenge yielded highly effective solutions, most notably ARC-VLA and RoboCola. Results demonstrate that a Specialist + Generalist dual-model framework for long-horizon multi-task learning is highly effective, and the strate-gic utilization of recovery-from-failure curriculum data is a critical insight for successful deployment. This report outlines the competition setup, task design, evaluation approach, key findings, and future directions for industrial EAI. Our dataset, CAD files of industrial objects, code, and evaluation results can be found at: https://rocochallenge.github.io/RoCo2026/. 
+
+## 1 Introduction 
+
+Embodied Artificial Intelligence (EAI) is currently undergoing a transformative shift, transitioning from isolated digital twins to integrated agents capable of executing complex physical tasks in unstructured environments [Liu et al., 2025b]. This evolution is gradually subverting traditional 
+
+> ∗
+
+Corresponding author. 
+
+> arXiv:2603.15469v1 [cs.RO] 16 Mar 2026
+
+autonomous systems’ paradigms, moving from rigid, pre-programmed perception-action sequences toward adaptive, foundation-model-driven architectures [Xiao et al., 2025]. Within the broader scope of EAI, robotic manipulation for industrial use cases remains a critical frontier [Zhang et al., 2025]. Automating intricate assembly tasks not only promises to enhance manufacturing efficiency but also serves a vital socio-economic role by freeing human workers from repetitive, ergonomically taxing, and potentially hazardous daily labors [Ranjan Das and Koskinopoulou, 2025]. A number of recent benchmarks have been proposed to study embodied manipulation, spanning both simulation and real-world settings. In simulation, benchmarks such as LIBERO [Liu et al., 2023] provide procedurally generated lifelong manipulation tasks designed to study knowledge transfer and continual learning across task suites. ManiSkill 3 [Tao et al., 2024] introduces a GPU-parallelized robotics simulator that enables large-scale training on diverse contact-rich manipulation environments with high simulation throughput. CALVIN [Mees et al., 2022] focuses on language-conditioned long-horizon manipulation, where robots must compose multiple skills to execute sequential tasks based on natural language instructions. RoboTwin 2.0 [Chen et al., 2025] further emphasizes scalable synthetic data generation and evaluation for robust bimanual manipulation through extensive domain randomization. In real-world settings, several benchmarks have also been developed to study physical robot learning. 
+
+LeRobot [Cadene et al., 2024] provides an open-source framework and infrastructure for collecting and training on real-world robotic datasets, aiming to standardize the robot learning stack across hard-ware platforms. FurnitureBench [Heo et al., 2025] focuses on long-horizon furniture assembly tasks and provides standardized hardware setups together with large teleoperated demonstration datasets to facilitate reproducible evaluation. The Functional Manipulation Benchmark (FMB) [Luo et al., 2025] studies generalizable robotic learning through procedurally generated 3D-printed objects and functional manipulation tasks such as grasping, repositioning, and assembly. Despite these advances, existing benchmarks primarily focus on household manipulation, tabletop tasks, or synthetic environments, and rarely capture the precision requirements, structured workflows, and collaborative manipulation characteristics of real industrial assembly processes. In particular, high-precision mechanical assemblies such as gearbox construction require coordinated bimanual manipulation, strict tolerance control, and robust recovery from intermediate failures, aspects that remain underexplored in current benchmarks. The RoCo Challenge is designed to address this gap by introducing a high-fidelity benchmark centered on industrial gearbox assembly, bridging simulation and real-world evaluation under a unified framework. Technically, achieving human-level dexterity and reliability in industrial settings presents formidable technical challenges, which are further compounded by the absence of representative benchmarks for industrial assembly manipulation. First, long-horizon manipulation requires the robot to maintain a coherent global plan while executing a series of interdependent sub-tasks, where a single failure in an early stage can propagate throughout the entire workflow [Guo et al., 2023]. Second, accurate interaction with objects , specifically in contact-rich tasks like gearbox assembly, demands sub-millimeter precision that is often difficult to achieve with visual feedback alone [Tsuji et al., 2025]. Third, the transition to coordinated bimanual manipulation introduces increased degrees of freedom and the need for sophisticated spatial reasoning [Merlo et al., 2025]. Finally, a truly "human-centric" system must possess recovery from failure capabilities, ensuring that the robot can detect anomalies, such as a misplaced part or an incorrect component, and autonomously correct its state to ensure robust industrial performance [Lin et al., 2025]. Current technical approaches to these challenges generally fall into two categories. Modularized perception-action paradigms decompose the problem into discrete stages: perception and 3D reconstruction, task and motion planning (TAMP), and foundation pose estimation for grasp per-ception [Liu et al., 2025a]. While interpretable, these pipelines are often brittle to sensor noise and calibration errors. Conversely, end-to-end data-driven approaches have gained traction, ranging from high-frequency visuomotor policies like Diffusion Policy (DP) [Chi et al., 2024] and Action Chunking Transformer (ACT) [Zhao et al., 2023] to large-scale Vision-Language-Action (VLA) models such as RT-2 [Brohan et al., 2023], π0 [Black et al., 2026], and GR-00T [NVIDIA et al., 2025]. However, deploying these models in real-world factories uncovers significant hurdles [Zhang et al., 2025, Liu et al., 2025b]: 2Figure 1: The simplified planetary gear reducer used in the RoCo Challenge, consisting of a sun gear, three planet gears, one finned key shaft, a ring gear component, and a planet carrier with three pins. The assembly task requires precise placement of these components within a planet carrier. • Out-of-Distribution (OOD) Generalization: Models often struggle when encountering environment configurations or lighting conditions not present in the training data. • Data Efficiency: Learning complex skills for high-precision tasks typically requires vast amounts of data, which is expensive to collect in physical industrial settings. • Robustness to Noise: Models must learn to extract actionable features from noisy, multi-modal real-world data without the luxury of high-fidelity tactile or force-sensing modalities. • Real-time Feasibility: The computational demand of large-scale models must be balanced against the constraints of edge hardware to ensure low-latency deployment. To systematically address these challenges, we introduced the RoCo Challenge as part of the Inter-national Workshop on Addressing Challenges and Opportunities in Human-Centric Manufacturing (HCM) at AAAI 2026 . The challenge serves as a bridge between the global research commu-nity and industrial application, providing a high-fidelity Simulation Track based on NVIDIA Isaac Sim [NVIDIA, 2026] for rapid iteration and an Onsite Track utilizing the Galaxea R1 Lite dual-arm platform [Galaxea, 2026] for real-world validation. By benchmarking state-of-the-art solutions on an epicyclic gearbox assembly task, we aim to push the boundaries of EAI in industrial conditions, setting new standards for collaborative manipulation. This report outlines the competition setup, task design, and evaluation approach, and provides an in-depth analysis of the key findings and future directions identified by the participating teams to catalyze the next generation of smart manufacturing solutions. 
+
+## 2 Competition Structure, Rules and Results 
+
+The RoCo Challenge was meticulously designed to bridge the gap between high-fidelity simulation and physical industrial deployment. The competition was divided into two distinct but interconnected tracks: the Simulation Track, which emphasized algorithmic iteration and data efficiency, and the Onsite Track, which focused on the robustness of real-world deployment on standardized hardware. 
+
+2.1 Simulation Track: Human-in-the-Loop by State Initialization 
+
+The simulation phase utilized a self-developed environment built upon the NVIDIA Isaac Sim platform. This environment provided teams with a digital twin of the assembly bench and the Galaxea R1 robot, allowing for large-scale data collection and policy training. 
+
+2.1.1 Task Definitions and Data Collection 
+
+To evaluate the long-horizon nature of gearbox assembly, leveraging the simplified planary gear reducer shown in Figure 1 the simulation track defined three representative scenarios: • Task 1 (Assembly from Scratch): The robot begins with an empty planet carrier and must sequentially install three planet gears, the sun gear, and the ring gear. 3(a) Task 1: Scratch assembly 
+
+> (b) Task 2: Partial state
+> (c) Task 3: Gear recovery
+
+Figure 2: Simulation environment demonstrations for the three RoCo Challenge tasks. The stages mirror the real-world setup: (a) initial assembly, (b) completion from partial states, and (c) dynamic error recovery. • Task 2 (Resume from Partial State): The robot is initialized in a state where some components have already been assembled (simulating a handover from a "virtual human operator"). The agent must perceive the current state and continue the sequence correctly. • Task 3 (Error Detection and Recovery): Semantic errors, such as the placement of an incorrect gear size, are injected into the initial state. The robot must identify the discrepancy, remove the faulty part, and resume the correct assembly flow. As shown in Figure 2, In task 1 (Figure 2a) the robot assembles from scratch: pick up the planet gears and insert them onto the pins on the planet carrier; pick up the sun gear and insert it in the center of planet gears; finally pick up the ring gear, and place it onto the gears. In task 2 (Figure 2b) the robot starts from a partial state where three planetary gears are already in place, and it only needs to pick up and mount the sun gear and the ring gear. In task 3 (Figure 2c) the error is defined that the sun gear is placed on top of one planet gear by mistake, and the robot needs to pick the sun gear from that wrong place to proceed with normal assembly. 
+
+2.1.2 Evaluation and Scoring 
+
+A single model was required to handle all three scenarios. Success was measured using a normalized score ( S ∈ [0 , 1] ) based on the number of correctly assembled parts and the accuracy of error recovery. The final simulation score was calculated using a weighted scheme: 
+
+Ssim = 4 · S1 + 2 · S2 + 4 · S3
+
+10 
+
+To ensure fairness and prevent environment-specific overfitting, the final evaluation was executed on a private workstation with randomized (but consistent across teams) lighting, textures, and gearbox colors. 4Figure 3: Visualization of the data frame for the simulation track. The dataset includes synchronized multi-modal observations (RGB, Depth, and proprioception) and action streams, enabling compre-hensive training for both visuomotor imitation learning and VLA models. 
+
+2.1.3 Baseline and Data Provision 
+
+To facilitate entry and encourage innovation, we provided baseline implementations of a VLA model (π0.5 [Black et al., 2025]) and an ACT model [Zhao et al., 2023], trained on a subset of the provided dataset. These baselines served as reference points for participants to improve upon. The detailed deployment instructions of the baselines, including code and hyperparameters, were made available on the official competition website. In terms of data, teams were given access to a comprehensive dataset of more than 300 automatically generated demonstrations collected in the Isaac Sim environment. As illustrated in Figure 3 This dataset included synchronized multi-modal observations (RGB, Depth, and proprioception) and action streams, enabling participants to train both visuomotor imitation learning and VLA models effectively. The dataset was designed to cover a wide range of initial conditions to encourage robust policy learning. Note that the data generation scripts were also provided, allowing teams to augment the dataset with additional samples if desired. The dataset, along with the baseline implementations and deployment instructions, was made available on the official competition website to ensure that all participants had a common starting point for their development efforts. This link provides access to the simulation dataset. 
+
+2.2 Onsite Track: Physical Collaborative Assistance 
+
+The onsite finals took place at the Advanced Remanufacturing and Technology Centre (ARTC) in Singapore. Finalists deployed their models onto the Galaxea R1 Lite, a dual-arm mobile manipulation platform equipped with head-mounted stereo cameras and wrist-mounted RGB-D sensors. 
+
+2.2.1 Hardware and Data Collection 
+
+Unlike the simulation phase, participants in the real-world track were provided with a high-quality teleoperated dataset consisting of more than 300 demonstrations collected on the target hardware platform. As shown in Figure 4, the hardware setup includes a Galaxea A1X robot arm, multiple RealSense D405 cameras, a binocular camera, and an R1 Lite teleoperation device. The dataset contains synchronized multi-modal observations, including RGB images, depth measurements, and proprioceptive robot states, together with corresponding action streams, thereby supporting the training of imitation learning and vision-language-action (VLA) models. As illustrated in Figure 5, the real-world setting is partially different from the simulation track. Task 1 (Figure 5a) is simplified to assemble only 3 planet gears: pick them up and insert onto the planet carrier pins one by one. In task 2 (Figure 5b) the robot starts from the partial state where two planetary gears are already inserted, and only needs to pick and insert the remaining one. In task 3 (Figure 5c) 5RealSense     
+
+> D405 Camera
+> Binocular
+> Camera
+> Galaxea A1X
+> Robot Arm
+> R1Lite Teleop
+
+Figure 4: Hardware settings for real-world data collection. The platform consists of a Galaxea A1X robot arm, multiple RealSense D405 cameras, a binocular camera, and an R1 Lite teleoperation device used for demonstration collection. 
+
+> (a) Task 1: Assemble 3 gears
+> (b) Task 2: Assemble from partial state
+> (c) Task 3: Error recovery by replacing the wrong gear
+
+Figure 5: Real-world demonstration of the three gear assembly tasks in the RoCo Challenge. (a) Assembly from scratch; (b) Completion from a partial state; (c) Error recovery by replacing the incorrect gear. a larger gear is mounted on one pin by mistake, and the robot needs to remove the wrong gear and place the correct one instead. 
+
+2.2.2 Real-World Constraints 
+
+The physical track introduced complexities absent in simulation, including: • Contact Dynamics: The planetary gears require precise meshing; a misalignment of a few millimeters prevents the sun or ring gear from seating correctly. • Sensor Noise: Teams had to manage the variance in real-world RGB streams and reconstruct depth from stereo head cameras using provided calibration files (if needed). • Quick Deployment: Finalists had only several hours for model deployment and testing on the physical hardware, emphasizing the need for robust sim-to-real transfer and efficient fine-tuning strategies. 6Figure 6: Visualization of the data frame for the real-world track collected using the teleoperation de-vice. The dataset includes synchronized multi-modal observations (RGB, Depth, and proprioception) and action streams, enabling comprehensive training in real-world conditions. Table 1: RoCo Challenge Final Leaderboard (Top 6) - Detailed Scores                                                                 
+
+> Simulation Track Real-World Track Team S1S2S3Sim Score S1S2S3Real Score Final Score IIGroup 0.190 0.100 0.075 0.126 0.111 0.250 0.625 0.344 0.279 RoboCola 0.070 0.050 0.000 0.038 0.139 0.417 0.000 0.139 0.109
+> Show Me Robot 0.080 0.025 0.000 0.037 0.056 0.167 0.167 0.122 0.097
+> HD-Robo 0.440 0.400 0.000 0.256 0.000 0.000 0.000 0.000 0.077
+> K-Lee-gends 0.110 0.450 0.125 0.184 0.000 0.000 0.000 0.000 0.055
+> Real2RealGap 0.100 0.000 0.000 0.040 0.000 0.000 0.000 0.000 0.012
+
+2.2.3 Baselines and Data Provision 
+
+Similar to the simulation track, baseline implementations of π0.5 [Black et al., 2025] and ACT [Zhao et al., 2023] were provided for the real-world track, trained on the teleoperated dataset. For the data collection, we use a teleoperation device (shown in Figure 4) to collect high-quality demonstrations of the assembly tasks. Noteably, the dataset includes a significant portion of error detection and recovery demonstrations, which are crucial for training models to handle the complexities of real-world assembly. As shown in Figure 6, the real-world robotic assemby dataset is fully synchronized across multiple modalities, including RGB images from the head-mounted cameras, depth measurements from the wrist-mounted sensors, and proprioceptive data from the robot’s joints, which can be accessed through this link. 
+
+2.3 Results Overview 
+
+The competition saw participation from over 60 teams and 170+ participants spanning 10 countries. The results, summarized in Table 1, reveal a significant "Sim-to-Real Cliff." While many teams achieved high scores in the controlled simulation environment, only a few transitioned successfully to the physical hardware. There are several key observations from the results: • The Simulation Leaders: Teams like HD-Robo and K-Lee-gends dominated the simulation round by leveraging modular perception-action pipelines. However, these solutions proved brittle onsite, failing to generalize to the physical robot’s latency and mechanical tolerances. • The VLA Advantage: The top three overall winners (IIGroup, RoboCola, and Show Me Robot) all utilized end-to-end VLA architectures. These models demonstrated superior robustness to the domain shift between simulation and reality, particularly in Task 3 (Error Recovery), where semantic reasoning was paramount. 
+
+## 3 Excellent VLA Solutions 
+
+The top-performing teams in the RoCo Challenge primarily leveraged end-to-end VLA architectures. Unlike modular pipelines that rely on brittle geometric chains, VLA models demonstrated a superior ability to internalize the complex relationship between visual semantics and motor control, making 7Task Instruction    
+
+> ### Insert the Gear Pin
+> into the Hole
+> Text
+> Encoder
+> SigLIP and
+> Gemma
+> Robot State
+> Encoder
+> Multi -view RGB Observation
+> Feature
+> Fusion
+> Current Robot State
+> Failure -aware
+> Learning
+> Recovery -aware
+> Manipulation
+> Action Expert
+> Policy Decoder
+> Stage1: Approach
+> Stage2: Alignment
+> Stage3: Insertion
+> Text
+> Feature
+> Image
+> Feature
+> State
+> Feature
+> Closed -loop Visual Feedback
+> Future Robot Trajectory
+> Wrist -camera
+> Centric Perception
+
+Figure 7: Overall pipeline of ARC-VLA. The model integrates task instruction, multi-camera observations, and robot state features through a multi-modal backbone and a failure-aware policy learning framework to generate closed-loop manipulation actions. them more resilient to the "Sim-to-Real" gap. This section details the technical innovations of the two leading teams: IIGroup (1st Place Overall) and RoboCola (2nd Place Overall). 
+
+3.1 ARC-VLA and Failure-Aware Data Programming 
+
+The overall winner, IIGroup, introduced ARC-VLA, a 3.6-billion-parameter model built upon the 
+
+π0.5 backbone [Black et al., 2025]. As illustrated in Figure 7, their success was largely attributed to a stability-first design philosophy that emphasized consistent observation protocols and explicit failure recovery. Instead of relying solely on nominal successful demonstrations, ARC-VLA was developed to maintain robust execution under fine-grained misalignment and repeated trial failures, making it particularly effective for precision-sensitive manipulation tasks. To provide a visual overview of the system design. 
+
+3.1.1 Architecture and "Risk-First" Perception 
+
+ARC-VLA utilizes a hybrid vision backbone combining SigLIP and Gemma with a dedicated action expert [Zhai et al., 2023, Gemma Team et al., 2024]. To circumvent the complexities of global depth calibration, the team adopted a wrist-camera-centric strategy. Wrist cameras provide high-fidelity "near-field" data of the gear and pins, allowing the model to learn contact geometry implicitly without relying on noisy global depth maps. 
+
+3.1.2 Overcoming the "Lazy Robot" with L1 Loss 
+
+A key technical insight from IIGroup was addressing the precision bottleneck. They observed that standard L2 (MSE) loss leads to vanishing gradients as the robot approaches a target, causing it to stop correcting when it is "close enough" but not yet aligned for insertion. To combat this, they implemented L1 loss optimization, which maintains a constant gradient, forcing the model to minimize even sub-millimeter errors: 
+
+LL1 =
+
+> T
+
+X
+
+> t=1
+
+|a(t) 
+
+> pred
+
+− a(t) 
+
+> gt
+
+|.
+
+They maintained constant gradient pressure, enabling millimeter-level insertion accuracy. Further-more, they heavily utilized recovery-from-failure curriculum data, constructing specific datasets targeting misalignment recovery and infinite-loop breaking, which proved critical for Task 3 success. 
+
+3.1.3 Recovery Correction Data Programming 
+
+Instead of training only on "perfect" trajectories, IIGroup explicitly taught the robot how to manage failures through a two-stage training pipeline (600 simulation episodes, 400 real-world episodes). They introduced two specific error types: 8Robot State  
+
+> Encoder
+> Current Robot State
+> Recovery -aware
+> Manipulation
+> Stage3: Insertion
+> State
+> Feature
+> Closed -loop Visual Feedback
+> Task Instruction
+> ### Insert the Gear into
+> the Shaft and Recover if
+> Misaligned
+> Multi -view RGB Observation
+> Current Robot State
+> Text
+> Encoder
+> Visual
+> Encoder
+> Robot State
+> Encoder
+> Semantic
+> Planner
+> Kinematic
+> Controller
+> Delta Action
+> Prediction
+> Text
+> Feature
+> Image
+> Feature
+> State
+> Feature
+> OpenPi
+> GalaxeaVLA
+> High -level Action
+> Proposal
+> Kinematically
+> Valid Action
+> Weighted
+> Action
+> Incremental
+> Motion
+> Temporal Window
+> Smoothing
+> Future Robot Trajectory
+
+Figure 8: Overall pipeline of the Team RoboCola. The framework adopts a dual-model collaboration strategy to couple high-level task reasoning with low-level motion generation, enabling effective and precise robotic manipulation. • Type 1 (Small Offsets): Correcting minor misalignments during placement. • Type 2 (Fail and Reset): Teaching the robot to completely retract, recalibrate, and retry after a failed grasp or a "stuck" pin scenario. 
+
+3.1.4 Deployment Alignment 
+
+To stabilize the policy onsite, they reduced the action chunking size K from 50 to 20. This allowed the robot to react more dynamically to visual feedback (closed-loop control) rather than blindly following a long, potentially erroneous trajectory predicted from a single frame. 
+
+3.2 RoboCola 
+
+Team RoboCola secured the runner-up position by employing a unique Dual-Model Collaboration Framework that balances high-level logical reasoning with low-level kinematic precision. As illus-trated in Figure 8, the overall system is organized as a collaborative pipeline in which different model components are responsible for complementary aspects of decision-making and control. This design enables RoboCola to combine semantic reasoning at the task level with precise action execution at the motion level, leading to strong performance in complex manipulation scenarios. 
+
+3.2.1 The Dual-Model Framework 
+
+Securing the runner-up position, RoboCola effectively demonstrated a Specialist + Generalist dual-model framework. Their approach fused outputs from a semantic planner (OpenPi) and a kinematic controller (GalaxeaVLA) [Black et al., 2025, Jiang et al., 2025]. The final action is a weighted combination prioritizing kinematic precision. RoboCola argued that a single model struggles to handle both fine-grained motor skills and complex assembly logic (e.g., Task 3 recovery). Their solution fused two models: • Generalist (OpenPi): Acted as the "high-level brain" to maintain task logic and handle sequential error correction. • Specialist (GalaxeaVLA): A model pre-trained on the specific kinematics of the Galaxea R1 Lite to ensure smooth, physically valid movements.The final action was a weighted fusion: 
+
+af inal = λ · aspec + (1 − λ) · agen .
+
+3.2.2 Delta Action Space and Trajectory Smoothing 
+
+To preserve sensitivity for micro-adjustments, RoboCola utilized a Delta Action Space rather than absolute coordinates. This prevented the model from "losing sensation" during the final millimeters of insertion. To reduce jitter, they applied a temporal window algorithm to smooth transitions between consecutive action chunks, preventing high-frequency oscillations that would otherwise make gear meshing physically impossible. 93.2.3 Rejection Sampling Fine-Tuning (RFT) 
+
+To bridge the data gap for failure recovery, the team used RFT. They allowed the model to practice in the Isaac Sim simulator, collected all successful attempts (including those where the model accidentally recovered from a mistake), and added these trajectories back into the training set. This "self-correction" loop significantly boosted performance in Task 1 and Task 2. High-quality simulated rollouts were filtered by a success function R(τ ) and fed back into the training dataset: 
+
+Dnew = Dold ∪ { τ ∼ πθ |R(τ ) = 1 }.
+
+3.2.4 Inference Optimization 
+
+During the onsite finals, RoboCola identified a "sweet spot" of 7 execution steps per inference cycle. This balanced the trade-off between visual lag (too many steps) and computational stuttering (too few steps), maintaining fluid motion on the provided RTX 6000 Ada hardware. 
+
+## 4 Excellent Perception-Action Solutions 
+
+While VLA models dominated the real-world rankings, modular Perception-Action paradigms demon-strated remarkable efficiency and precision in the simulation phase. These approaches decompose the end-to-end mapping into explicit stages of state estimation, planning, and control. This section ana-lyzes the strategies of HD-Robo and K-Lee-gends, who achieved the highest scores in the Simulation Track. 
+
+4.1 Task Decomposition and Rule-Based Twisting 
+
+Team HD-Robo secured the highest score in simulation by treating the gearbox assembly as a series of decoupled geometric problems. Their pipeline was designed for modular reliability, though it faced significant challenges during the physical transfer. The team utilized a combination of Foundation Pose estimation and depth-based thresholding. For the initial three gears, the system identified parts using semantic segmentation and calculated 6D poses relative to the planet carrier pins. Recognizing that precise gear meshing is difficult to achieve via pure position control, HD-Robo implemented an ad-hoc twisting logic. Once the gear reached the vicinity of the pin, the robot executed a "Twist-Left, Twist-Right" motion primitive. This rule-based approach allowed the gears to "settle" into the meshed state by searching for local geometric minima, effectively bypassing the need for complex contact modeling. Despite its simulation success, HD-Robo’s reliance on Franka-style impedance control rules, which were not natively supported by the Galaxea R1 Lite’s control interface, led to a deployment failure onsite. This underscores the difficulty of transferring modular policies that are tightly coupled to specific simulation-based physics parameters. 
+
+4.2 Geometric Priors and Spiral Search 
+
+Team K-Lee-gends adopted a purely geometric approach, focusing on robust perception and de-terministic motion primitives to handle the uncertainties of assembly. To handle the transition from simulation textures to real-world lighting, the team replaced their initial Mask R-CNN [He et al., 2018] with the Segment Anything Model 3 (SAM 3) [Carion et al., 2025]. This allowed for high-fidelity part segmentation across varying environmental conditions without requiring extensive real-world re-training. To address the "hole-searching" problem in gear-to-pin assembly, the team implemented a Spiral Search algorithm. When the end-effector encountered a vertical resistance force ( Fz ) exceeding a predefined threshold, the robot would transition from a linear move to a planar spiral trajectory: 
+
+x(t) = r(t) cos( ωt ), y(t) = r(t) sin( ωt ) (1) where the radius r(t) increases linearly over time. This allowed the robot to find the pin location even under slight calibration offsets. The team utilized MegaPose [Labbé et al., 2022] for object pose estimation and a traditional Inverse Kinematics (IK) solver for motion generation. While this provided high precision in the noise-free simulation, the cumulative errors in the physical perception-action loop, compounded by system latency, prevented successful execution on the physical hardware. 10 5 Key Insights 
+
+The RoCo Challenge provided a unique lens into the current state of EAI for industrial automation. The stark contrast between simulation rankings and real-world performance offers several critical insights for the research community. 
+
+5.1 The "Sim-to-Real Cliff" and Paradigm Robustness 
+
+A defining takeaway from the competition was the performance gap between modular and end-to-end systems. Modular pipelines dominated the Simulation Track, where they benefited from perfect state estimation and zero-latency control. However, these systems proved brittle onsite, failing primarily due to: • Calibration Sensitivity: Small errors in camera intrinsics or joint offsets caused cascading failures in geometric chains. • Latency Jitter: Real-world communication delays between perception and control modules often led to unstable oscillations during contact-rich tasks. In contrast, VLA-based approaches demonstrated higher tolerance for sensor noise. By learning a direct mapping from pixels to actions, these models internalize calibration offsets as part of the visual distribution, making them far more resilient to the physical realities of the assembly bench. 
+
+5.2 Data Engineering vs. Model Scale 
+
+The success of ARC-VLA highlights that for high-precision industrial tasks, data quality and diversity are more decisive than raw parameter count. While many teams focused on increasing model size, the winning strategy relied on: • Failure-Recovery Curriculum: Training on data that explicitly includes errors, such as "stuck" pins or dropped parts, transformed the policies from "hope-for-success" models into resilient agents. • Loss Function Alignment: Replacing standard L2 loss with L1 loss was a critical technical pivot. By maintaining constant gradients, L1 loss prevents the "lazy robot" phenomenon, ensuring that the agent continues to apply micro-corrections until the assembly is fully seated. 
+
+5.3 The Bottleneck of Visual Occlusion 
+
+Task 1 (Assembly from Scratch) revealed a fundamental hardware-software limitation: visual occlu-sion. As the robot’s hand approaches the carrier pin, the gear itself often blocks the camera’s view of the target. • The Wrist-Camera Solution: Teams that utilized wrist-mounted cameras (IIGroup) had a significant advantage in handling near-field geometry. • Multi-Arm Collaboration: Future solutions may require "active perception," where one arm holds the part while the other arm positions its wrist camera to provide a secondary "side-view" for alignment, effectively solving the occlusion problem through bimanual coordination. 
+
+5.4 Semantic Reasoning in Manipulation 
+
+Task 3 (Error Detection and Recovery) proved to be the most difficult scenario. It required the robot to not only perform a motor skill but also to understand the semantic state of the workspace (e.g., "This gear is the wrong size"). Only the VLA-based models, which leverage the reasoning capabilities of Large Language Models (LLMs), were able to successfully identify and correct these high-level errors. This suggests that the future of industrial robotics lies in the fusion of low-level "reflexive" motor control with high-level semantic reasoning. 11 6 Competition Impact 
+
+The RoCo Challenge has established a new benchmark for evaluating EAI within the context of HCM. Beyond the technical scores, the competition served as a catalyst for community building and a rigorous testbed for the "Sim-to-Real" transition in industrial automation. 
+
+6.1 Global Participation and Community Reach 
+
+The challenge attracted significant international interest, drawing more than 60 teams and 170+ participants from over 10 countries. This diversity brought together leading academic institutions, such as Tsinghua University, Beihang University, NUS, and GIST, alongside innovative industrial players like HiDream.ai. This cross-sector collaboration facilitated a unique exchange of ideas between foundational AI research and practical industrial engineering. 
+
+6.2 Onsite Engagement and Knowledge Sharing 
+
+The onsite finals, held at the A*STAR ARTC in Singapore, provided a high-visibility platform for state-of-the-art robotics. The event culminated in a dedicated session at the International Workshop on Addressing Challenges and Opportunities in Human-Centric Manufacturing at AAAI 2026. • Live Audience: The onsite challenge attracted approximately 100 attendees, providing a rare opportunity for researchers to observe the real-world failure modes and successes of various algorithmic paradigms in person. • Technical Plenary: The top-performing teams, IIGroup and RoboCola, delivered invited talks detailing their system architectures. These presentations offered invaluable "lessons from the trenches," specifically regarding the management of real-world noise and the implementation of recovery strategies. 
+
+6.3 Standardizing Industrial Benchmarks 
+
+By providing a standardized hardware platform (Galaxea R1 Lite) and a unified evaluation kit, the RoCo Challenge addressed a major bottleneck in robotics research: reproducibility. The release of the "RoCo-Dataset", which includes over 300 high-quality teleoperated demonstrations and multi-modal sensor logs, provides the community with a persistent resource for training and benchmarking future VLA and modular models. The challenge has effectively shifted the conversation from can a robot perform a task in simulation? 
+
+to how robustly can a robot handle the uncertainty of a physical assembly line? In doing so, it has set a new standard for what constitutes a "deployable" EAI solution in the manufacturing sector. 
+
+## 7 Related Work 
+
+The RoCo Challenge builds upon and extends several foundational research areas within the robotics community, bridging the gap between theoretical robot learning and practical industrial application. 
+
+7.1 Robotic Manipulation for Industrial Automation 
+
+Traditional industrial automation has long relied on Task and Motion Planning (TAMP) and rigid programming for high-speed assembly [Guo et al., 2023, Ranjan Das and Koskinopoulou, 2025]. While these systems excel in structured environments, they often fail when faced with the variability of modern "Human-Centric Manufacturing." Recent benchmarks, such as the NIST Assembly Task Board, have sought to standardize the evaluation of robotic dexterity [Kimble et al., 2020]. The RoCo Challenge advances this by introducing collaborative assembly, where robots must not only possess dexterity but also the semantic reasoning to resume tasks from partial states or recover from human-induced errors. 12 7.2 Robot Learning in Manipulation 
+
+The transition from modular pipelines to end-to-end learning has been a dominant trend in recent years [Liu et al., 2025b, Brohan et al., 2023]. • Visuomotor Policies: Approaches like ACT and Diffusion Policy (DP) have demonstrated remarkable success in learning complex, multi-modal tasks from demonstrations [Zhao et al., 2023, Chi et al., 2024]. • VLA Models: Models such as RT-2, π0.5, and OpenVLA have introduced the concept of "Embodied Foundation Models," leveraging LLM weights to provide semantic priors for manipulation [Brohan et al., 2023, Black et al., 2025, Kim et al., 2024]. The RoCo Challenge specifically benchmarks these models against the high-precision requirements of gearbox assembly, highlighting that while VLA models offer superior reasoning, they still require specialized fine-tuning, such as the L1 loss and failure-recovery data utilized by the winning teams, to meet industrial standards. 
+
+7.3 Long-Horizon Manipulation and Multi-Task Learning 
+
+Assembling a planetary gearbox is a quintessential long-horizon task, requiring dozens of successful sub-actions where errors can compound over time [Zhao et al., 2023]. Research into Hierarchical Reinforcement Learning (HRL) and Sub-goal Discovery has attempted to solve these sequences by breaking them into manageable primitives [Hutsebaut-Buysse et al., 2022, Paul et al., 2019]. The RoCo Challenge demonstrates a shift toward unified, task-conditioned policies that handle diverse scenarios (scratch, resume, recovery) within a single architecture, proving that multi-task learning can enhance the robustness of individual skills through shared representations. 
+
+## 8 Future Plan 
+
+The 1st RoCo Challenge has provided a foundational benchmark, but it also revealed several avenues for further research and development to fully realize the potential of EAI in smart manufacturing. Our future efforts will focus on three primary dimensions: 
+
+8.1 Expanding the Simulation Ecosystem 
+
+While the current Isaac Sim-based environment effectively modeled the planetary gearbox assembly, we plan to expand the simulator to support a broader range of complex industrial tasks. This includes: • Industrial Product Inspection: Integrating high-fidelity visual and surface defect simula-tion to train agents for quality control. • PCB Sorting and Assembly: Introducing small-scale, high-precision electronic component handling that requires even greater dexterity and specialized end-effectors. • Dynamic Human-Robot Collaboration: Moving beyond "virtual human" state initializa-tion to real-time, physics-based human models to test reactive safety and proactive assistance in shared workspaces. 
+
+8.2 Advancing Algorithmic Robustness 
+
+To address the "Sim-to-Real Cliff" identified in this challenge, future research will explore: • Autonomous Recovery Discovery: Utilizing Reinforcement Learning (RL) within the simulator to autonomously discover optimal recovery policies, reducing the reliance on manually curated failure datasets. • Temporal Memory Integration: Incorporating architectural features like Transformers or State Space Models (SSMs) with longer temporal windows to prevent "infinite loop" failures and allow the robot to learn from its own recent history of attempts. 13 • Active Bimanual Perception: Developing policies that coordinate both arms, one for ma-nipulation and the other for positioning a "third-eye" camera, to overcome visual occlusion during contact-rich tasks. 
+
+8.3 Real-World Scaling 
+
+We aim to transition from standardized kits to more varied, real-world industrial components. This involves testing models on parts with different materials (e.g., reflective metals, flexible plastics) and under the non-idealized lighting conditions typical of active factory floors. 
+
+## 9 Conclusion 
+
+The 1st RoCo Challenge successfully benchmarked the state-of-the-art in robotic collaborative ma-nipulation for industrial assembly. By attracting over 60 teams and 170+ participants, the competition highlighted the global research community’s commitment to bridging the gap between EAI research and manufacturing reality. Our analysis of the top-performing solutions underscores a significant shift in the field. While modular perception-action pipelines showed promise in simulation, VLA models emerged as the clear winners in the physical world. Their ability to handle sensor noise and perform semantic reasoning for error recovery (Task 3) suggests that end-to-end learning, when grounded with physical priors like L1 loss and failure-recovery data programming, is the most promising path toward deployable industrial agents. The challenge has set a new standard for industrial benchmarks, providing the community with the RoCo-Dataset and a rigorous evaluation framework. As we move forward, the insights gained here, specifically regarding the importance of data engineering over model scale and the need for active perception, will serve as a roadmap for the development of "human-centric" robots capable of working seamlessly alongside human operators in the factories of the future. 
+
+## Acknowledgment 
+
+We acknowledge the support of the Singapore National Robotics Programme, A*STAR ARTC, and Galaxea for providing the hardware and venue support. 
+
+## References 
+
+Kevin Black, Noah Brown, James Darpinian, et al. π0.5: A vision-language-action model with open-world generalization. arXiv preprint arXiv:2504.16054 , 2025. Kevin Black, Noah Brown, Danny Driess, Chelsea Finn, Sergey Levine, et al. π0: A vision-language-action flow model for general robot control. arXiv preprint arXiv:2410.24164 , 2026. Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Xi Chen, et al. RT-2: Vision-language-action models transfer web knowledge to robotic control. arXiv preprint arXiv:2307.15818 , 2023. Remi Cadene, Simon Alibert, Alexander Soare, et al. LeRobot: State-of-the-art machine learning for real-world robotics in pytorch. https://github.com/huggingface/lerobot , 2024. Nicolas Carion, Laura Gustafson, Yuan-Ting Hu, et al. SAM 3: Segment anything with concepts. 
+
+arXiv preprint arXiv:2511.16719 , 2025. Tianxing Chen, Zanxin Chen, Baijun Chen, Zijian Cai, Yibin Liu, Zixuan Li, Qiwei Liang, Xianliang Lin, Yiheng Ge, Zhenyu Gu, et al. RobotWin 2.0: A scalable data generator and benchmark with strong domain randomization for robust bimanual robotic manipulation. arXiv preprint arXiv:2506.18088 , 2025. Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, and Shuran Song. Diffusion policy: Visuomotor policy learning via action diffusion. The International Journal of Robotics Research , 2024. 14 Galaxea. Galaxea R1 Lite. https://www.galaxea-ai.com/en/products/R1-Lite , 2026. Ac-cessed: 2026-03-10. Gemma Team, Thomas Mesnard, Cassidy Hardin, et al. Gemma: Open models based on gemini research and technology. arXiv preprint arXiv:2403.08295 , 2024. Huihui Guo, Fan Wu, Yunchuan Qin, Ruihui Li, Keqin Li, and Kenli Li. Recent trends in task and motion planning for robotics: A survey. ACM Computing Surveys , 55(13s), 2023. doi: 10.1145/3583136. Kaiming He, Georgia Gkioxari, Piotr Dollár, and Ross Girshick. Mask R-CNN. arXiv preprint arXiv:1703.06870 , 2018. Minho Heo, Youngwoon Lee, Doohyun Lee, and Joseph J Lim. FurnitureBench: Reproducible real-world benchmark for long-horizon complex manipulation. The International Journal of Robotics Research , 44(10-11):1863–1891, 2025. Matthias Hutsebaut-Buysse, Kevin Mets, and Steven Latré. Hierarchical reinforcement learning: A survey and open research challenges. Machine Learning and Knowledge Extraction , 4(1):172–221, 2022. Tao Jiang, Tianyuan Yuan, Yicheng Liu, Chenhao Lu, Jianning Cui, Xiao Liu, Shuiqi Cheng, Jiyang Gao, Huazhe Xu, and Hang Zhao. Galaxea open-world dataset and G0 dual-system VLA model. 
+
+arXiv preprint arXiv:2509.00576 , 2025. Moo Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, et al. OpenVLA: An open-source vision-language-action model. arXiv preprint arXiv:2406.09246 , 2024. Kenneth Kimble, Karl Van Wyk, Joe Falco, Elena Messina, Yu Sun, Mizuho Shibata, Wataru Uemura, and Yasuyoshi Yokokohji. Benchmarking protocols for evaluating small parts robotic assembly systems. IEEE Robotics and Automation Letters , 5(2):883–889, 2020. doi: 10.1109/LRA.2020. 2965869. Yann Labbé, Lucas Manuelli, Arsalan Mousavian, Stephen Tyree, Stan Birchfield, Jonathan Tremblay, Justin Carpentier, Mathieu Aubry, Dieter Fox, and Josef Sivic. MegaPose: 6d pose estimation of novel objects via render & compare. arXiv preprint arXiv:2212.06870 , 2022. Zijun Lin, Jiafei Duan, Haoquan Fang, Dieter Fox, Ranjay Krishna, Cheston Tan, and Bihan Wen. FailSafe: Reasoning and recovery from failures in vision-language-action models. arXiv preprint arXiv:2510.01642 , 2025. Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter Stone. LIBERO: Benchmarking knowledge transfer for lifelong robot learning. Advances in Neural Information Processing Systems , 36:44776–44791, 2023. Haichao Liu, Sikai Guo, Pengfei Mai, Jiahang Cao, Haoang Li, and Jun Ma. RoboDexVLM: Visual language model-enabled task planning and motion control for dexterous robot manipulation. In 
+
+Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) ,pages 1–8, 2025a. Yang Liu, Weixing Chen, Yongjie Bai, Xiaodan Liang, Guanbin Li, Wen Gao, and Liang Lin. Aligning cyber space with physical world: A comprehensive survey on embodied AI. IEEE/ASME Transactions on Mechatronics , 30(6):7253–7274, 2025b. doi: 10.1109/TMECH.2025.3574943. Jianlan Luo, Charles Xu, Fangchen Liu, Liam Tan, Zipeng Lin, Jeffrey Wu, Pieter Abbeel, and Sergey Levine. FMB: A functional manipulation benchmark for generalizable robotic learning. 
+
+The International Journal of Robotics Research , 44(4):592–606, 2025. Oier Mees, Lukas Hermann, Erick Rosete-Beas, and Wolfram Burgard. CALVIN: A benchmark for language-conditioned policy learning for long-horizon robot manipulation tasks. IEEE Robotics and Automation Letters , 7(3):7327–7334, 2022. Elena Merlo, Marta Lagomarsino, and Arash Ajoudani. Information-theoretic detection of bimanual interactions for dual-arm robot plan generation. IEEE Robotics and Automation Letters , 10(5): 4532–4539, 2025. doi: 10.1109/LRA.2025.3552216. 15 NVIDIA. NVIDIA Isaac Sim. https://developer.nvidia.com/isaac/sim , 2026. Accessed: 2026-03-10. NVIDIA, Johan Bjorck, Fernando Castañeda, et al. GR00T N1: An open foundation model for generalist humanoid robots. arXiv preprint arXiv:2503.14734 , 2025. Sujoy Paul, Jeroen van Baar, and Amit K. Roy-Chowdhury. Learning from trajectories via subgoal discovery. arXiv preprint arXiv:1911.07224 , 2019. Adip Ranjan Das and Maria Koskinopoulou. Toward sustainable manufacturing: A review on innovations in robotic assembly and disassembly. IEEE Access , 13:100149–100166, 2025. doi: 10.1109/ACCESS.2025.3576441. Stone Tao, Fanbo Xiang, Arth Shukla, Yuzhe Qin, et al. ManiSkill3: Gpu parallelized robotics simulation and rendering for generalizable embodied AI. arXiv preprint arXiv:2410.00425 , 2024. Toshiaki Tsuji, Yasuhiro Kato, Gokhan Solak, Heng Zhang, Tadej Petriˇ c, Francesco Nori, and Arash Ajoudani. A survey on imitation learning for contact-rich tasks in robotics. arXiv preprint arXiv:2506.13498 , 2025. Xuan Xiao, Jiahang Liu, Zhipeng Wang, Yanmin Zhou, Yong Qi, Shuo Jiang, Bin He, and Qian Cheng. Robot learning in the era of foundation models: a survey. Neurocomputing , 638:129963, 2025. Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. SigLIP: Sigmoid loss for language image pre-training. arXiv preprint arXiv:2303.15343 , 2023. Jianjing Zhang, Lihui Wang, and Robert X. Gao. Embodied AI: A foundation for intelligent and autonomous manufacturing. Engineering , 2025. Tony Z. Zhao, Vikash Kumar, Sergey Levine, and Chelsea Finn. Learning fine-grained bimanual manipulation with low-cost hardware. arXiv preprint arXiv:2304.13705 , 2023. 16
