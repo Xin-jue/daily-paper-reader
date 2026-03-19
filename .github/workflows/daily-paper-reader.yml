@@ -73,8 +73,10 @@ jobs:
           HUGGINGFACE_HUB_CACHE: ${{ github.workspace }}/hf_cache
           HF_HUB_DISABLE_SYMLINKS: "1"
         run: |
+          set -euo pipefail
+
           echo "Cleaning any previous local cache..."
-          rm -rf ${{ github.workspace }}/hf_cache
+          rm -rf "${{ github.workspace }}/hf_cache"
 
           echo "=== Debug: runtime env ==="
           echo "PWD=$(pwd)"
@@ -85,38 +87,44 @@ jobs:
           echo "HF_HUB_DISABLE_SYMLINKS=$HF_HUB_DISABLE_SYMLINKS"
           echo "TRANSFORMERS_CACHE=${TRANSFORMERS_CACHE:-<unset>}"
           echo "XDG_CACHE_HOME=${XDG_CACHE_HOME:-<unset>}"
+
+          echo "--- python info ---"
+          which python
+          python --version
+
           echo "--- env (filtered) ---"
           env | grep -E '^(HF_|HUGGINGFACE_|TRANSFORMERS_|XDG_|HOME=|GITHUB_WORKSPACE=)' | sort || true
 
           echo "--- python/hf versions ---"
-          /opt/hostedtoolcache/Python/3.11.14/x64/bin/python - <<'PY'
+          python - <<'PY'
           import os
           def v(mod):
-            try:
-              m = __import__(mod)
-              return getattr(m, "__version__", "<no __version__>")
-            except Exception as e:
-              return f"<import failed: {e}>"
+              try:
+                  m = __import__(mod)
+                  return getattr(m, "__version__", "<no __version__>")
+              except Exception as e:
+                  return f"<import failed: {e}>"
 
-          print("python_exe:", os.environ.get("PYTHON", ""))
+          print("python_exe:", os.sys.executable)
           print("HF_HOME env:", os.environ.get("HF_HOME"))
           print("HUGGINGFACE_HUB_CACHE env:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
           print("HF_HUB_DISABLE_SYMLINKS env:", os.environ.get("HF_HUB_DISABLE_SYMLINKS"))
           print("TRANSFORMERS_CACHE env:", os.environ.get("TRANSFORMERS_CACHE"))
           print("versions:", {
-            "huggingface_hub": v("huggingface_hub"),
-            "transformers": v("transformers"),
-            "sentence_transformers": v("sentence_transformers"),
+              "huggingface_hub": v("huggingface_hub"),
+              "transformers": v("transformers"),
+              "sentence_transformers": v("sentence_transformers"),
           })
+
           try:
-            from huggingface_hub import constants as c
-            print("hub.constants:", {
-              "HF_HOME": getattr(c, "HF_HOME", None),
-              "HUGGINGFACE_HUB_CACHE": getattr(c, "HUGGINGFACE_HUB_CACHE", None),
-              "HF_HUB_DISABLE_SYMLINKS": getattr(c, "HF_HUB_DISABLE_SYMLINKS", None),
-            })
+              from huggingface_hub import constants as c
+              print("hub.constants:", {
+                  "HF_HOME": getattr(c, "HF_HOME", None),
+                  "HUGGINGFACE_HUB_CACHE": getattr(c, "HUGGINGFACE_HUB_CACHE", None),
+                  "HF_HUB_DISABLE_SYMLINKS": getattr(c, "HF_HUB_DISABLE_SYMLINKS", None),
+              })
           except Exception as e:
-            print("hub.constants import failed:", e)
+              print("hub.constants import failed:", e)
           PY
 
           echo "--- cache dir check ---"
@@ -130,6 +138,7 @@ jobs:
           FETCH_DAYS="${{ github.event.inputs.fetch_days }}"
           FETCH_MODE="${{ github.event.inputs.fetch_mode }}"
           ARGS=""
+
           if [ "$RUN_ENRICH" = "true" ]; then
             ARGS="--run-enrich"
           fi
@@ -139,9 +148,9 @@ jobs:
           if [ -n "$FETCH_MODE" ]; then
             ARGS="$ARGS --fetch-mode $FETCH_MODE"
           fi
-          /opt/hostedtoolcache/Python/3.11.14/x64/bin/python src/main.py $ARGS --embedding-device cpu --embedding-batch-size 8
 
-          # 让前端可以在不配置 GitHub Token 的情况下直接读取配置（只读快照）
+          python src/main.py $ARGS --embedding-device cpu --embedding-batch-size 8
+
           cp -f config.yaml docs/config.yaml
 
           echo "--- post-run cache symlink check ---"
