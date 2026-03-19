@@ -1,0 +1,323 @@
+Title: Learning to Build: Autonomous Robotic Assembly of Stable Structures Without Predefined Plans
+
+URL Source: https://arxiv.org/pdf/2602.23934v1
+
+Published Time: Mon, 02 Mar 2026 01:59:33 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Learning to Build: Autonomous Robotic Assembly of Stable Structures Without Predefined Plans 
+
+Jingwen Wang ∗1, Johannes Kirschner ∗2, Paul Rolland ∗2,Luis Salamanca 2, Stefana Parascho 1
+
+Lab of Creative Computation, ´ Ecole Polytechnique F´ ed´ erale de Lausanne 1
+
+Swiss Data Science Center 2
+
+Abstract: This paper presents a novel autonomous robotic assembly frame-work for constructing stable structures without relying on predefined architectural blueprints. Instead of following fixed plans, construction tasks are defined through targets and obstacles, allowing the system to adapt more flexibly to environmental uncertainty and variations during the building process. A reinforcement learning (RL) policy, trained using deep Q-learning with successor features, serves as the decision-making component. As a proof of concept, we evaluate the approach on a benchmark of 15 small-scale 2D robotic assembly tasks of discrete block con-struction. Experiments using a real-world closed-loop robotic setup demonstrate the feasibility of the method and its ability to handle construction noise. The re-sults suggest that our framework offers a promising direction for more adaptable and robust robotic construction in real-world environments. 
+
+Keywords: Autonomous robotic assembly, Robotic construction, Reinforcement learning, Closed-loop robotic assembly 
+
+# 1 Introduction 
+
+In the past decade, robots have been increasingly adopted in construction [1] for their precision and efficiency [2], yet their widespread use remains limited [3]. A major barrier is the reliance on rigid, highly detailed plans that are difficult to apply in the dynamic and uncertain conditions of construction sites [4, 5, 6]. Unlike manufacturing, where robotic arms execute repetitive tasks in controlled environments using pre-tested motion plans, architectural fabrication faces unique and unpredictable on-site conditions—uneven terrain, variable material properties, and human-induced inconsistencies. As a result, plan-driven workflows that assume perfect alignment between design and reality often prove impractical, demanding tight tolerances and leaving little room for material or fabrication uncertainties or real-time adaptation [7]. These challenges highlight the need for construction systems that can make decisions on the fly, adjusting their actions as conditions evolve instead of relying solely on precomputed plans. Building on this motivation, we aim to develop a construction framework that enables robots to autonomously perform construction tasks without relying on predefined plans. We focus specif-ically on the robotic assembly of discrete rigid block structures with dry joints. This restriction allows us to target architectural assemblies that can be built through a relatively straightforward and resource-efficient construction process, as commonly explored in research on unreinforced or dry-stacked masonry systems [8, 9]. However, because dry joints do not provide inherent reinforcement, structural stability must be maintained throughout the construction process, which makes adaptive decision-making particularly important. Specifically, this work investigates: 
+
+> ∗
+
+Equal contribution 
+
+> arXiv:2602.23934v1 [cs.RO] 27 Feb 2026
+
+• How to formalize robotic assembly tasks in a way that frees the process from rigid, prede-fined construction plans. • How to design a flexible and adaptable framework capable of accomplishing multiple con-struction tasks. • How to validate the proposed framework in physical construction scenarios with noise. In this paper, we propose a flexible robotic construction system that builds structures from discrete blocks based on abstract task definitions, specified through targets and obstacles, without utilizing predefined plans, as shown in Figure 1 (left). A reinforcement learning (RL) model serves as the decision-making core, enabling the robot to adapt its actions based on construction progress and real-time site conditions. As a proof of concept, we demonstrate our approach on a set of 2D dry-stacked vertical and spanning structures, and validate it both in simulation and on a real-world closed-loop robotic assembly process. The remainder of the paper is organized as follows: Section 2 reviews related work on classic and learning-based robotic assembly of stable structures; Section 3 introduces the task formulation and its associated challenges; Section 4 presents our method for autonomous construction of multiple construction tasks; Section 5 presents experimental results in both simulation and real-world set-tings; and Section 6 concludes the paper and discusses limitations as well as future directions. 
+
+# 2 Related Works 
+
+2.1 Classic plan-based robotic assembly of stable structures 
+
+Existing research on robotic assembly of dry-stacked structures [10, 11, 12, 9] typically depends on carefully analyzed construction plans, detailing geometry, tessellation, assembly sequence, and robotic execution. This linear design-to-construction pipeline often results in rigid workflows with limited adaptability. Three practical challenges further illustrate these limitations. First, identifying a feasible and stable assembly sequence for a certain geometry, particularly for spanning structures with strict stability constraints, is an NP-hard problem [13, 14]. Second, robotic constraints must also be taken into account: even if a sequence satisfies structural stability requirements, it may still be unconstructible due to issues such as limited robot reachability or potential collisions with previously placed el-ements or the robot itself [11, 9, 14]. These constraints often necessitate revisiting early design decisions. Third, construction environments are inherently dynamic. Construction tolerances tend to accumulate, especially in tall or complex assemblies [9]. Such variability further undermines the feasibility of rigid plans. To address these challenges, we aim to develop a system that moves beyond static, plan-based con-struction and can dynamically adapt to on-site conditions. 
+
+2.2 Learning-based assembly guided by blueprints 
+
+Recent work has demonstrated the use of learning-based methods to assemble structures from pre-defined blueprints. Ghasemipour et al. [15] train agents to assemble magnetic structures using struc-tured graph representations and reinforcement learning, learning both sequencing and bimanual co-ordination. Kulshrestha and Qureshi [16] use graph attention networks to plan multi-level rearrange-ments of up to 20 blocks, then delegating low-level actions to a robot controller for demonstration. Funk et al. [17] propose a hierarchical system combining graph-based policies with Monte Carlo Tree Search to construct stable 3D structures consisting of cubes. These works capture structural dependencies such as layering [16, 17] and construction coordination strategies [15, 16], yet they all operate under fixed designs. In contrast, our work addresses the challenge of constructing without fixed designs, requiring the agent to determine how to achieve a goal under evolving and unstructured conditions. 22.3 Learning-based assembly without blueprints 
+
+Approaches without predefined plans often target specific structural forms. Li et al. [18, 19] learn to build bridges over gaps using attention-based networks and object-centric policies. Vallat et al. [20] train agents to construct arches across variable spans. Both show that learning-based methods can flexibly generate bridge-like structures from task-specific goals. Wibranek et al. [21] learn to assemble SL blocks along curves to construct linear structures sequentially. Bapst et al. [22] propose a graph-based approach that learns construction strategies through relational reasoning. One of their tasks is to connect the ground to targets while avoiding obstacles, allowing flexible structural layouts. However, their task design often produces similar umbrella-like solutions, and the use of adhesive connections leads to behaviors that do not generalize to dry-stacked construction. Unlike prior approaches that focus on a single structural form, our framework is designed to handle a wider range of construction goals, supporting both vertical and spanning topologies. It also departs from the common assumption of rectangular or grid-aligned blocks [18, 19, 22, 20, 21]. By accom-modating polygonal geometries such as trapezoids, our system enables more diverse and flexible construction strategies. 
+
+# 3 Problem Formulation 
+
+3.1 Task overview and design principles 
+
+To support the construction of diverse architectural forms, we define a construction task in terms of four elements: the construction space, targets, obstacles, and blocks. As shown in Figure 1, the goal of the task is for the robot to build a discrete structure by using a set of blocks that connect the ground to the targets while avoiding obstacles. This formulation offers several key advantages. First, it enables the construction of a wide range of structural forms simply by varying the configuration of targets and obstacles. For example, a column or a bridge can be represented through different task specifications. Second, it removes the need to provide a fixed blueprint for the robot to follow, allowing fast adaptation to unexpected changes or inaccuracies. 
+
+3.2 Simulated environment definition 
+
+To simulate the block assembly process in Section 3.1, we design a 2D construction environment that captures essential physical and geometric constraints relevant to architectural assembly tasks, shown in Figure 1(left). In this environment, the most relevant elements are: 
+
+Unit Blocks We use two basic types of construction units: square and trapezoidal blocks. These shapes are commonly found in architectural applications and provide diversity for creating varied structures. 
+
+Construction Space The construction space is defined based on the dimensions of the blocks. It spans the range x ∈ [−5, 5] and z ∈ [0 , 10] . A horizontal floor is placed at z = 0 , serving as the foundation upon which all structures are built. 
+
+Targets and Obstacles Targets are defined as 2D points that the structure must reach. Obstacles are defined as 2D square regions that the structure must avoid touching. These elements encode high-level construction objectives and constraints within each task. Furthermore, we can define the most important concepts related to the construction process: 
+
+Construction Step At each construction step, a new block is placed within the environment. A placement action is considered valid if the block does not overlap with any other block already placed, the ground floor and obstacles, the block remains within the bounds of the construction space, and the resulting structure remains stable. Structural stability is evaluated using the Rigid-Block Equilibrium (RBE) method [23, 24]. The construction episode, defined as the complete 3Figure 1: Left: Problem Definition: Example of a construction task, defined by the construction space, target locations, obstacle regions, and available unit blocks. Right: Tasks: A set of 15 tasks used to evaluate the reinforcement learning approach. sequence of these construction steps, terminates successfully when all targets have been reached; otherwise, it terminates unsuccessfully if the maximum number of blocks has been placed. 
+
+Construction Task A construction task is defined by a set of target points and obstacle regions defined by squares. To promote the emergence of specific structural typologies—such as columns, arches, and bridges—we manually design a set of tasks, illustrated in Figure 1(right). 
+
+3.3 Challenges of solving the proposed problem 
+
+To the best of our knowledge, this construction problem has not been explored previously. Prior work generally assumes fixed designs or targets a single structural topology, whereas our goal is to solve a diverse set of tasks with one policy. The main challenge lies in the dynamic, state-dependent action space: each block placement changes the geometry, creating a new set of valid placements that grows combinatorially as the structure expands. The agent must reason over this evolving configuration to plan long-horizon assembly sequences. In addition, the reward varies across tasks due to different target and obstacle layouts. As a result, the learning framework must enable a policy that handles a continuously changing action space while also generalizing across tasks with distinct objectives. 
+
+# 4 Methodology 
+
+To solve the proposed construction problem, we develop an innovative RL framework which we further test in a real-world closed-loop robotic construction workflow to validate the obtained trained policy. 
+
+4.1 Goal-conditioned reinforcement learning 
+
+Formally, we model the construction task as a goal-conditioned reinforcement learning problem, de-fined by a state space S, action space A, and a task space T [25]. The goal-conditioned formulation enables a single construction policy to generalize across different construction tasks. The task de-scription T ∈ T captures information about targets, obstacles, and available block shapes. Targets are defined by point coordinates in the construction space. Obstacles are defined by subsets of the construction space. The action space A consists of possible placements (position and orientation) of a single shape in the construction space. The state space S consists of assemblies St ∈ S of size 
+
+t ≥ 0 defined by block placements St = {A1, . . . , A t} ∈ A (S). The empty assembly is S0 = {} .The feasible action space A(S) ⊂ A is a state-dependent set composed of feasible placements of a new block, i.e., containing only placements that yield a stable structure and do not collide with any 4obstacle or any already placed block. To obtain a finite action space, we limit the number of possible shifts when placing a new block’s face against a face of an already placed block. The agent sequentially chooses a sequence of block placements A1, . . . , A t, resulting in a sequence of structures S1, . . . , S t. The agent then chooses the next action At+1 from the available actions 
+
+A(St). Given a task T , the goal of the agent is to construct an assembly that reaches all the targets and does not intersect any obstacles. An episode ends if the agent reaches all targets, if a maximum of 10 actions is taken, or if there are no feasible actions. 
+
+4.2 RL algorithm 
+
+Designing an RL model for our construction tasks requires addressing three key aspects. First, we must encode the state space S, the action space A, and the task space T in a way that effectively cap-tures the combinatorial assembly space, construction goals, and geometric properties of the construc-tion. Second, the reward formulation should guide the assembly toward targets efficiently—using as few blocks as possible—while enabling multi-task learning. Third, the learning algorithm must han-dle a state-dependent action space, as the set of feasible placements A(S) changes with the evolving structure and cannot be captured by a fixed global action set. To address the first point, we choose image-based feature representations for states, actions, and tasks. We introduce action features ϕ(At) ∈ Rd×d, defined as a binary image indicating the block shape and placement associated with action At, as illustrated in the Column 2 of Figure 2. In our ex-periments, we set d = 64 , capturing sufficient geometric detail for our benchmark tasks (Figure 1). For an assembly state St, the state features ψ(St) are defined as the sum over the corresponding action features, ψ(St) = Pti=1 ϕ(Ai), as shown in the Column 1 of Figure 2. This feature represen-tation encodes state–action transitions using a simple additive update that mirrors the additive nature of the physical assembly process. We further embed the task information in the same image space by introducing task features ξ(T ) ∈ R2×64 ×64 , where the first channel encodes obstacle locations and the second channel encodes target locations (Column 3&4 in Figure 2). Importantly, this formulation ensures that state, action, and task features all share a common image-based representation. Second, to guide the block placement, we introduce a task-dependent reward r(A, T ). A na¨ ıve formulation would assign a reward of +1 only when a block is placed at a target location, but such a sparse reward severely slows learning. To address this issue, we replace the single-point target signal with a smooth scalar field around the targets, encouraging the structure to grow toward them. In addition, we penalize the volume of each placed block to promote material efficiency. Both effects can be expressed compactly in our image-based feature space. For each task T , we construct a reward feature ρ(T ) ∈ R64 ×64 by convolving the target locations with a Gaussian kernel and subtracting a constant C > 0 (Figure 2 Column 4). The reward for placing a block is then computed as the inner product r(A, T ) = ϕ(A)⊤ρ(T ), where ϕ(A) denotes the action feature. This formulation provides dense, shaped rewards and enables fast evaluation by decomposing the reward into task-dependent and action-dependent components directly in the shared image feature space. Third, we must choose an effective learning algorithm for the above definitions. Our objective is to learn a policy π : S × T → A that, for any state S ∈ S and task T ∈ T , returns an action 
+
+A ∈ A (S) so as to maximize the cumulative discounted reward. We denote the return of a policy by V π = Ptfinal −1 
+
+> t=0
+
+γt r(At+1 , T ), where γ ∈ [0 , 1] is the discount factor, tfinal is the number of steps until the episode ends. A policy π∗ is optimal if it maximizes the return, i.e., π∗ ∈ arg max π V π .We exploit the linear structure of the reward r(A, T ) = ϕ(A)⊤ρ(T ) and introduce the successor feature Ψπ (S, A, T ) associated with a state S ∈ S , an action A ∈ A (S), and a policy π. For a trajectory starting from (S, A, T ), we define Ψπ (S, A, T ) = ϕ(A) + Ptfinal −1 
+
+> t=|S|+1
+
+γt−| S|ϕ(At+1 ), so that the state-action value function decomposes as Qπ (S, A, T ) = Ψ π (S, A, T )⊤ρ(T ). Successor features are known to satisfy a Bellman equation analogous to that of value and Q-functions [26], which allows us to apply standard RL methods in this feature space. 5More specifically, we use a variant of Deep Q-Learning [27], which is particularly convenient for our setting with a state-dependent action space A(S) (given by the set of feasible block placements for the current partial structure). Instead of directly approximating Qπ , our RL algorithm learns to predict the successor features of the optimal policy. We parametrize Ψθ (S, A, T ) with an image-to-image U-Net [28] with learnable parameters θ and inputs ψ(S), ϕ(A), and ξ(T ). The complete procedure is summarized in Algorithm 1. After training, an episode run resembles what is illustrated in Figure 2. The Column 1&2 repre-sent the current state S and the action A∗ taken by the policy in this state. Column 3&4 repre-sent the obstacles and reward images used for this episode respectively. Column 5 corresponds to the successor feature Ψθ (S, A ∗, T ) which is used to select the action A∗ in this step, i.e., 
+
+A∗ = arg max A Ψθ (S, A, T )⊤ρ(T ). The important point here is that Column 5, the successor features, also show the future assembly to be constructed. The key novelty of our method lies in its use of image-based successor features, which decompose the reward into task- and action-specific components. This enables effective multi-task training: a single policy can generalize across different objectives without separate reward functions. The shared image representation naturally supports translational equivariance—shifting targets or ob-stacles leads to corresponding shifts in the optimal actions—making it well-suited for geometric reasoning. It also accommodates arbitrary polygonal block shapes rather than being restricted to rectangles; even with only two shapes, this already yields a rich construction space, and additional shapes can be incorporated easily. Finally, successor features offer interpretability: visualizing them reveals the policy’s long-term construction intent (see Column 5 in Figure 2), making the decision process more transparent. 
+
+Algorithm 1: Deep Q-Learning (DQN) with Successor Features  
+
+> 1
+
+Input: Set of tasks T = {T1, . . . , T k}, batch size B, number of episodes M , number of optimization epochs noptim −iter , number of policy iterations npolicy −iter  
+
+> 2
+
+Initialize replay buffer D 
+
+> 3
+
+Initialize action-value Successor Features Ψθ with random weights θ 
+
+> 4
+
+Initialize target network Ψ¯θ with weights ¯θ ← θ 
+
+> 5
+
+for episode = 1 to M do  
+
+> 6
+
+# Add transitions to the replay buffer by running the policy on all tasks  
+
+> 7
+
+for T in T do  
+
+> 8
+
+Initialize state to empty assembly S = S0 
+
+> 9
+
+for t = 1 to max steps per episode or until the episode ends do  
+
+> 10
+
+A ← arg max A′ Ψθ (S, A ′, T )⊤ρ(T ) 
+
+> 11
+
+Execute action A, observe next state S′ 
+
+> 12
+
+Store transition (S, A, S ′, T ) in D 
+
+> 13
+
+S ← S′ 
+
+> 14
+
+# Update the policy using the transitions stored in the replay buffer  
+
+> 15
+
+for npolicy −iter iterations do  
+
+> 16
+
+for noptim −iter epochs do  
+
+> 17
+
+Sample batch of transitions (S1, A 1, S ′
+
+> 1
+
+, T 1), . . . , (SB , A B , S ′ 
+
+> B
+
+, T B ) from D 
+
+> 18
+
+for each sampled transition do  
+
+> 19
+
+Set target:  
+
+> 20
+
+A′ 
+
+> j
+
+= arg max A′ Ψ¯θ (S′ 
+
+> j
+
+, A ′, T j )⊤ρ(Tj ) 
+
+> 21
+
+Yj = ϕ(Aj ) + γΨθ
+
+ S′ 
+
+> j
+
+, A ′ 
+
+> j
+
+, T j
+
+ if S′ 
+
+> j
+
+is not terminal  
+
+> 22
+
+Yj = ϕ(Aj ) else  
+
+> 23
+
+Perform a gradient step using ADAM on loss 
+
+L(θ) = 1
+
+> B
+
+PBj=1 ∥Yj − Ψθ (Sj , A j , T j )∥2 with respect to θ 
+
+> 24
+
+Update target network: ¯θ ← θ 
+
+> 25
+
+Return policy πθ (S, T ) = arg max A Ψθ (S, A, T )⊤ρ(T )
+
+6Step 1       
+
+> State Action Obstacles Reward image Successor features
+> 1
+> -1
+> Step 2
+> 21
+> -1
+> Step 3
+> 3
+> 21
+> -1
+
+Figure 2: Example of episode run of Task 8. 
+
+Figure 3: Closed-loop robotic assembly workflow. Given the current constructed structure (state S)and the task specification, the trained policy selects the next action A for the robot to execute. After the robot places the block in the physical world, ArUco-based pose estimation is used to detect the updated block configuration. This information is then fed back into the simulation to update the state S for the next decision step. 
+
+4.3 Robotic closed-loop construction 
+
+We implement a closed-loop robotic assembly system to evaluate whether the trained RL policy remains effective under physical assembly noise. Closed-loop feedback is crucial, as physical con-struction introduces small placement errors and tolerances that accumulate over time. By updating the state through real-time perception, the system allows the policy to adapt its decisions to the ac-tual construction state. This serves as a proof of concept, demonstrating that our framework can accommodate fabrication uncertainties and supports real-time adaptation. As shown in Figure 4, we use an ABB CRB 15000 robotic arm equipped with a custom-designed L-shaped suction gripper for handling blocks. The blocks are 3D printed, and sandpaper is attached to their contact surfaces to increase friction. 7Figure 4: Closed-loop robotic assembly setup: Left: Real-world construction scene with the robotic arm. Right Top: 3D-printed blocks labeled with ArUco markers for visual tracking. Right Bottom: 
+
+Custom L-shaped suction gripper used for block manipulation. To monitor construction progress, we establish a visual feedback loop using a Zivid structured-light 3D camera and ArUco markers, as shown in Figure 3. ArUco markers are chosen as they can be used as 6D pose estimation markers. ArUco markers are printed and affixed to the front face of each block. At each construction step, the Zivid camera scans the assembled structure to obtain point clouds, detects blocks via their ArUco tags, and determines the location of the most recently placed block. This updated state is then passed to the trained policy, which computes the next placement action. The goal of our setup is not only to validate the effectiveness of the trained policy but also the robustness of the construction workflow, and demonstrate its ability to adapt to real-world uncertainties. 
+
+# 5 Experimental Results 
+
+5.1 Training and simulation results 
+
+We apply our training Algorithm 1 to the 15 tasks in Figure 1(right). We train for a total of 50 episodes, using a discount factor γ = 0 .9 and a learning rate of 5 · 10 −4. Figure 5 shows the number of solved tasks, the cumulative rewards averaged over the 15 tasks, as well as the average number of blocks used per episode throughout the training. As shown in the right plot, the policy gradually learns to construct structures with fewer blocks as training progresses. After 50 episodes, we obtain a policy solving 14 out of the 15 tasks. Note that during the training process, we obtain a policy solving all 15 tasks (at iteration 37). The simulated results of Figure 6 and 7 show the constructions obtained using this latter policy on each of the training tasks and for a variety of assemblies. Notably, several tasks are solved using arch-like structures (tasks 4, 8, 9, 12-15), and task 6 is solved using a counterweight to achieve the necessary overhang to reach the target. This result demonstrates that, after a reasonable number of episodes, our algorithm can train a single policy capable of solving a variety of different construction tasks, proposing complex and unintuitive solutions for various types of structures. 
+
+5.2 Robotic closed-loop construction 
+
+We deploy the trained policy on our closed-loop robotic construction system. As shown in Figure 6, the robot successfully completes 12 of 15 tasks, 10 of them on the first attempt, as detailed in Table 1. 80 10 20 30 40 50           
+
+> Episode
+> 0
+> 5
+> 10
+> 15
+> Solved Tasks
+> 010 20 30 40 50
+> Episode
+> 0.25
+> 0.00
+> 0.25
+> 0.50
+> 0.75
+> Average Reward
+> 010 20 30 40 50
+> Episode
+> 5
+> 6
+> 7
+> 8
+> 9
+> 10
+> Average Assembly Size
+
+Figure 5: The plots show the total number of solved tasks, average cumulative reward and average number of blocks per episode across the 15 tasks. Note that already after 10 episodes, the policy solves 13 out of the 15 tasks, and achieves an average reward of 0.75 . In episode 37, the policy solves all 15 tasks. In the final episode, the policy solves 14 out of 15 tasks and achieves a reward 
+
+> 0.75 . The right plot shows how the policy learns to build structures that reach the task targets using fewer blocks as the training progresses. 
+
+Figure 6: Successfully completed tasks in real-world construction. The top row shows the sim-ulated assemblies, while the bottom row shows the corresponding real-world constructions using closed-loop feedback. Notably, in Task 3 & 12, the policy produces assemblies that differ from the simulation. Two additional tasks (Tasks 9 and 11) are completed after a second trial. Failed tasks are shown in Figure 7. Tasks 4 and 7 do not succeed after multiple attempts, and Task 13 is not executed due to the difficulty of achieving its assembly in real-world conditions. Failures in robotic construction arise from three main factors. First, in one long-horizon task (Task 7), small placement errors accumulate across many steps and result in policy failure. While the closed-loop system can correct moderate deviations, its adaptability has limits; beyond a certain threshold, the drift becomes too large for the policy to recover. Second, our binary stability solver (RBE) cannot capture marginally stable cases that collapse under slight disturbances, as in Tasks 9, 11, and 13. In Task 13, for instance, Block 8 is theoretically supported by compressive forces from Block 3 and 4 but can easily fail under perturbation in reality. Third, hardware constraints limit feasibility. In Task 4, the gripper’s geometry prevents placing Block 5 without collision. This issue highlights the need to integrate reachability and collision checks into policy learning, and an accurate and robust numerical simulation of assembly stability. 9Figure 7: Failed tasks in real-world construction. Task 4 failed due to robotic infeasibil-ity—specifically, a gripper collision that prevented block placement. Task 7 failed due to limited policy robustness in the presence of accumulated construction noise. Tasks 9, 11, and 13 failed due to structural instability under minor physical perturbations, despite being classified as stable in sim-ulation. Table 1: Construction results for all tasks. ID : Task number; S: Successful trials / Total trials; 
+
+Avg : Average relative placement offset; Max : Maximum relative placement offset. Offsets are normalized by block size. Note that we did not test Task 13. 
+
+ID S Avg Max 
+
+1 1/1 0.04 0.08 2 1/1 0.01 0.03 3 1/1 0.03 0.08 4 0/4 0.03 0.06 5 1/1 0.03 0.08 6 1/1 0.01 0.03 7 0/6 0.04 0.09 
+
+ID S Avg Max 
+
+8 1/1 0.01 0.01 9 1/2 0.02 0.05 10 1/1 0.01 0.01 11 1/2 0.03 0.05 12 1/1 0.01 0.04 14 1/1 0.01 0.03 15 1/1 0.03 0.04 Notably, in two successful cases—Task 3 and Task 12—the constructed assemblies differ from the simulated outcomes. These deviations result from real-world construction noise and demonstrate that the policy can adapt its strategy when the physical structure evolves differently than expected. This capability is especially important in construction, where material tolerances, sensing errors, and on-site uncertainties are unavoidable. This kind of adaptive behavior is precisely what is needed to deploy autonomous methods in practical construction environments. To quantify construction noise, we compare the policy-generated actions with the actual placements executed by the robot, and report the average and maximum positional offsets normalized by the block size in Table 1. Several factors may contribute to the construction noise: unevenness of the construction table, imperfect tool center point (TCP) calibration, slight misalignment when attaching ArUco markers, and minor deviations in block placement at the pick station. Despite these sources of noise, the overall deviation remains relatively small. As a result, the trained policy, even without explicit modeling of construction noise, can be reliably deployed on a real robot to accomplish 80% of tasks. 
+
+# 6 Conclusion 
+
+In summary, our work makes the following contributions: 10 • We propose a novel robotic construction framework that enables the autonomous assembly of simple 2D stable structures without relying on predefined architectural plans. • We formalize construction tasks in terms of geometric goals, defined by targets and obsta-cles, rather than fixed structural forms. This allows layouts to emerge during the building process. • We develop a goal-conditioned reinforcement learning (RL) approach that uses deep Q-learning with successor features to solve multiple construction tasks using a single policy. We rely on an image-based successor-feature formulation that promotes task-level gener-alization through linear and composable reward structures, accommodates polygon-shaped blocks in a shared representation, and maintains translational equivariance. This repre-sentation not only enables multi-task learning but also enhances the interpretability of the learned policy by making its long-term construction intentions visually traceable. • We validate the framework on 15 construction tasks, both in simulation and on a real-world closed-loop robotic assembly process. The policy is trained in just 50 episodes and achieves a 93.3% task success rate in simulation and 80% in real-world tests, despite construction noise. These results highlight the potential of our framework for more flexible and adaptive robotic construction in dynamic, real-world environments. 
+
+6.1 Limitations and future work Design Intention Alignment By removing predefined blueprints, the system is free to discover its own construction strategies, which may differ from what a human designer would anticipate. In Task 11, for instance, the policy generated a structurally valid solution that did not match our initial design intention. Rather than a drawback, this highlights the generative capacity of the RL approach. Moving forward, a more interactive setup could allow human designers to inject preferences or constraints, enabling collaborative decision-making while preserving the flexibility of the learned policy. 
+
+Limited Design Space Currently, our work operates in a 2D environment with only two types of blocks and one robotic arm. This simplification limits the action space of the reinforcement learning agent, allowing for feasible training times. As a proof of concept, this work demonstrates the feasibility of blueprint-free construction; future work will extend the approach to more diverse block shapes, full 3D construction tasks, and with multiple robotic arms, which should unlock more complex strategies through collaborative strategies. 
+
+Sim-to-Real Gap As demonstrated in our closed-loop robotic constructions, a noticeable sim-to-real gap remains, arising from three main factors. First, the stability solver (RBE) provides only binary results, causing marginally stable structures to fail under real-world disturbances. Future work will explore more accurate solvers [29] to better capture structural behavior. Second, actions generated by the RL policy can be infeasible due to robotic constraints such as gripper collisions or limited reachability. Incorporating these constraints into the learning process will improve deploy-ment feasibility. Third, the current policy is trained without accounting for construction noise or uncertainty. Although it achieves high success rates, performance degrades in long-horizon tasks. The RL model proposed allows us to include real-world noise during training to achieve more robust and reliable policies, an approach that we will explore in future work. 
+
+Long-Term Vision Looking ahead, we envision this framework as a foundation for autonomous construction systems capable of working with diverse materials, scales, and environments. Expand-ing beyond current 3D-printed blocks, future developments could incorporate natural, irregular, or recycled materials—an important step toward real-world architectural applications. The ability to as-semble structures without predefined plans also opens opportunities for remote or difficult-to-access scenarios, such as rapid post-disaster reconstruction or space construction using in-situ materials. Ultimately, our goal is to move toward autonomous systems that can support architectural-scale fabrication while remaining adaptable to the uncertainties inherent in real construction sites. 11 References 
+
+[1] G. Ellis. 100+ construction industry statistics, Jul 2025. URL https://www.autodesk.com/ blogs/construction/construction-industry-statistics/ .[2] F. Gramazio, M. Kohler, and J. Willmann. The Robotic Touch: How Robots Change Archi-tecture . G - Reference,Information and Interdisciplinary Subjects Series. Park Books. ISBN 978-3-906027-37-1. [3] J. M. D. Delgado, L. Oyedele, A. Ajayi, L. Akanbi, O. Akinade, M. Bilal, and H. Owolabi. Robotics and automated systems in construction: Understanding industry-specific challenges for adoption. 26:100868. ISSN 2352-7102. doi:https://doi.org/10.1016/j.jobe.2019.100868. [4] P. Pradhananga, M. ElZomor, and G. S. Kasabdji. Identifying the challenges to adopting robotics in the u.s. construction industry. Journal of Construction Engineering and Manage-ment , 147(5):05021003, 2021. doi:10.1061/(ASCE)CO.1943-7862.0002007. [5] S. Parascho. Construction robotics: From automation to collaboration. 6(1):183–204. ISSN 2573-5144, 2573-5144. doi:10.1146/annurev-control-080122-090049. [6] Y. Liu, A. A.H., N. A. Haron, B. N.A., and H. Wang. Robotics in the construction sector: Trends, advances, and challenges. 110(2):72. ISSN 1573-0409. doi:10.1007/ s10846-024-02104-4. [7] P. E. Love, J. Matthews, M. C. Sing, S. R. Porter, and W. Fang. State of science: Why does rework occur in construction? what are its consequences? and what can be done to mitigate its occurrence? Engineering , 18:246–258, 2022. ISSN 2095-8099. doi:https://doi.org/10.1016/j. eng.2022.05.010. [8] P. Block, T. V. Mele, M. Rippmann, and N. Paulson. Beyond Bending - Reimagining Compres-sion Shells . Edition DETAIL. [9] J. Wang, W. Liu, G. Ting-Chun Kao, I. Mitropoulou, F. Ranaudo, P. Block, and B. Dil-lenburger. Multi-robotic assembly of discrete shell structures. In K. D¨ orfler, J. Knip-pers, A. Menges, S. Parascho, H. Pottmann, and T. Wortmann, editors, Advances in Ar-chitectural Geometry 2023 , pages 261–274. De Gruyter. ISBN 978-3-11-116268-3. doi: 10.1515/9783111162683-020. [10] S. Parascho, I. X. Han, S. Walker, A. Beghini, E. P. G. Bruun, and S. Adriaenssens. Robotic vault: a cooperative robotic assembly method for brick vault construction. 4(3):117–126. ISSN 2509-8780. doi:10.1007/s41693-020-00041-w. [11] L. Nagele, A. Hoffmann, A. Schierl, and W. Reif. LegoBot: Automated planning for coordi-nated multi-robot assembly of LEGO structures. In 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 9088–9095. IEEE. ISBN 978-1-72816-212-6. doi:10.1109/IROS45743.2020.9341428. [12] K. Wu and A. Kilian. Designing compression-only arch structures using robotic equilibrium assembly. In C. Gengnagel, O. Baverel, J. Burry, M. Ramsgaard Thomsen, and S. Weinzierl, editors, Impact: Design With All Senses , pages 608–622. Springer International Publishing. ISBN 978-3-030-29829-6. [13] M. Deuss, D. Panozzo, E. Whiting, Y. Liu, P. Block, O. Sorkine-Hornung, and M. Pauly. As-sembling self-supporting structures. 33(6). ISSN 0730-0301. doi:10.1145/2661229.2661266. Place: New York, NY, USA Publisher: Association for Computing Machinery. [14] Z. Wang, W. Liu, J. Wang, G. Vallat, F. Shi, S. Parascho, and M. Kamgarpour. Learning to assemble with alternative plans. ACM Trans. Graph. , 44(4), 2025. 12 [15] S. K. S. Ghasemipour, D. Freeman, B. David, S. S. Gu, S. Kataoka, and I. Mordatch. Blocks assemble! learning to assemble with large-scale structured reinforcement learning. [16] M. Kulshrestha and A. H. Qureshi. Structural concept learning via graph attention for multi-level rearrangement planning. In 7th Annual Conference on Robot Learning .[17] N. Funk, G. Chalvatzaki, B. Belousov, and J. Peters. Learn2assemble with structured represen-tations and search for robotic architectural construction. In 5th Annual Conference on Robot Learning .[18] Y. Li, T. Kong, L. Li, Y. Li, and Y. Wu. Learning to design and construct bridge without blueprint. In 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 2398–2405. IEEE Press, . doi:10.1109/IROS51168.2021.9636280. [19] Y. Li, T. Kong, L. Li, and Y. Wu. Learning design and construction with varying-sized materials via prioritized memory resets. In 2022 International Conference on Robotics and Automation (ICRA) , pages 7469–7476. IEEE Press, . doi:10.1109/ICRA46639.2022.9811624. [20] G. Vallat, J. Wang, A. Maddux, M. Kamgarpour, and S. Parascho. Reinforcement learning for scaffold-free construction of spanning structures. In SCF ’23: Proceedings of the 7th Annual ACM Symposium on Computational Fabrication . Association for Computing Machinery. doi: doi.org/10.1145/3623263.3623359. [21] B. Wibranek, Y. Liu, N. Funk, B. Belousov, J. Peters, and O. Tessmann. Reinforcement learn-ing for sequential assembly of SL- blocks. In Proceedings of the 39th eCAADe Conference ,volume 1, pages 27–36. [22] V. Bapst, A. Sanchez-Gonzalez, C. Doersch, K. L. Stachenfeld, P. Kohli, P. W. Battaglia, and J. B. Hamrick. Structured agents for physical construction. In International Conference on Machine Learning , pages 464–474. [23] E. Whiting, J. Ochsendorf, and F. Durand. Procedural modeling of structurally-sound masonry buildings. ACM Trans. Graph. , 28(5):1–9, Dec. 2009. ISSN 0730-0301. doi:10.1145/1618452. 1618458. [24] E. Whiting, H. Shin, R. Wang, J. Ochsendorf, and F. Durand. Structural optimization of 3d masonry buildings. ACM Trans. Graph. , 31(6), Nov. 2012. ISSN 0730-0301. doi:10.1145/ 2366145.2366178. [25] M. Andrychowicz, F. Wolski, A. Ray, J. Schneider, R. Fong, P. Welinder, B. McGrew, J. Tobin, O. Pieter Abbeel, and W. Zaremba. Hindsight experience replay. In I. Guyon, U. V. Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, Advances in Neural Information Processing Systems , volume 30. Curran Associates, Inc., 2017. [26] A. Barreto, W. Dabney, R. Munos, J. J. Hunt, T. Schaul, H. P. van Hasselt, and D. Silver. Successor features for transfer in reinforcement learning. Advances in neural information processing systems , 30, 2017. [27] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Veness, M. G. Bellemare, A. Graves, M. Riedmiller, A. K. Fidjeland, G. Ostrovski, et al. Human-level control through deep rein-forcement learning. nature , 518(7540):529–533, 2015. [28] O. Ronneberger, P. Fischer, and T. Brox. U-net: Convolutional networks for biomedical im-age segmentation. In Medical image computing and computer-assisted intervention–MICCAI 2015: 18th international conference, Munich, Germany, October 5-9, 2015, proceedings, part III 18 , pages 234–241. Springer, 2015. [29] G. T.-C. Kao, A. Iannuzzo, B. Thomaszewski, S. Coros, T. Van Mele, and P. Block. Coupled rigid-block analysis: Stability-aware design of complex discrete-element assemblies. 146: 103216. ISSN 00104485. doi:10.1016/j.cad.2022.103216. 13

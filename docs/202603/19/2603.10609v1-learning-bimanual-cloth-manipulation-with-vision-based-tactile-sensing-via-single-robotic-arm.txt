@@ -1,0 +1,296 @@
+Title: Learning Bimanual Cloth Manipulation with Vision-based Tactile Sensing via Single Robotic Arm
+
+URL Source: https://arxiv.org/pdf/2603.10609v1
+
+Published Time: Thu, 12 Mar 2026 00:48:06 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+> 1
+
+# Learning Bimanual Cloth Manipulation with Vision-based Tactile Sensing via Single Robotic Arm 
+
+Dongmyoung Lee, Wei Chen, Xiaoshuai Chen, Rui Zong, and Petar Kormushev, Member, IEEE 
+
+Abstract —Robotic cloth manipulation remains challenging due to the high-dimensional state space of fabrics, their deformable nature, and frequent occlusions that limit vision-based sensing. Although dual-arm systems can mitigate some of these issues, they increase hardware and control complexity. This paper presents Touch G.O.G. , a compact vision-based tactile gripper and perception/control framework for single-arm bimanual cloth manipulation. The proposed framework combines three key components: (1) a novel gripper design and control strategy for in-gripper cloth sliding with a single robot arm, (2) a
+
+Vision Foundation Model -backboned Vision Transformer pipeline for cloth part classification ( PC-Net ) and edge pose estimation (PE-Net ) using real and synthetic tactile images, and (3) an encoder-decoder synthetic data generator ( SD-Net ) that reduces manual annotation by producing high-fidelity tactile images. Experiments show 96% accuracy in distinguishing edges, corners, interior regions, and grasp failures, together with sub-millimeter edge localization and 4.5◦ orientation error. Real-world results demonstrate reliable cloth unfolding, even for crumpled fabrics, using only a single robotic arm. These results highlight Touch G.O.G. as a compact and cost-effective solution for deformable object manipulation. Supplementary material is available at https://sites.google.com/view/touchgog. 
+
+Index Terms —Bimanual cloth manipulation, visuotactile per-ception, robotic gripper, deformable object manipulation. 
+
+I. I NTRODUCTION 
+
+The robotic manipulation of deformable objects, particularly fabrics, represents a frontier in mechatronics where traditional rigid-body control strategies often fail. The high-dimensional state space and unpredictable dynamics of cloth require systems that can adapt in real time to local deformations. While dual-arm robotic systems have shown success in tasks such as unfolding, they introduce substantial hardware cost and control complexity, which limits their deployment in unstructured domestic and industrial environments [1]. Another major bottleneck in cloth manipulation is perception under occlusion. Traditional vision-based approaches rely on global cameras to identify features such as corners [2], [3]. However, during intricate tasks such as edge tracing or hand-over-hand sliding, the robot end-effector and fabric folds frequently occlude the camera view, often resulting in open-loop failure. To overcome this, we propose a paradigm shift from global vision to active visuotactile local control. We introduce Touch G.O.G. , a mechatronic system designed to emulate bimanual dexterity using a single arm. Unlike previous mechanical solutions that relied on passive compliance or open-loop kinematics [4], our approach integrates high-resolution tactile    
+
+> Dongmyoung Lee, Wei Chen, Xiaoshuai Chen, Rui Zong, and Petar Kormushev are with the Robot Intelligence Lab, Dyson School of Design Engineering, Imperial College London, 25 Exhibition Road, London, SW7 2DB, UK (d.lee20, w.chen21, c.xiaoshuai19, rui.zong21, p.kormushev)@imperial.ac.uk
+
+Fig. 1: Touch G.O.G. framework enabling single-arm bimanual cloth manipulation. Unlike rigid grippers, our system utilizes a human-inspired sliding strategy: (1) The robot identifies structural regions (e.g., corners), (2) The gripper actively expands and modulates friction to slide along the edge, and (3) Real-time tactile feedback corrects pose errors during sliding until the opposing corner is reached. 
+
+sensing directly into the control loop. This allows the system to perform closed-loop edge tracing and error correction that was previously impossible with mechanical constraints alone. However, robust learning-based tactile perception is fundamentally data-limited. Accurate supervision for edge geometry in tactile images is expensive to collect and difficult to annotate at scale across diverse fabrics. To address this data bottleneck, we introduce SD-Net, a SAM-backboned encoder-decoder framework that generates high-fidelity synthetic tactile images from lightweight edge annotations, enabling data-efficient training of PE-Net. This paper presents a unified robotic system comprising three contribution: 1) Novel Gripper Design and Control Strategy: We introduce a visuotactile end-effector and control strategy for single-arm bimanual cloth manipulation. The proposed design combines decoupled belt-driven width control with an additional abduction degree-of-freedom (DoF), enabling adaptive grasp modulation, in-gripper cloth sliding, and real-time pose correction during manipulation. 2) Foundation-Model-Based Visuotactile Perception ( PC-Net and PE-Net ): We present a robust perception pipeline built on the Segment Anything Model (SAM) [5], com-prising a cloth part classification network ( PC-Net ) and an edge pose estimation network ( PE-Net ). Together, these networks enable reliable recognition of grasp states and precise edge localization, achieving sub-millimeter position accuracy even on complex, patterned fabrics. 3) Synthetic Data Generator ( SD-Net ): To address the 
+
+> arXiv:2603.10609v1 [cs.RO] 11 Mar 2026 2
+
+limited availability of annotated tactile datasets, we propose a SAM-backboned encoder-decoder framework that synthesizes high-fidelity tactile images from edge annotations, significantly reducing manual labeling while expanding pose and texture diversity for training PE-Net .We validate this framework through extensive real-world experiments, demonstrating reliable unfolding of crumpled fabrics using a single robotic arm which requires the synergy of mechanical dexterity and algorithmic intelligence. II. R ELATED WORKS 
+
+A. Cloth Unfolding 
+
+Cloth unfolding is a fundamental process for downstream tasks like ironing, folding, and dressing. Existing research can be broadly grouped into quasi-static and dynamic manip-ulations. Quasi-static methods focus on sequential pick-and-place operations to unfold cloth. These approaches generally rely on identifying cloth features such as wrinkles, edges, or corners [6]. Learning-based methods have been employed to learn optimal actions for cloth unfolding [7]–[11]. In addition to this, other approaches also aim to explicitly learn the dynamics of the garment model by Graph Neural Network (GNN)-based approaches [12]. These strategies typically require many actions and degrade in performance when key features are heavily occluded. Dynamic manipulation aims to achieve rapid cloth coverage with a few non-prehensile actions [13]–[15]. While effective, these methods typically require elaborate setups involving multiple robotic arms or external air control systems, increasing both system cost and complexity. An alternative strategy is edge tracing , where the gripper slides along a cloth edge [16]–[18]. Recent advancements have enhanced edge sliding by incorporating tactile sensing, emulating human dexterity in handling deformable objects. Vision-based tactile systems have demonstrated the ability to trace cloth edges and detect corners for unfolding tasks [19], [20]. However, these methods are generally demonstrated on simple fabrics and struggle with patterned or textured cloth, where pose estimation and feature detection become more complex. In this study, we build upon these approaches by leveraging vision-based tactile sensing to enhance edge sliding performance. Our method addresses challenges associated with diverse cloth by integrating advanced perception and control strategies. 
+
+B. Data Augmentation 
+
+Data augmentation is a common strategy to alleviate data scarcity by artificially expanding training distributions and improving generalization [21]. Classical techniques, such as affine transforms and color jittering [22], are widely used, but aggressive augmentation can distort the underlying data distribution and introduce biases [21]. To go beyond these transformations, generative models have been explored for data augmentation. GAN-based methods [23]– [25] can produce high-fidelity, photorealistic images. Hybrid GAN-diffusion approaches further increase sample diversity for complex patterns [26], but typically at the cost of substantial computational overhead and non-trivial training stability issues. Diffusion models have recently emerged as a powerful alter-native for data augmentation [27], [28]. Variants such as the Denoising Diffusion Implicit Model (DDIM) improve sampling efficiency while preserving generation quality [29], yet most of pipelines still incur substantial computational cost due to the large number of denoising steps required during sampling [30]. In robotics, self-annotated scene pipelines can generate pixel-wise masks in cluttered environments and have suc-cessfully trained segmentation networks for manipulation [31] and cluttered grasping [32]. Our work follows this line but targets visuotactile sensing. We propose a SAM-backboned encoder–decoder framework ( SD-Net ) that generates high-fidelity tactile images directly from edge annotations, enabling to train robust cloth edge pose estimation with minimal manual labeling. 
+
+C. Vision-based Tactile Manipulation 
+
+Vision-based tactile sensors (GelSight [33] and DIGIT [34]) have emerged as powerful tactile sensors by offering high spatial resolution and fast response times. These sensors have been successfully employed system property identification, such as cloth texture recognition [35] and liquid classifica-tion [36]. In manipulation tasks, vision-based tactile sensing has demonstrated significant potential by enabling robust control. For example, they have been utilized for in-hand ball-rolling manipulation using deep tactile model predictive control [34], [37], enhancing grasping stability [38], precise slip detection [39], and accurate object surface following [40]. Recent works has extended vision-based tactile sensing to deformable object manipulation [41]–[43]. Specifically within the domain of cloth manipulation, vision-based tactile sensing has been used for cloth edge tracing with a Linear–Quadratic Regulator (LQR) controller [19] or offline RL policies [44]. However, most of these approaches are limited to manipulating small square cloths and often require dual-arm robotic setups, restricting flexibility and practicality in single arm-based bimanual tasks. In this paper, we present the Touch G.O.G. , a novel system that integrates vision-based tactile sensing with a SAM-backboned Vision Transformer (ViT) and an encoder-decoder-based synthetic dataset pipeline. This cohesive framework significantly improves edge detection, pose estimation, and con-trolled sliding by addressing challenges related to occlusions, complex patterns, and diverse cloth configurations. Our system achieves robust single-arm manipulation, leveraging the synergy between advanced perception and mechanical innovation. III. T OUCH G.O.G. S YSTEM 
+
+This section details the mechanical design of the Touch G.O.G. as depicted in Fig. 2. To enable closed-loop tactile sliding, the system integrates two functionally distinct modules: Decoupled Width Control Gripper (D-WCG) for global span regulation and Tactile Variable Friction Gripper (T-VFG) for local grasp modulation and sensing. 3   
+
+> Fig. 2: Touch G.O.G. overview: (left) the CAD model of the Touch G.O.G. , showing the base, the Decoupled Width Control Gripper (D-WCG), and the two Tactile Variable Friction Grippers (T-VFGs) and (right) the versatility of D-WCG and T-VFG.
+
+A. Decoupled Width Control Gripper (D-WCG) 
+
+D-WCG serves as the prismatic base of the system, providing the translational degrees of freedom necessary to emulate bimanual spreading and tensioning. The mechanism utilizes a dual-rail linear stage where each finger carriage is indepen-dently actuated by a dedicated stepper motor via a timing belt transmission. This decoupled actuation strategy enables asymmetric finger positioning, allowing the system to adapt its grasp width dynamically to irregular fabric geometries and varying cloth sizes (Fig. 2). To ensure precise control of the tensioning forces applied to the fabric, a belt-driven transmission is selected for its high stiffness and minimal backlash. Unlike compliant or underactuated mechanisms, this rigid transmission ensures that the linear separation of the fingers tracks the motor position commands accurately, independent of the resistive loads imposed by the stretching fabric. This direct electromechanical coupling is essential for performing stable, closed-loop expansion maneuvers during cloth unfolding. 
+
+B. Tactile Variable Friction Gripper (T-VFG) 
+
+T-VFG module (Fig. 3) acts as the active interaction interface of the system. This design targets three components that are critical for reliable in-gripper sliding under occlusion: (i) sufficient kinematic redundancy to re-orient the contact, (ii) high-resolution contact sensing to resolve local fabric features, and (iii) closed-loop control for deformable objects. Each T-VFG is mounted at the distal end of a D-WCG finger, forming a finger with an additional abduction DoF. The abduction axis lies approximately in the plane orthogonal to the primary grasping direction and is actuated by a compact DC motor housed inside the D-WCG finger, transfering torque directly to the rotating T-VFG. Mechanically, this abduction DoF is actuated via a small DC motor housed within the D-WCG finger body, which transfers torque directly to the rotating T-VFG. The Touch G.O.G. incorporates a vision-based tactile sensor (DIGIT) on each finger pad. The DIGIT sensor consists of an   
+
+> Fig. 3: Detail of the T-VFG in the Touch G.O.G. system, showing the DIGIT sensor for high-resolution tactile feedback and the DC motor that drives the rack-and-pinion mechanism.
+
+internal camera and an elastomeric sensing surface to capture high-resolution images of the contact interface, providing a dense measurement of local surface geometry such as corners, edges, regions inside the fabric, or grasp failures. This capability allows the system to distinguish between successfully grasping a fabric layer and failing to make con-tact, preventing grasp failures. This tactile-driven adaptability significantly enhances the precision and robustness of cloth manipulation, particularly in tasks requiring delicate handling or real-time correction. 
+
+C. T-VFG Closed-Loop Control 
+
+Alongside the vision-based sensors, each T-VFG is driven by a DC motor equipped with an incremental encoder, enabling closed-loop position control of the grasping as well as the abduction angle. Both motions are governed by a standard PID controller that regulates the motor positions. Let ek denote the error at time step k, defined as the difference between the measured position pos k and the desired setpoint pos t,k . The corresponding control command uk is then calculated as:             
+
+> uk=Kpek+KikX
+> i=0
+> ei∆T+Kd
+> ek−ek−1
+> ∆T,(1) 4
+
+where Kp, Ki, and Kd are the proportional, integral, and derivative gains, respectively, and ∆T is the sampling interval between two consecutive control updates. Direct differentiation of encoder feedback can amplify measurement noise and introduce chattering in the control signal. To mitigate this effect, the derivation term is filtered using exponential smoothing:         
+
+> ˙efiltered ,k = (1 −α) ˙ efiltered ,k −1+α
+> ek−ek−1
+> ∆T
+> 
+> ,(2)
+
+where 0 < α < 1 controls the trade-off between responsiveness and noise attenuation. The final PID control law becomes:           
+
+> uk=Kpek+Kd˙efiltered ,k +KikX
+> i=0
+> ei∆T. (3)
+
+For the grasping motion, the controller precisely position the T-VFG fingers and the resulting motor effort is implicitly limited to avoid excessive normal force on the fabric. The abduction motion controls the rotational movement of the T-VFG, allowing the system to re-orient and adjust the gripper when it is misaligned or positioned too deeply in the fabric. The tuning parameters Kp, K i, K d and the smoothing factor 
+
+α are adjusted to account for the different dynamics and load conditions. The control loop runs with a dynamically measured sampling interval ∆T to accommodate variations in loop timing typical of interrupt-driven embedded implementations. This explicit use of the measured ∆T preserves controller performance even when the execution period is not perfectly constant. Combined with the derivative filtering in Eq. 2, the overall scheme yields smooth motor responses with reduced oscillations, which is crucial for ensuring stable, repeatable sliding trajectories. By applying this controller to both the grasping and abduction motions, each T-VFG converges reliably to its commanded posture, enabling the Touch G.O.G. to realize accurate in-hand adjustments, controlled slip, and compliant alignment with the garment edge. 
+
+D. Comparative Workspace Analysis 
+
+Fig. 4 illustrate the planar workspaces associated with the 
+
+Touch G.O.G. system. Due to the decoupled linear motion and the additional abduction DoF on each finger, the proposed design generates a 2D reachable region in the plane. Within this region, each finger can be positioned and oriented continuously, enabling the end-effectors to approach cloth edges from multiple angles while maintaining contact in a single horizontal plane. For reference, Fig. 4 also shows the workspace of a prior gripper configuration, whose fingers are constrained to a nearly 1D locus along the lateral axis. Although both mechanisms achieves a comparable maximum span along the x-direction, the abduction motion in Touch G.O.G. substantially enlarges the set of reachable region. In practice, this broader and more flexible workspace allows the system to grasp objects that are offset from the central line and to adjust the approach angle to accommodate different cloth sizes, shapes, and edge orientations, which is essential for reliable single-arm bimanual manipulation.    
+
+> Fig. 4: Comparison of workspaces: G.O.G. (top) shows the left finger (blue) and right finger (green) workspaces, exhibiting lower dexterity.
+> Touch G.O.G. (bottom) shows larger coverage due to extra degrees of freedom, with left (green) and right (blue) regions superimposed on the CAD model.
+
+IV. V ISION -BASED TACTILE PERCEPTION AND CONTROL 
+
+This section presents the visuotactile perception pipeline that underpins the closed-loop control behavior of Touch G.O.G. 
+
+system. As summarized in Fig. 5, the framework comprises three main components: (i) Cloth Part Classification Network (PC-Net ) that identifies the grasped cloth region (edge, corner, inner fabric, or grasp failure), (ii) SAM-backboned Mask Decoder Network ( SD-Net ) that synthesizes realistic tactile images to alleviate data scarcity, and (iii) Edge Pose Estimation Network ( PE-Net ) that estimates edge center position and orientation for sliding control. In this work, we formulate the manipulation policy as a camera-free visuotactile control problem. All state feedback used for decision making is derived from the on-finger DIGIT sensors, with no external cameras used during operation. This design choice reflects the frequent self-occlusions encountered during edge tracing, where global vision becomes unreliable. 
+
+A. Cloth Part Classification Network 
+
+The Cloth Part Classification Network ( PC-Net ) assigns each visuotactile observation to one of four classes: • Edge: the sensor is in contact with a cloth edge. • Corner: the sensor is in contact with a cloth corner. • In-Fabric: the contact lies in the interior region. • Grasp Failure: no cloth is present in the sensing area. 5  
+
+> Fig. 5: Overview of the cloth manipulation framework: The environment setup shows the Touch G.O.G. system integrated with visuotactile sensors. (1) Cloth Part Classification Network ( PC-Net ) is trained with a SAM backbone and a convolutional head. (2) The SAM-backboned Mask Decoder Network ( SD-Net ) generates realistic synthetic tactile images from edge annotations. (3) The resulting synthetic dataset is used to train the Edge Pose Estimation Network ( PE-Net ), which estimates edge pose for (4) precise cloth sliding.
+
+This information is used to decide when to initiate sliding, when to re-grasp, and when a sliding trajectory has successfully reached the opposite corner. 
+
+1) Data Preparation and Augmentation: To obtain a bal-anced dataset without excessive data collection, we perform 100 grasp trials per class on multiple fabrics. Each trial produces a short sequence of tactile images. Standard 2D augmentation such as in-plane translation and rotation are applied, while depth augmentations are avoided to preserve temporal consistency between frames. After augmentation, the dataset contains on the order of 10,000 samples per class, covering a range of contact conditions, fabric patterns, and pose variations. 
+
+2) Temporal Information for Classification: Cloth contact evolves over time during a grasping motion. To exploit this temporal structure, PC-Net processes a short sequence of frames rather than a single image. For each grasp attempt, the last five frames are stacked along a temporal dimension and passed through the network. By analyzing sequences of tactile images, the network can distinguish between transient and persistent features, improving its ability to classify complex interactions and adapt to varying fabric behaviors. 
+
+3) Network Architecture: PC-Net adopts the Segment Any-thing Model (SAM) vision transformer backbone as a feature extractor, followed by a convolutional and fully connected head for the four-class classification task. Let I ∈ RB×T ×C×H×W
+
+denote a batch of T -frame tactile sequences. The SAM backbone performs:  
+
+> •
+
+Patch embedding: each frame is partitioned into non-overlapping patches and projected into a D-dimensional feature space, yielding a set of patch tokens.  
+
+> •
+
+Transformer blocks: a stack of self-attention blocks refines the patch tokens, capturing both local and global spatial dependencies.  
+
+> •
+
+Neck: the refined tokens are reshaped into feature maps 
+
+Ineck suitable for convolutional processing. The convolutional head then reduces the feature dimension-ality while preserving spatial structure, using several convolu-tional layers with ReLU activation, batch normalization, and dropout. Temporal aggregation is implemented by averaging features across the T frames, followed by a final fully connected layer that outputs logits in RB×k corresponding to the k
+
+classes. This combination of transformer-based global context and convolutional local processing yields robust classification performance across fabrics and contact conditions. 
+
+B. Edge Pose Estimation 
+
+While PC-Net provides a categorical description of the grasped region, successful sliding further requires precise esti-mation of edge pose within the tactile image. This subsection introduces the SD-Net for synthetic data generation and the 
+
+PE-Net for edge pose estimation. 
+
+1) SAM-backboned Mask Decoder Network: Accurate edge pose estimation demands a diverse annotated tactile dataset, which is expensive to obtain manaully. To mitigate this, we design the SD-Net to generate realistic tactile images from simple edge annotations. The architecture of SD-Net , illustrated in Fig. 6, integrates a SAM backbone with a convolutional decoder network to reconstruct tactile images from input masks. The SD-Net 
+
+includes: • SAM backbone encoder: the input mask (encoding the cloth region) is processed into a latent representation via patch embedding and transformer blocks, leveraging the strong spatial-context modeling of SAM. • Convolutional decoder: a stack of transposed convolutional layers progressively upsamples the latent representation to reconstruct a high-resolution tactile image. 6
+
+Fig. 6: The architecture of SAM-backboned mask decoder network (SD-Net ). Network input is annotation information of real-world tactile images and output is generated tactile images compared with tactile image inputs. 
+
+Initially trained on a modest dataset comprising 100 manually annotated tactile edge images, SD-Net is subsequently leveraged to generate 30,000 diverse synthetic images. This extensive augmentation significantly enrich the training distribution for pose estimation. To enforce both pixel-wise accuracy and structural similarity, the training objective combines mean squared error (MSE) and structural similarity index measure (SSIM). The MSE loss between generated output ˆI0 and ground-truth image I0 is:      
+
+> LM SE =1
+> N
+> NX
+> i=1
+> ˆI0,i −I0,i
+> 2
+> (4)
+
+where N is the number of pixels. For two image patches x
+
+and y, SSIM is defined as:                
+
+> SSIM (x, y ) = (2 μxμy+C1)(2 σxy +C2)(μ2
+> x+μ2
+> y+C1)( σ2
+> x+σ2
+> y+C2)(5)
+
+where μx and μy are the mean intensities, σ2 
+
+> x
+
+and σ2 
+
+> y
+
+are variances, σxy is the covariance, and C1, C2 are constants for numerical stability. The SSIM loss is then:      
+
+> LSSIM = 1 −SSIM (x, y )(6)
+
+The total loss is a weighted sum of these components:            
+
+> L=α· L M SE + (1 −α)·(1 − L SSIM )(7)
+
+where α balances pixel-level accuracy and structural similarity. This training strategy enables SD-Net to generate structurally and visually consistent tactile images from minimal inputs, providing a scalable way to enrich the pose-estimation dataset. 
+
+2) Cloth Edge Pose Estimation Network: Building on the outputs of SD-Net , we train the PE-Net to estimate the center position ( x, y) and orientation ( θ) of fabric edges. The PE-Net also uses the SAM backbone as a feature extractor, as in 
+
+PC-Net , but replaces the classification head with a regression head. he tactile image is passed through the backbone to obtain a compact feature map, which is then processed by a convolutional head and a fully connected layer. The final output has dimension RB×3, corresponding to (x, y, θ ) for each sample in the batch. Training data is collected from sliding interactions between the gripper and multiple fabrics of various patterns and sizes. Approximately 200 real tactile images with labeled edge poses are obtained and then combined with the synthetic samples generated by SD-Net . This hybrid dataset increases coverage 
+
+Fig. 7: Confusion matrix of predicted vs. true labels for four classes—(1) Edge, (2) Corner, (3) In-fabric, and (4) Grasp Failure. Each cell shows the number of instances classified into each category, with diagonal cells indicating correct predictions. 
+
+in edge orientation, position, and fabric appearance, reducing overfitting and improving generalization. The PE-Net is trained using a combination of two loss functions: MSE loss for position prediction and angular loss for orientation prediction. The MSE loss ensures accurate localization of the edge center, while the angular loss mini-mizes deviations in the predicted orientation. For the angular component, we employ a cosine similarity loss that treats angles as vectors on a unit circle:        
+
+> Langular = 1 −cos  θpred −θtrue
+> (8)
+
+This loss formulation is particularly effective in handling the periodic nature of angular measurements and ensures that small angular discrepancies are appropriately penalized. The total loss function is:        
+
+> L=λ1· L M SE +λ2· L angular (9)
+
+where λ1 and λ2 are weighting factors to balance positional and angular accuracy. By combining the synthetic data generated by SD-Net with a small set of real-world data, we achieve precise edge pose 
+
+Fig. 8: The sample outputs of SAM-backboned mask decoder network (SD-Net ). When generating images, random edge pose is input to create synthetic images for random edge poses. This enables to get unseen images that is not captured when training. 7                                         
+
+> TABLE I: Classification evaluation for PC-Net .
+> Method / Metric Precision (%) Recall (%)
+> Edge Corner In-Fabric Grasp Failure Edge Corner In-Fabric Grasp Failure B1: ResNet 0.85 0.89 0.94 0.96 0.85 0.84 0.95 1.00 B2: DenseNet 0.92 0.92 0.95 0.97 0.91 0.89 0.97 1.00 B3: ViT 0.87 0.81 0.79 0.90 0.69 0.83 0.87 0.98
+> PC-Net (Ours) 0.97 0.99 0.94 0.97 0.93 0.97 0.97 1.00
+> Fig. 9: Cloth samples used to evaluate the generalization capability of the proposed cloth manipulation framework.
+
+predictions. These predictions are subsequently used to guide real-time tactile sliding for tasks such as edge tracing. V. E XPERIMENTS 
+
+We evaluate the proposed perception and manipulation framework in four steps: (i) classification performance of 
+
+PC-Net compared with standard deep-learning baselines, (ii) analysis of the synthetic tactile data generated by SD-Net , (iii) quantitative edge pose estimation accuracy of PE-Net , and (iv) real-world cloth sliding performance using the Touch G.O.G. 
+
+system. 
+
+A. PC-Net Evaluation 
+
+The PC-Net model is evaluated on four trained cloths and three unseen cloths, as illustrated in Fig. 9. We compare its cloth-part classification performance against ResNet50, DenseNet121, and Vision Transformer (ViT) backbones. Table I reports precision and recall for the four classes ( Edge , Corner ,
+
+In-Fabric , Grasp Failure ). All methods achieve similar performance on the Grasp Failure , but PC-Net clearly improves the recognition of Edge 
+
+and Corner . This is particularly important for the sliding pipeline. Accurate detection of edge is used to trigger the 
+
+PE-Net and reliable corner recognition is required at the start and end of a sliding motion to ensure correct cloth alignment. The confusion matrix in Fig. 7 further illustrates the performance. Most samples lie on the main diagonal for all four classes, indicating consistent behavior across different fabrics. The Edge class exhibits minor confusion with In-Fabric (9 samples) and Corner (2 samples), but the overall classification accuracy remains high. In practice, these results indicate that standard data augmentation on real tactile sequences is sufficient for this task, meaning additional synthetic data is not required for PC-Net .
+
+B. SD-Net Evaluation 
+
+In contrast to classification, edge pose estimation requires substantially more labeled variability in edge positions and  
+
+> Fig. 10: t-SNE visualization comparing SD-Net -generated data (blue) with the real tactile dataset (green). The synthetic data exhibits broader coverage, indicating improved generalization and robustness.
+
+orientations than can be obtained from real data alone. Here, 
+
+SD-Net is used to generate a large synthetic dataset that com-plements the limited set of manually annotated tactile images. Figure 8 shows representative examples of images synthesized by SD-Net from randomly sampled edge annotations. The generated images capture key characteristics of real visuotactile observations, including contact footprint shape and local texture, while enabling systematic variation in edge pose beyond what is accessible in the data collection stage. To evaluate the effectiveness of the SD-Net in capturing the underlying data distribution, we perform a t-SNE analysis on latent features extracted from both the real and synthetic                                            
+
+> TABLE II: Edge pose estimation assessment for PE-Net .
+> Method / Metric Position (mm) Angle (°) XYDistance
+> Edge Detection 2.47 2.32 3.38 50.22 ResNet-w/o 0.68 1.58 1.72 14.92 DenseNet-w/o 0.46 1.13 1.22 8.19 ViT-w/o 0.37 0.85 0.93 6.48 PE-Net-w/o 0.30 0.72 0.78 5.52 ResNet 0.44 0.88 0.99 12.55 DenseNet 0.41 0.96 1.04 7.03 ViT 0.28 0.78 0.83 5.35
+> PE-Net (Ours) 0.25 0.54 0.59 4.52 8
+> Fig. 11: Example results of the PE-Net edge pose estimation on trained (top row) and unseen (bottom row) fabric samples. Each sub-image shows the estimated edge (blue line) and the predicted angle (green text), illustrating consistent boundary detection and orientation estimation under diverse conditions.
+
+datasets. As shown in Fig. 10, the SD-Net -generated samples (blue) occupy a broader region in the embedded space compared to the real images (green), which are confined to a smaller subset. This indicates that SD-Net learns a richer representation of plausible edge configurations and effectively interpolates between real examples. From the control perspective, this broader coverage is beneficial. The pose estimator is exposed during training to a wider range of edge orientations and contact patterns, including configurations that are rare in practice but can occur during sliding. Moreover, the smooth distribution of synthetic samples reduces discontinuities in the feature space, which is advantageous for downstream learning-based estimation in the presence of sensor noise and fabric variability. Overall, the analysis confirms that SD-Net provides a useful and physically consistent augmentation of the real tactile dataset, forming a crucial component of the edge pose estimation pipeline described in the following sections. 
+
+C. PE-Net Evaluation 
+
+Table II reports quantitative edge pose estimation perfor-mance for several baselines (classical edge detection [45], ResNet, DenseNet, ViT) and the proposed PE-Net , with and without synthetic data from SD-Net (denoted “w/o”). Position errors are reported along x, y, and as Euclidean distance in millimeters, together with angular error in degrees. As shown in Table II, PE-Net achieves the lowest position and angle errors among all methods, with an average distance error of 0.59 mm and angular error of 4.52 ◦. This repre-sents a substantial improvement over classical edge detection (3.38 mm , 50 .22 ◦) and also over the best deep-learning baseline (ViT, 0.83 mm , 5.35 ◦). Such sub-millimeter localization and low orientation error are critical for maintaining the cloth edge centered on the tactile sensor and aligning the gripper opening with the edge during sliding. The comparison between PE-Net and PE-Net-w/o highlights the role of synthetic data generated by SD-Net . Training without synthetic data leads to a higher distance error of 0.78 mm and angular error of 5.52 ◦, whereas incorporating SD-Net samples reduces these to 0.59 mm and 4.52 ◦, respectively. This confirms that the broader pose coverage provided by SD-Net (see Fig. 8 and the t-SNE analysis in Fig. 10) directly translates into improved estimation accuracy. Figure 11 illustrates qualitative results for both trained and unseen fabrics. In all cases, the estimated edge (blue line) closely tracks the visible boundary in the tactile image, and the predicted orientation remains stable despite changes in texture, pattern, and local deformation. This robustness to fabric variability is essential for deployment in the Touch G.O.G. sliding controller, where estimated edge poses are used to adjust the abduction angle and yaw of the gripper. Overall, the experiments demonstrate that PE-Net , combined with SD-Net augmentation, provides the accuracy and generalization required for reliable single-arm bimanual cloth manipulation. 
+
+D. Real-world Cloth Sliding Evaluation 
+
+We evaluate the proposed visuotactile framework on real cloth sliding tasks using the Touch G.O.G. mounted on a UR5 robotic arm, as illustrated in Fig. 12. The objective is to assess how PC-Net and PE-Net jointly support single-arm bimanual unfolding. All control decisions rely exclusively on DIGIT tactile images with no reliance on external cameras, highlighting the strength of our tactile perception system. 9
+
+Fig. 12: Real-world cloth sliding experiment using the Touch G.O.G. system. The rows illustrate sequential sliding steps for the flattened and crumpled fabrics. One T-VFG initially grasps a cloth corner, while the other performs sliding until the opposite corner is detected. During sliding, the gripper adjusts its opening width and abduction angle based on edge pose estimates provided by PE-Net .
+
+The DIGIT sensors on the gripper capture tactile images, which are then processed by PC-Net to identify contact regions (e.g., corner and edge) and by PE-Net to estimate the edge center and orientation when an edge is detected. Once the grip region and edge pose are determined, the Touch G.O.G. attempts a sliding motion on the fabric. Due to variability in fabric properties and configurations, some fabric orientations may exceed the inherent sliding capabilities of the Touch G.O.G. ,requiring adjustments by the robotic arm. When the T-VFGs slide along a fabric edge, the detected edge needs to stay centered on the DIGIT sensing area and aligned with the x-axis of the image, as illustrated in Fig. 13. Let ey (k) denote the vertical offset of the detected edge from the center of the image at time step k, and eθ (k) the angular misalignment between the estimated edge orientation and the 
+
+x-axis. Two discrete PD controllers are used:                           
+
+> uyaw (k) = KPyey(k) + KDy
+> ey(k)−ey(k−1) ∆T(10)
+> uab (k) = KPθ[eθ(k)−βu yaw (k)] + KDθ
+> eθ(k)−eθ(k−1) ∆T(11)
+
+where uyaw commands the end-effector yaw of the UR5, uab 
+
+commands the abduction angle of the T-VFG, and ∆T is the control interval. The feed-forward term βu yaw compensates for the coupling between end-effector rotation and the perceived edge tilt, and both commands are clipped to uyaw ∈ [−5◦, 5◦]
+
+and uab ∈ [−30 ◦, 30 ◦]. This scheme keeps the estimated edge centered in the DIGIT image and aligned with the sensor 
+
+x-axis. In addition to edge pose control, discrete adjustments of the insertion depth are triggered by PC-Net . When the sliding T-VFG is classified as In-Fabric , indicating that the gripper is too deeply embedded to slide effectively, the UR5 rotates slightly clockwise and withdraws a small distance, resulting in a shallower insertion. Conversely, when the sliding T-VFG is classified as Grasp Failure , the UR5 rotates slightly counter-clockwise and inserts the gripper deeper, increasing fabric engagement. Sliding continues with these small corrections until both T-VFGs are classified as Corner , signaling that the opposite corner has been reached. To isolate the contribution of tactile perception, we constrain the setup so that one T-VFG always starts from a correctly grasped corner and no global vision is used for corner detection or pose correction. This allows us to directly evaluate how well 
+
+PC-Net and PE-Net support local edge tracking and unfolding based solely on visuotactile feedback. As illustrated in Fig. 9, we test seven fabrics with different patterns, thicknesses, and material properties, including four template fabrics (TF1–TF4), a patterned towel (PT1), a linen blanket (LB1), and a pink towel (PT2). Each fabric is evaluated under two initial configurations: flattened (roughly planar configuration) and crumpled (randomly compressed configuration). For each combination, we perform five trials, resulting in a total of 70 experiments. A trial is counted as successful if the sliding T-VFG reaches the opposite corner and both T-VFGs are classified as Corner at the end of the motion, with the cloth sufficiently unfolded for subsequent handling. Table III summarizes the sliding success rates. The flattened configuration, which presents simpler edge geometries, achieves 24/35 successful trials. The crumpled configuration is more challenging due to folds and non-uniform thickness, yet still yields 20/35 successful trials across all fabrics. These results indicate that the combination of PC-Net and PE-Net , together with the Touch G.O.G. system, can handle substantial variability in fabric pattern and initial configuration while relying solely on local visuotactile feedback. Overall, the experiments confirm that the proposed frame-
+
+TABLE III: Performance of Cloth Sliding                           
+
+> Config. TF1 TF2 TF3 TF4 PT1 LB1 PT2 Average
+> Flattened 4/5 3/5 3/5 4/5 3/5 4/5 3/5 24/35
+> Crumpled 3/5 2/5 2/5 4/5 3/5 3/5 3/5 20/35 Seven different fabrics were tested under two initial cloth configurations:
+> flattened and crumpled . The scores represent the number of successful trials out of five attempts, illustrating the robustness of our framework across diverse materials and initial conditions. 10
+
+Fig. 13: Visuotactile edge-alignment control for cloth sliding. The fixed T-VFG holds a cloth corner, while the moving T-VFG uses the DIGIT image to regulate ey and eθ during sliding. 
+
+work enables robust edge tracing with a single robotic arm, even for patterned fabrics and crumpled initial states. By relying solely on visuotactile feedback, the system demonstrates robust performance even in scenarios where external vision may be compromised. These findings underscore the potential of our approach for reliable, uncertainty-aware cloth manipulation in practical robotic applications. VI. C ONCLUSION 
+
+This paper presents Touch G.O.G. , a single-arm robot system that achieves bimanual cloth manipulation by combining a novel visuotactile gripper with dedicated perception and control algorithms. The end-effector comprises a Decoupled Width Control Gripper (D-WCG) with independently actuated, belt-driven fingers and Tactile Variable Friction Grippers (T-VFGs) equipped with vision-based tactile sensors and DC motors. This design enables large in-plane span, abduction-based in-gripper reorientation, and regulated contact forces suitable for sliding along cloth edges under occlusion. On the perception side, we introduce a SAM-based cloth part classification network ( PC-Net ) and edge pose estimation network ( PE-Net ), together with a SAM-backboned mask de-coder network ( SD-Net ) that generates synthetic tactile images to alleviate data scarcity. The resulting visuotactile pipeline reliably classifies edges, corners, inner-fabric regions, and grasp failures, and achieves sub-millimeter edge localization with low angular error. These estimates are used to maintain the edge centered and aligned in the tactile image during sliding. Real-world experiments on multiple fabrics, including both flattened and crumpled initial configurations, demonstrate that the proposed system can robustly slide from corner to corner using only local tactile feedback, without external vision. The results highlight the effectiveness of combining a visuotactile gripper with foundation-model–based perception and synthetic data generation for deformable object manipulation. Future work will focus on scaling to larger garments, integrating additional sensing modalities (e.g., force–torque or global vision) for multi-step tasks such as folding or dressing, and assessing with different robotic platforms. We anticipate that these developments will further expand the applicability of visuotactile grippers such as Touch G.O.G. in domestic, industrial, and healthcare environments. REFERENCES [1] J. Borr `as, “Effective grasping enables successful robot-assisted dressing,” 
+
+Science robotics , vol. 7, no. 65, p. eabo7229, 2022. [2] P. Jim ´enez and C. Torras, “Perception of cloth in assistive robotic manipulation tasks,” Natural Computing , vol. 19, no. 2, pp. 409–431, 2020. [3] W. Chen, D. Lee, D. Chappell, and N. Rojas, “Learning to grasp clothing structural regions for garment manipulation tasks,” in 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2023, pp. 4889–4895. [4] D. Lee, W. Chen, X. Chen, and N. Rojas, “Gog: A versatile gripper-on-gripper design for bimanual cloth manipulation with a single robotic arm,” IEEE Robotics and Automation Letters , 2024. [5] A. Kirillov, E. Mintun, N. Ravi, H. Mao, C. Rolland, L. Gustafson, T. Xiao, S. Whitehead, A. C. Berg, W.-Y. Lo, P. Dollar, and R. Girshick, “Segment Anything,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , October 2023, pp. 4015–4026. [6] L. M. Mart ´ınez and J. Ruiz-del Solar, “Recognition of grasp points for clothes manipulation under unconstrained conditions,” in RoboCup 2017: Robot World Cup XXI 11 . Springer, 2018, pp. 350–362. [7] F. Ebert, C. Finn, S. Dasari, A. Xie, A. Lee, and S. Levine, “Visual foresight: Model-based deep reinforcement learning for vision-based robotic control,” arXiv preprint arXiv:1812.00568 , 2018. [8] K. Saxena and T. Shibata, “Garment recognition and grasping point detection for clothing assistance task using deep learning,” in 2019 IEEE/SICE International Symposium on System Integration (SII) . IEEE, 2019, pp. 632–637. [9] D. Seita, N. Jamali, M. Laskey, A. K. Tanwani, R. Berenstein, P. Baskaran, S. Iba, J. Canny, and K. Goldberg, “Deep transfer learning of pick points on fabric for robot bed-making,” in The International Symposium of Robotics Research . Springer, 2019, pp. 275–290. [10] Y. Wu, W. Yan, T. Kurutach, L. Pinto, and P. Abbeel, “Learning to manipulate deformable objects without demonstrations,” arXiv preprint arXiv:1910.13439 , 2019. [11] J. Hietala, D. Blanco-Mulero, G. Alcan, and V. Kyrki, “Learning visual feedback control for dynamic cloth folding,” in 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) .IEEE, 2022, pp. 1455–1462. [12] W. Chen, K. Li, D. Lee, X. Chen, R. Zong, and P. Kormushev, “Graph-garment: Learning garment dynamics for bimanual cloth manipulation tasks,” arXiv preprint arXiv:2503.05817 , 2025. [13] H. Ha and S. Song, “Flingbot: The unreasonable effectiveness of dynamic manipulation for cloth unfolding,” in Conference on Robot Learning .PMLR, 2022, pp. 24–33. [14] R. Jangir, G. Alenya, and C. Torras, “Dynamic cloth manipulation with deep reinforcement learning,” in 2020 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2020, pp. 4630–4636. [15] Z. Xu, C. Chi, B. Burchfiel, E. Cousineau, S. Feng, and S. Song, “Dextairity: Deformable manipulation can be a breeze,” arXiv preprint arXiv:2203.01197 , 2022. [16] H. Yuba, S. Arnold, and K. Yamazaki, “Unfolding of a rectangular cloth from unarranged starting shapes by a dual-armed robot with a mechanism for managing recognition error and uncertainty,” Advanced Robotics , vol. 31, no. 10, pp. 544–556, 2017. [17] A. Gabas, Y. Kita, and E. Yoshida, “Dual edge classifier for robust cloth unfolding,” ROBOMECH Journal , vol. 8, no. 1, p. 15, 2021. [18] I. Garcia-Camacho, M. Lippi, M. C. Welle, H. Yin, R. Antonova, A. Var-ava, J. Borras, C. Torras, A. Marino, G. Alenya, et al. , “Benchmarking bimanual cloth manipulation,” IEEE Robotics and Automation Letters ,vol. 5, no. 2, pp. 1111–1118, 2020. [19] N. Sunil, S. Wang, Y. She, E. Adelson, and A. R. Garcia, “Visuotactile affordances for cloth manipulation with local control,” in Conference on Robot Learning . PMLR, 2023, pp. 1596–1606. [20] F. Zhang and Y. Demiris, “Visual-tactile learning of garment unfolding for robot-assisted dressing,” IEEE Robotics and Automation Letters , 2023. [21] L. Perez and J. Wang, “The effectiveness of data augmentation in image classification using deep learning,” arXiv preprint arXiv:1712.04621 ,2017. [22] E. J. Bjerrum, “Smiles enumeration as data augmentation for neural network modeling of molecules,” arXiv preprint arXiv:1703.07076 , 2017. [23] I. Gulrajani, F. Ahmed, M. Arjovsky, V. Dumoulin, and A. Courville, “Improved training of wasserstein gans,” arXiv preprint arXiv:1704.00028 ,2017. [24] M. Zheng, T. Li, R. Zhu, Y. Tang, M. Tang, L. Lin, and Z. Ma, “Conditional wasserstein generative adversarial network-gradient penalty-based approach to alleviating imbalanced data classification,” 11 
+
+Information Sciences , vol. 512, pp. 1009–1023, 2020. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0020025519309715 [25] T. Karras, M. Aittala, S. Laine, E. H ¨ark ¨onen, J. Hellsten, J. Lehtinen, and T. Aila, “Alias-free generative adversarial networks,” in Proc. NeurIPS ,2021. [26] Z. Wang, H. Zheng, P. He, W. Chen, and M. Zhou, “Diffusion-GAN: Training GANs with diffusion,” in The Eleventh International Conference on Learning Representations , 2023. [Online]. Available: https://openreview.net/forum?id=HZf7UbpWHuA [27] S. Azizi, S. Kornblith, C. Saharia, M. Norouzi, and D. J. Fleet, “Synthetic data from diffusion models improves imagenet classification,” arXiv preprint arXiv:2304.08466 , 2023. [28] Z. Li, Y. Li, P. Zhao, R. Song, X. Li, and J. Yang, “Is synthetic data from diffusion models ready for knowledge distillation?” arXiv preprint arXiv:2305.12954 , 2023. [29] J. Song, C. Meng, and S. Ermon, “Denoising diffusion implicit models,” in International Conference on Learning Representations , 2021. [Online]. Available: https://openreview.net/forum?id=St1giarCHLP [30] P. Dhariwal and A. Nichol, “Diffusion Models Beat GANs on Image Synthesis,” Advances in Neural Information Processing Systems , vol. 34, pp. 8780–8794, 2021. [31] P. Marion, P. R. Florence, L. Manuelli, and R. Tedrake, “Label fusion: A pipeline for generating ground truth labels for real rgbd data of cluttered scenes,” in 2018 IEEE International Conference on Robotics and Automation (ICRA) , 2018, pp. 3235–3242. [32] D. Lee, W. Chen, and N. Rojas, “Synthetic data enables faster annotation and robust segmentation for multi-object grasping in clutter,” in 2024 10th International Conference on Mechatronics and Robotics Engineering (ICMRE) , 2024, pp. 253–259. [33] W. Yuan, S. Dong, and E. H. Adelson, “GelSight: High-Resolution Robot Tactile Sensors for Estimating Geometry and Force,” Sensors , vol. 17, no. 12, 2017, art. no. E2762. [34] M. Lambeta, P.-W. Chou, S. Tian, B. Yang, B. Maloon, V. R. Most, D. Stroud, R. Santos, A. Byagowi, G. Kammerer, et al. , “Digit: A novel design for a low-cost compact high-resolution tactile sensor with application to in-hand manipulation,” IEEE Robotics and Automation Letters , vol. 5, no. 3, pp. 3838–3845, 2020. [35] W. Yuan, Y. Mo, S. Wang, and E. H. Adelson, “Active clothing material perception using tactile sensing and deep learning,” in 2018 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2018, pp. 4842–4849. [36] H.-J. Huang, X. Guo, and W. Yuan, “Understanding dynamic tactile sensing for liquid property estimation,” arXiv preprint arXiv:2205.08771 ,2022. [37] S. Tian, F. Ebert, D. Jayaraman, M. Mudigonda, C. Finn, R. Calandra, and S. Levine, “Manipulation by feel: Touch-based control with deep predictive models,” in 2019 International Conference on Robotics and Automation (ICRA) . IEEE, 2019, pp. 818–824. [38] R. Kolamuri, Z. Si, Y. Zhang, A. Agarwal, and W. Yuan, “Improving grasp stability with rotation measurement from tactile sensing,” in 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2021, pp. 6809–6816. [39] I. H. Taylor, S. Dong, and A. Rodriguez, “Gelslim 3.0: High-resolution measurement of shape, force and slip in a compact tactile-sensing finger,” in 2022 International Conference on Robotics and Automation (ICRA) .IEEE, 2022, pp. 10 781–10 787. [40] Y. Lin, J. Lloyd, A. Church, and N. F. Lepora, “Tactile gym 2.0: Sim-to-real deep reinforcement learning for comparing low-cost high-resolution robot touch,” IEEE Robotics and Automation Letters , vol. 7, no. 4, pp. 10 754–10 761, 2022. [41] S. Tirumala, T. Weng, D. Seita, O. Kroemer, Z. Temel, and D. Held, “Learning to singulate layers of cloth using tactile feedback,” in 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2022, pp. 7773–7780. [42] Y. She, S. Wang, S. Dong, N. Sunil, A. Rodriguez, and E. Adelson, “Cable manipulation with a tactile-reactive gripper,” The International Journal of Robotics Research , vol. 40, no. 12-14, pp. 1385–1401, 2021. [43] L. Pecyna, S. Dong, and S. Luo, “Visual-tactile multimodality for following deformable linear objects using reinforcement learning,” in 
+
+2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2022, pp. 3987–3994. [44] W. Zhou, S. Bajracharya, and D. Held, “Plas: Latent action space for offline reinforcement learning,” in Conference on Robot Learning .PMLR, 2021, pp. 1719–1735. [45] C. Harris, M. Stephens, et al. , “A combined corner and edge detector,” in Alvey vision conference , vol. 15, no. 50. Manchester, UK, 1988, pp. 10–5244.
