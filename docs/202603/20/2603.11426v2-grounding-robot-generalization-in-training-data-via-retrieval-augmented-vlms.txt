@@ -1,0 +1,614 @@
+Title: Grounding Robot Generalization in Training Data via Retrieval-Augmented VLMs
+
+URL Source: https://arxiv.org/pdf/2603.11426v2
+
+Published Time: Thu, 19 Mar 2026 01:40:55 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+> 1
+
+# Grounding Robot Generalization in Training Data via Retrieval-Augmented VLMs 
+
+Jensen Gao 1,2, Dorsa Sadigh 1, Sandy Huang 2, Dhruv Shah 2,3
+
+Abstract —Recent work on robot manipulation has advanced policy generalization to novel scenarios. However, it is often difficult to characterize how different evaluation settings actually represent generalization from the training distribution of a given policy. To work towards more precise evaluation of generalization in robotics, we propose RADAR, a scalable framework for directly comparing test-time evaluation tasks to policy training data, to determine what form of policy generalization is required. RADAR consists of a two-stage pipeline: first, retrieval using generalist policy embeddings identifies which training examples are relevant for a given evaluation task. Next, vision-language models (VLMs) analyze the evaluation task against the retrieved data, outputting interpretable analysis on how they compare along a variety of axes, and an overall classification of what type of policy generalization is required. Through controlled ex-periments, we demonstrate that VLMs are effective at analyzing data for generalization, and that our retrieval step effectively identifies examples needed to make accurate classifications with respect to the training data. Furthermore, we scale RADAR to large-scale datasets, where we observe agreement with human-defined benchmark conditions from prior work. We provide demonstrations at our website radar-analysis.github.io. 
+
+I. I NTRODUCTION 
+
+Achieving broad generalization is one of the most important and challenging problems in robotics. We want robots that can be deployed in unseen, open-world scenarios, such as a robot that can do the dishes in brand new kitchens. However, measuring progress towards this can be challenging, as the range of settings we care about can be immense (e.g., all possible kitchen setups and types of dishes). Therefore, when we can only evaluate a relatively narrow set of conditions in practice, it becomes important to characterize how these evaluations capture generalization from training data, to better understand the capabilities and limitations of robot policies. Recent work has shown that generalist robot policies can generalize beyond their training data [1–4]. However, real-world benchmarking in robotics is notoriously difficult to reproduce, and models are increasingly trained on proprietary datasets [1–4]. As a result, it is often unclear to what extent evaluations actually capture generalization from training data. When a robot successfully does the dishes in a new kitchen, how much generalization is actually happening? Simply des-ignating the task as “unseen” is vague, as the extent of generalization involved can still vary greatly. For example, if the physical layout of the kitchen is significantly different than the training data, this can involve a greater degree of generalization than if only the color of the countertops differ. To work towards better understanding policy generalization, we propose Retrieval-Augmented Data Analysis for Robotics (RADAR ), a simple and scalable framework for characterizing how evaluation conditions constitute generalization from robot    
+
+> 1Stanford University, 2Google DeepMind, 2Princeton University. Corre-spondence to: jenseng@stanford.edu .
+
+training data. This is done by using vision-language mod-els (VLMs) to directly compare training data to evaluation tasks. The VLM is prompted with visual observations and language instructions from the training and evaluation tasks, as well as a taxonomy to structure its analysis along different generalization axes [5]. Then, it outputs qualitative, human-interpretable descriptions of how the evaluation task deviates from the training data along these axes, as well as an overall classification of the evaluation task as either in-distribution ,or requiring visual or behavioral generalization. To scale to large robot datasets, we first use embedding-based retrieval to identify relevant examples from training data, and use the VLM to only analyze these. For our embeddings, we propose using internal representations from generalist vision-language-action (VLA) policies trained on large-scale robot data. These embeddings capture visual and semantic invariances from their internet-scale pretraining, while being sensitive to scene changes that require new behavior from its exposure to large-scale robot data. These are key properties for effective retrieval in our framework. Importantly, these embeddings can be applied to data unseen by the policy. To evaluate RADAR, we design controlled experiments using diverse data mixtures across three task families on the ALOHA 2 platform [6]. In these experiments, we show that generalist policy embeddings perform well at identifying training examples needed to make accurate downstream clas-sifications, achieving recall rates of 80-90% on such examples when retrieving only 5-10% of the original dataset. We also show that VLMs can be effective at comparing task instances, achieving an average F1 score of 0.841 when analyzing if tasks differ along a generalization axis, and 92.5% accuracy on classifying overall policy generalization for one task family. However, we observe that modern VLMs can still be limited when analyzing tasks with more subtle visual differences, resulting in worse performance on other tasks. Lastly, we scale RADAR to two large-scale datasets: Bridge V2 [7], and a dataset of over 1M ALOHA 2 demonstrations. We use it to assess evaluation tasks used in prior work for benchmarking generalist manipulation. We show that RADAR often produces analysis in agreement with human-defined characterizations of generalization, while also revealing cases where these characterizations may have subtle limitations. II. R ELATED WORK 
+
+In this section, we review related work on generalization in robotics, vision-language models for visual reasoning, and retrieval in robotics and machine learning. 
+
+Generalization in Robotics. Many recent works have worked towards generalization in robotics via scaling data [7–11] and models [1, 2, 4, 12], and investigating best practices for generating robot data [13–15]. To evaluate for generalization, different works largely use their own protocols, which has        
+
+> arXiv:2603.11426v2 [cs.RO] 18 Mar 2026 2Evaluation Task:
+> “unzip the lunchbag ”
+> Training Data Nearest
+> Neighbors
+> The background has
+> changed from blue to red .
+> Generalization Type:
+> In -Distribution
+> Visual
+> Behavioral Vision -Language
+> Model
+> Generalist Policy
+> Embeddings
+> Retrieval Set
+
+1. Retrieval 2. VLM Analysis  
+
+> Fig. 1: We outline the two-stage pipeline of RADAR. Given an evaluation task, we first identify relevant examples from training data using nearest neighbors with embeddings from a generalist robot policy. Next, we use vision-language models to analyze the evaluation task against the retrieved examples to categorize what generalization it represents with respect to the training data (in-distribution, visual, or behavioral).
+
+made benchmarking difficult to interpret and reproduce. Some works have tried to mitigate this, for example by proposing a taxonomy of generalization axes [5], or developing a crowd-sourced benchmarking platform [16]. However, there remains limited rigor in defining how evaluations capture general-ization, as this is usually left to human judgment. In our work, we propose a data analysis framework to systematically characterize generalization required by evaluations. 
+
+Vision-Language Models. VLMs have grown in recent years to become very powerful and general-purpose tools for visual reasoning, owing to the scale and diversity of data they train on, as well as the large language model (LLM) backbones they inherit. VLMs have previously been used for embodied reasoning, including for robot planning [17], physical scene understanding [18], and spatial reasoning [19]. In our work, we leverage VLMs to compare scenes in robot data for characterizing generalization conditions. 
+
+Retrieval and Data Embeddings. Data retrieval for robotics has been studied in the context of finding training data that most benefits a downstream task, using different forms of embedding-based similarity [20–24]. In our setting, we focus on identifying relevant portions of training data to analyze, not for training on. Also, unlike these works, we use embeddings from robot policies, which we find to be especially suited for our setting. Policy embeddings have been used in prior work to identify out-of-distribution data [25, 26]. While similar, we instead focus on using policy embeddings to retrieve relevant examples for downstream VLM data analysis, which can be seen as a form of retrieval-augmented generation (RAG) [27]. III. P ROBLEM FORMULATION 
+
+We develop our problem formulation based on ⋆-Gen, a taxonomy for characterizing generalization based on task perturbations [5]. In particular, we consider how changes to tasks affect the input and output modalities of a visual-lingual control policy π(a | o, l ), which takes in an image observation 
+
+o, a language instruction l, and outputs a distribution over actions a. We consider visual task perturbations that change the initial distribution of observations o, and behavioral 
+
+perturbations that change the optimal distribution over actions 
+
+a (see Section III in [5] for more details). Unlike in [5], we do not focus on semantic perturbations to instructions, to simplify our analysis and focus on what we consider more challenging aspects of robot generalization (e.g., semantic generalization can more easily be studied using language models). We assume a dataset D = (d1, . . . , d N ) of N demon-strations. Each di = {(oi
+
+> 0
+
+, a i
+
+> 0
+
+), . . . , (oiTi−1, a iTi−1), l i} is a sequence of T i observation-action pairs and a language in-struction li. We then have a test-time evaluation task τ test ,represented by an initial observation distribution ptest (o0) and language instruction ltest . In practice, we assume a sample 
+
+otest  
+
+> 0
+
+∼ ptest (o0) rather than the full distribution, and that 
+
+ptest (o0) is narrow (i.e., minor variation in object poses, lighting). Our goal is to determine how τ test represents gener-alization for a policy trained on D, which we define as follows:  
+
+> •
+
+τ test is in-distribution with respect to D if there exists a demonstration d∗ ∈ D for a task that is neither a 
+
+visual nor behavioral perturbation of τ test (i.e., the initial observation o∗ 
+
+> 0
+
+in d∗ is in the support of ptest (o0), and the action sequence in d∗ is optimal behavior for τ test ).  
+
+> •
+
+τ test captures visual generalization with respect to D
+
+if there does not exist d∗ ∈ D as defined above, but there does exist dv ∈ D for a task that is a visual 
+
+but not behavioral perturbation of τ test (i.e., the initial observation ov 
+
+> 0
+
+in dv is not in the support of ptest (o0), but the action sequence in dv is optimal behavior for τ test ).  
+
+> •
+
+τ test captures behavioral generalization with respect to D
+
+if the above two cases do not apply (i.e., all d ∈ D are of tasks that are behavioral perturbations of τ test ). Note that behavioral perturbations can be induced by physical changes to the scene or language specification. In summary, our objective is to classify τ test as either in-distribution to D, or capturing visual or behavioral general-ization. We visualize an example of each scenario in Fig. 2. We note that D can be any dataset one desires to assess generalization with respect to (e.g., the entirety of a policy’s pre-training data, or a more narrow post-training dataset). 3𝜏 test d* (In -Distribution) dv (Visual) Behavioral 
+
+Fig. 2: (Left) Test example τ test for the task “put the lemon on the plate” . (Right) If d∗ (e.g., minor lighting change) is found in D, then 
+
+τ test is in-distribution . Otherwise, if dv (e.g., distractor objects) is found in D, then this is visual generalization. If neither case applies, then all d ∈ D involve different optimal behavior than τ test (e.g., changed object poses), and this is behavioral generalization. 
+
+IV. R ETRIEVAL -A UGMENTED DATA ANALYSIS 
+
+In this section, we outline our proposed framework RADAR, which consists of two stages (retrieval and VLM analysis). We visualize an overview of RADAR in Fig. 1. 
+
+A. Retrieval via Embeddings 
+
+In order for RADAR to be scalable to large datasets D, we first use retrieval to identify a sub-dataset Dretrieval ⊂ D , where 
+
+|D retrieval | << N , to reduce the amount of data to be analyzed by the VLM. Our goal is to choose Dretrieval such that the VLM can produce an accurate classification of τ test with respect to the original dataset D, i.e., τ test has the same generalization relationship to Dretrieval as to D.To obtain Dretrieval , we select the k nearest neighbors of τ test 
+
+in some embedding space induced by an embedding function 
+
+ϕ(o0, l ), which takes in initial observations and language instructions. Formally, this can be expressed as: 
+
+Dretrieval = {d ∈ D : dist (ϕ(oi
+
+> 0
+
+, l i), ϕ (otest  
+
+> 0
+
+, l test )) ≤ dist k},
+
+where dist (·, ·) is some distance function (e.g., ℓ2 distance), and dist k is the kth smallest distance. With this in mind, we aim to choose ϕ such that Dretrieval has the same generalization relationship to τ test as D. To identify what ϕ is suitable for this, let us consider each case for how τ test can relate to D:
+
+Case 1: If τ test is in-distribution to D, there exists some 
+
+d∗ ∈ D as previously defined. For τ test to also be 
+
+in-distribution to Dretrieval , we want d∗ ∈ D retrieval .Because its initial observation o∗ 
+
+> 0
+
+is supported by 
+
+ptest (o0), which is narrow, o∗ 
+
+> 0
+
+should be close to otest  
+
+> 0
+
+.Therefore, if ϕ is not sensitive to small changes in 
+
+o0, or changes to l that do not change the task speci-fication, it should produce embeddings that are close in distance for d∗ and τ test , such that d∗ ∈ D retrieval .
+
+Case 2: If τ test captures visual generalization with respect to 
+
+D, this is because of the existence of some dv ∈ D
+
+as previously defined. For τ test to also capture visual 
+
+generalization with respect to Dretrieval , we want dv ∈Dretrieval . For this to happen, we want ϕ to assign closer distances for tasks that are visual perturbations than behavioral perturbations. 
+
+Case 3: If τ test captures behavioral generalization with re-spect to D, then all d ∈ D are for behavioral pertur-bations of τ test . Therefore, regardless of ϕ, Dretrieval 
+
+will also consist entirely of behavioral perturbations, so this case will always result in a proper Dretrieval .To meet these requirements, we propose using embeddings from VLA policies that have been trained on large-scale robot datasets. We posit that because VLAs inherit VLM backbones, their embeddings possess invariance to changes in visual observations and language that do not affect task spec-ification or behavior. Also, because they have been trained on diverse robot behavior, their embeddings should be sensitive to changes that necessitate different behavior. We hypothesize that this property is more likely to transfer to unseen data than policy performance for off-the-shelf VLAs, as the policy does not need to succeed on tasks for their embeddings to be useful for retrieval with them. Therefore, we argue that VLAs are a convenient source of embeddings, as they are becoming more widespread, and using embeddings from off-the-shelf VLAs requires no additional training. 
+
+B. VLM Analysis of Generalization 
+
+After obtaining Dretrieval , we can use a VLM to analyze it against τ test . To do this, we prompt it with initial observations 
+
+o0 and instructions l from each d ∈ Dretrieval , as well as 
+
+otest  
+
+> 0
+
+and ltest from τ test . Then, we ask it to perform pairwise analysis between each d and τ test , predicting whether d is for a 
+
+visual perturbation of τ test (i.e., dv ), a behavioral perturbation, or neither (i.e., d∗). Then, we aggregate these predictions to provide an overall classification of τ test with respect to Dretrieval 
+
+(and by proxy D), according to the definitions in Section III. Before providing a classification for d, we ask the VLM to provide qualitative descriptions of how τ test differs from 
+
+d along a variety of different axes from ⋆-Gen. The VLM also provides binary predictions on whether each axis is in-distribution for τ test with respect to d. In this way, the VLM is given a prior on what it should reason about when determining how to classify a given example. Also, this makes the VLM output more interpretable, in terms of understanding what task differences resulted in τ test being classified a certain way. We also consider first asking the VLM to detect all relevant objects in the scene for τ test and all d ∈ D retrieval , predict-ing their labels and 2D bounding boxes, before making the other aforementioned predictions. We hypothesize that this can improve predictions on axes that involve object-centric reasoning. V. E VALUATION 
+
+To evaluate RADAR, we conduct controlled experiments where we have access to ground truth to compare against. We instantiate these experiments on the ALOHA 2 platform [6]. 4Pick-and-Place 
+
+Unzip Lunchbag 
+
+Fold Dress       
+
+> “unzip the lunchbag”
+> Image Augmentations (Brighter) Object Poses (Bowl Higher) Visual Task Object (Red Bowl) New Object (Lemon) “put the green bowl on the plate”
+> Image Augmentations (Darker) Visual Scene (Green Background) Object Poses (Lunchbag Higher) Morphed Objects (Bigger Lunchbag)
+> “fold the dress” Morphed Objects (Bigger Dress) Object Poses (Rotated Dress) Interacting Scene (Shoe Clutter) Visual Task Object (Gray Dress)
+
+Fig. 3: We visualize the three task families in our controlled experiments ( Pick-and-Place , Unzip Lunchbag , and Fold Dress ). We provide an example instance for each task (left), and variations of that task across different axes (right), with the specific change noted in parentheses. 0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+> Cumulative Recall
+
+Pick-and-Place 
+
+0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+Unzip Lunchbag 
+
+0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+Fold Dress 
+
+π0 π0.5 GROD GROD (25% Data) PG2 SigLIP 2 DINOv3 Random 
+
+Fig. 4: Recall rate scaling ( y-axis) of d∗ for Din-dist as the size of the retrieval set ( x-axis) increases. We find that VLA-based embeddings and DINOv3 significantly outperform the other retrieval methods. 0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+> Cumulative Recall
+
+Pick-and-Place 
+
+0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+Unzip Lunchbag 
+
+0.0 2.5 5.0 7.5 10.0 
+
+Retrieval Size (% Dataset) 
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+Fold Dress 
+
+π0 π0.5 GROD GROD (25% Data) PG2 SigLIP 2 DINOv3 Random 
+
+Fig. 5: Recall rate scaling ( y-axis) of dv for Dvisual as the size of the retrieval set ( x-axis) increases. π0.5 and GROD outperform their counterparts trained on less robot data ( π0, GROD (25% Data)), and are much better than the baselines that do not use robot data. 
+
+Tasks and Datasets. We collect data for three task families (Pick-and-Place , Unzip Lunchbag , and Fold Dress ). Each task family consists of variations for multiple axes, which are annotated to have ground truth labels for evaluation. We visualize some examples of our task variations in Fig. 3. In total, our data consists of over 2.3K task variations, which is unseen by the VLAs whose embeddings we use for retrieval. 
+
+Experimental Setup. For each task family, we reserve 50-100 variations as held-out evaluation tasks (i.e., τ test ). Then, for each τ test , we construct different D, for each way τ test can relate to it ( Din-dist , Dvisual , Dbehavioral ). We consider multiple versions of Din-dist and Dvisual with different d∗ and dv ,respectively. To prevent trivial retrieval with Din-dist , we add minor perturbations to the brightness and language instructions of d∗ compared to τ test (otherwise, their embeddings would be identical). Each D consists of data across all task families. 
+
+A. Retrieval 
+
+We first compare the effectiveness of retrieval methods. To do this, we plot how the recall rate of relevant examples ( d∗ for 
+
+Din-dist and dv for Dvisual ) scales with the size of the retrieval set 
+
+k, aggregated across all τ test and examples of d∗/dv . Note that 5Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.2 0.4 0.6 0.8 L2 Distance 
+
+> 0
+> Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.2 0.4 0.6
+> 0.5
+> Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.1 0.2
+> GROD Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.1 0.2 0.3
+> GROD (25% Data) Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.1 0.2 L2 Distance
+> PG2 Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.2 0.4
+> SigLIP 2 Image Aug Visual Task Obj Visual Scene Obj Poses New Obj 0.2 0.4 0.6
+> DINOv3
+
+Fig. 6: Distribution of embedding distances induced by task perturbations across different axes for Pick-and-Place . VLA embeddings, especially for GROD, generally have larger distances for behavioral axes (blue) than visual axes (orange), unlike the other embeddings. 
+
+we do not consider Dbehavioral because retrieval does not matter for this case. We focus on using off-the-shelf embeddings (e.g., no domain-specific training). We compare the following:  
+
+> •
+
+π0/π0.5: We consider the π0 [3] and π0.5 [4] base VLAs. For embeddings, we use the KV cache corresponding to their image tokens from the second-to-last transformer layer of their PaliGemma [28] backbones.  
+
+> •
+
+GROD : We use Gemini Robotics On-Device (GROD), a VLA trained on thousands of hours of ALOHA 2 data. The model is conditioned on four camera views, proprioception, and a language instruction. We extract embeddings in a similar manner as with π0/π0.5. 
+
+> •
+
+GROD (25% Data) : We consider another version of GROD, but trained on only 25% of the robot data, scaled down to only data for the most common scenes.  
+
+> •
+
+PG2 : We use embeddings from PaliGemma 2 [29], with conditioning and embedding extraction done similarly as with GROD. This comparison helps ablate the contribu-tion of robot data, compared to only VLM training.  
+
+> •
+
+SigLIP 2 : We use SigLIP 2 [30] to separately embed visual observations and language instructions, and then concatenate them together.  
+
+> •
+
+DINOv3 : We use DINOv3 [31] to embed visual obser-vations. We do not incorporate language instructions. Each embedding is normalized to have unit norm. For embed-dings based on KV caches, we first reduce their dimensionality to 2048 using Gaussian random projections. We also compare against retrieval using random sampling. 
+
+In-Distribution Retrieval. In Fig. 4, we report recall rate scaling of d∗ for Din-dist . We find that all VLA-based embed-dings and DINOv3 perform well, achieving recall rates of over 95% for each task family when retrieving less than 5% of the original dataset. π0.5 performs the best overall, particularly on 
+
+Pick-and-Place , which we suspect is because it was trained with knowledge insulation [32] to better preserve semantic invariance to the minor language variations in our d∗ examples. Performance degrades slightly with GROD (25%), while the other methods (PG2, SigLIP) perform significantly worse. We hypothesize this is because these models lack robustness to the language variations in our d∗ examples. While they incorporate language pre-training, they were trained on fewer examples of language-annotated robot data, or none at all, resulting in worse semantic invariance specific to robot tasks. 
+
+Visual Generalization Retrieval. In Fig. 5, we report recall rate scaling of dv for Dvisual . We find that GROD performs the best overall, achieving the highest recall rates for 2/3 of our task families. π0.5 is the only other competitive model, and we suspect GROD performs better because it was trained specifically on data for the evaluation platform (ALOHA 2). However, π0.5 still performs reasonably, suggesting that more general-purpose VLA embeddings can also be effective. GROD (25% Data) and π0 perform worse than their counter-parts trained on more robot data, indicating that advancements in VLAs, particularly in robot data diversity, can make their embeddings more effective for retrieval. The VLA embeddings significantly outperform the baselines that are not behavior-aware (PG2, SigLIP 2, DINOv3). Overall, these results moti-vate using VLA embeddings in RADAR. While the VLA embeddings do not achieve perfect recall, we note that this is the recall rate of individual examples of dv .If D contains multiple dv , then retrieval only needs to obtain one of them for downstream analysis. Also, we note that in our experimental setup a large proportion of each dataset is closely related to τ test , which makes it harder to disambiguate dv . We expect that for more diverse datasets, where proportionally fewer examples are related to τ test , we can achieve high recall with relatively fewer retrieved examples. 
+
+Investigating Embedding Spaces. To better understand what is captured by each embedding space, we consider how task perturbations for different ⋆-Gen axes affect embedding distances. In Fig. 6, we visualize box plots of embedding distances induced by perturbations across different axes for 
+
+Pick-and-Place . We show visual axes in shades of orange, and 
+
+behavioral axes in shades of blue. We see that VLA embed-dings, especially for GROD, are generally more sensitive to 
+
+behavioral perturbations than visual . In contrast, there is more overlap between visual and behavioral axes for the others, explaining why they are less effective for retrieval. 6
+
+Task VLM Image Aug Visual Task Obj Visual Scene Obj Poses Morphed Obj New Obj Interacting Scene Perturb Class 
+
+Din-dist 
+
+Acc 
+
+Dvisual 
+
+Acc 
+
+Dbehavioral 
+
+Acc Overall Acc 
+
+Pick-and-Place 
+
+Gemini 3.1 Flash-Lite 39.6 81.9 39.7 29.3 – 87.5 – 78.9 95.0 7.0 78.0 60.0 Gemini 3.0 Flash 94.7 67.3 92.7 38.2 – 97.5 – 96.7 95.6 64.4 97.9 86.2 Gemini 3.1 Pro 79.1 69.4 98.9 73.9 – 99.4 – 98.3 94.9 82.7 100.0 92.5 
+
+Unzip Lunch-bag 
+
+Gemini 3.1 Flash-Lite 52.8 84.9 75.6 75.0 55.3 – – 83.4 100.0 4.0 82.0 62.0 Gemini 3.0 Flash 95.4 96.6 89.5 81.2 65.8 – – 88.3 95.9 58.3 51.0 68.5 Gemini 3.1 Pro 74.8 97.3 100.0 88.8 69.5 – – 89.7 93.8 71.4 54.0 72.8 
+
+Fold Dress 
+
+Gemini 3.1 Flash-Lite 53.4 38.4 34.1 19.8 14.0 – 64.0 81.6 92.0 8.0 64.0 54.7 Gemini 3.0 Flash 92.9 99.1 67.7 66.6 3.6 – 84.5 76.3 100.0 36.2 57.5 64.3 
+
+Gemini 3.1 Pro 78.2 93.7 73.9 51.8 13.9 – 76.2 67.7 98.0 33.3 33.3 55.2 
+
+TABLE I: (Left) VLM performance (F1 x100) on pairwise prediction of per-axis differences and perturbation classification between τ test and 
+
+d ∈ D retrieval . We do not report axes where the task has no variation for it. (Right) Overall RADAR classification accuracy after aggregating VLM predictions across all d ∈ D retrieval , for each version of D.Train Task Evaluation Task      
+
+> The target blue plate is in a different position in the evaluation task compared to the training task, which changes the required placement motion. In Distribution: False
+> The lunchbag is in the same pose in both tasks. In Distribution: True
+> “put the lemon on the plate” “put the lemon on the plate” “unzip the lunchbag”
+> The training task uses a significantly larger lunch bag (height 363 vs 226). In Distribution: False
+> The dress geometry is the same in both tasks. In Distribution: True
+> “unzip the lunchbag” “fold the dress” “fold the dress”
+> Object Poses
+> Morphed Objects
+> “unzip the lunchbag”
+> “unzip the lunchbag”
+> Train Task Evaluation Task VLM Analysis VLM Analysis
+
+Fig. 7: Examples of successful (green) and failed (red) predictions of Gemini 3.0 Flash for “Object Poses” and “Morphed Objects”. The VLM struggles more when comparing examples with more subtle visual changes (lunchbag rotation, slightly different dress size). 
+
+B. VLM Analysis 
+
+Next, we benchmark the VLM analysis and overall per-formance of RADAR. We evaluate on retrieval sets Dretrieval 
+
+of size k = 20 obtained using GROD embeddings, which performed the best overall. Each original Din-dist contains two possible d∗, while each Dvisual contains up to five possible 
+
+dv . On these datasets, over 96% of the resulting retrieval sets contain at least one needed example ( d∗ or dv , respectively). We compare three different state-of-the-art VLMs in our experiments: Gemini 3.1 Flash-Lite [33], 3.0 Flash [34], and 3.1 Pro [35]. We assess predicting the per-axis differences and perturbation classifications for individual d ∈ D retrieval ,reporting F1 scores. We also report the overall generalization classification accuracy of RADAR on τ test after aggregating the perturbation classifications across d, for each version of 
+
+D. This accounts for possible error introduced by retrieval. We report our results in Table I. For Pick-and-Place , we see positive scaling with stronger VLMs. Gemini 3.1 Pro performs the best, achieving an average F1 score of 0.841 across all per-axis predictions, a weighted F1 score of 0.983 for perturbation classification, and an overall classification accuracy of 92.5%. We note that overall classification accuracies are lower than for individual perturbations due to compounding error, as a single erroneous classification of d as d∗ or dv can result in an incorrect overall classification. For the other task families, the VLMs struggle more on axes prediction, particularly for “Object Poses” and “Mor-phed Objects”, resulting in worse perturbation and overall generalization accuracies. We hypothesize this is because axes perturbations for these tasks are more visually subtle than in Pick-and-Place . In Fig. 7, we visualize examples of successes and failures of 3.0 Flash, and note that its failure modes typically involve less visually apparent changes. This highlights deficiencies in modern VLMs that can sometimes limit the effectiveness of RADAR. However, we note that 3.1 Pro does improve for these axes, providing evidence that as VLMs improve these deficiencies can be mitigated. 
+
+Ablations. We ablate design decisions in our instantiation of VLM analysis in RADAR. Using Gemini 3.1 Pro, we compare our full approach on Unzip Lunchbag to omitting object detections, as well as also omitting ⋆-Gen axes guidance. In addition, we increase the size of the retrieval set from k = 20 
+
+to 40 , to assess how sensitive RADAR is to longer contexts. In our results in Table II, we find that including object detection slightly improves object-centric axes (“Obj Poses”, “Morphed Objects”), as well as “Visual Scene”. This translates to an overall accuracy improvement of around 12%. When removing ⋆-Gen axes guidance, generalization classification accuracy significantly drops. This shows the importance of us-ing ⋆-Gen to guide VLM reasoning, so that it can effectively determine what forms of generalization are involved. Lastly, when increasing the size of the retrieval set, we find that axes predictions degrade slightly, suggesting that VLMs perform worse at these forms of visual reasoning with longer contexts. This results in somewhat worse overall classification accuracies, although performance does not degrade substan-tially, indicating some robustness to context length. VI. C ASE STUDY : L ARGE SCALE ANALYSIS 
+
+We now show how RADAR can be applied to large-scale robot datasets. We consider Bridge V2 [7], and a proprietary dataset of over 1M demonstrations for the ALOHA 2 platform. 7
+
+Task Method Image Aug Visual Task Obj Visual Scene Obj Poses Morphed Obj Perturb Class 
+
+Din-dist 
+
+Acc 
+
+Dvisual 
+
+Acc 
+
+Dbehavioral 
+
+Acc Overall Acc 
+
+Unzip Lunch-bag 
+
+Gemini 3.1 Pro 74.8 97.3 100.0 88.8 69.5 89.7 93.8 71.4 54.0 72.8 
+
+– Obj Detect 75.5 97.7 89.9 86.7 66.0 87.2 93.9 55.1 33.3 61.0 – Obj Detect, Axes – – – – – 79.9 90.0 40.0 6.0 45.3 + Longer Context ( k = 40 ) 73.1 95.4 99.4 87.8 68.1 89.7 96.0 62.5 44.0 67.6 
+
+TABLE II: Ablations of VLM analysis in RADAR. (Left) VLM performance (F1 x100) on pairwise prediction of per-axis differences and perturbation classification between τ test and d ∈ D retrieval . (Right) Overall RADAR classification accuracy after aggregating VLM predictions. Evaluation task has distinct     
+
+> lighting from a handheld lam p
+> Visual Gen
+> Evaluation Task Retrieved Tasks VLM Analysis
+> Banana orientation on the
+> table is different
+> Behavioral Gen
+> D
+> Bag position differs (bottom
+> vs. top )
+> Behavioral Gen Test
+> “unzip the lunch bag completely”
+> “put banana in bowl with handover”
+> “put the legos into the lego bag”
+
+Fig. 8: Examples of RADAR applied to benchmarking generalization for a large-scale ALOHA 2 dataset. For a given benchmark evaluation task (left), we provide three instances of retrieved training data examples (middle). Then, we provide the VLM analysis comparing the evaluation task to the leftmost retrieved example, as well as the overall generalization classification (right). 
+
+Bridge V2. We consider 35 evaluation tasks from BridgeV2-
+
+⋆ [5], a benchmark from prior work used to assess generaliza-tion with Bridge V2. We use RADAR to analyze these tasks against the entirety of Bridge V2, as well as the base tasks used for co-training policies in the BridgeV2-⋆ evaluations. We use retrieval size k = 50 with embeddings from CogACT [36], as this VLA is more suited for the Bridge V2 platform compared to the VLAs in our previous experiments. In Table III, we report the overall generalization classifi-cation agreement of different VLMs in RADAR, compared against the original categorizations in BridgeV2-⋆, and see agreement improves with stronger VLMs. We observe that disagreements are largely due to visually subtle changes, similar to the VLM errors in our controlled experiments. We observe that while the retrieved data from Bridge V2 is generally relevant to the evaluation task (e.g., similar scenes and objects), none of them captured the exact behavior in-volved in a given evaluation task. Therefore, all such examples were categorized as behavioral , such that only the co-training base tasks end up relevant for categorization. This results in significant alignment between RADAR analysis and the categorizations from BridgeV2-⋆, which originally defined generalization with respect to these base tasks. 
+
+ALOHA 2. While the ALOHA 2 dataset does not have ground truth labels to evaluate against, we can assess RADAR by considering evaluation tasks from prior work that were used to benchmark generalization for policies trained on this data [1]. We can then compare RADAR analysis against how these 
+
+VLM Gemini 3.0 Flash Gemini 3.0 Pro Gemini 3.1 Pro Agreement 60.0 71.4 77.1 
+
+TABLE III: Classification agreement of different VLMs in RADAR on BridgeV2-⋆ [5], compared against their original categorizations. 
+
+evaluations were originally characterized. We use retrieval size 
+
+k = 50 with GROD embeddings, and Gemini 3.1 Pro. In Fig. 8, we provide examples where RADAR agrees with previous human characterizations of the aforementioned benchmark tasks, including retrieved examples, VLM analysis, and overall generalization classification. However, we also observe that sometimes there is disagreement, e.g., sometimes humans appear in the background of scenes were categorized as in-distribution , but RADAR identifies this instead as visual 
+
+generalization. This shows how RADAR can be used to systematically identify limitations in previous benchmarking efforts that may otherwise have been overlooked. VII. D ISCUSSION 
+
+We present RADAR, a scalable framework for characteriz-ing the extent and type of generalization required for policy evaluation. RADAR involves a two-stage pipeline where a retrieval step using VLA embeddings first identifies relevant training data. Then, a VLM analyzes the retrieved data against the evaluation task, providing comparisons across various generalization axes and an overall generalization classification. In our experiments, we show that VLA embeddings perform well at identifying examples that enable accurate downstream 8
+
+analysis, and VLMs can be effective at predicting axis differ-ences and classifying generalization. We also scale RADAR to two large-scale robot datasets, where it produces analysis consistent with human-defined generalization benchmarks. We hope that RADAR makes progress towards more systematic benchmarking of generalization in robotics. 
+
+Limitations and Future Work. While we find that VLMs can be effective at analyzing our Pick-and-Place task family, they perform worse on our other tasks, particularly for identifying changes with more subtle visual differences. We are hopeful that as VLMs develop they will improve at this analysis. RADAR assumes that task differences are observable from their initial observations and instructions, which may not always be true. Furthermore, task differences may be more challenging to disambiguate if observations across tasks are very misaligned (e.g., different camera views). Future work can address this limitation by incorporating 3D scene under-standing, which may require further advancements in VLMs. While RADAR can help characterize generalization, its level of categorization is relatively broad ( in-distribution ,
+
+visual , or behavioral generalization). Future work can inves-tigate more granular analysis, such as estimating the difficulty of generalization required (e.g., whether a change requires significantly different behavior, or only a minor adjustment). We hope that the elements of retrieval and VLM analysis from RADAR can be more broadly applied to such extensions. REFERENCES 
+
+[1] G. R. Team, S. Abeyruwan, J. Ainslie, J.-B. Alayrac, M. G. Arenas, T. Armstrong et al. , “Gemini Robotics: Bringing AI into the Physical World,” arXiv preprint arXiv:2503.20020 , 2025. [2] G. R. Team, A. Abdolmaleki, S. Abeyruwan, J. Ainslie et al. ,“Gemini Robotics 1.5: Pushing the Frontier of Generalist Robots with Advanced Embodied Reasoning, Thinking, and Motion Transfer,” arXiv preprint arXiv:2510.03342 , 2025. [3] K. Black, N. Brown, D. Driess, A. Esmail et al. , “ π0: A Vision-Language-Action Flow Model for General Robot Control,” in 
+
+Proceedings of Robotics: Science and Systems (RSS) , 2025. [4] P. Intelligence, K. Black, N. Brown, J. Darpinian et al. , “ π0.5:a Vision-Language-Action Model with Open-World Generaliza-tion,” in Conference on Robot Learning (CoRL) , 2025. [5] J. Gao, S. Belkhale, S. Dasari, A. Balakrishna et al. , “A Tax-onomy for Evaluating Generalist Robot Manipulation Policies,” 
+
+IEEE Robotics and Automation Letters (RA-L) , 2026. [6] J. Aldaco, T. Armstrong et al. , “ALOHA 2: An Enhanced Low-Cost Hardware for Bimanual Teleoperation,” arXiv , 2024. [7] H. R. Walke, K. Black, T. Z. Zhao, Q. Vuong, C. Zheng et al. ,“BridgeData V2: A Dataset for Robot Learning at Scale,” in 
+
+Conference on Robot Learning (CoRL) , 2023. [8] S. Dasari, F. Ebert et al. , “RoboNet: Large-Scale Multi-Robot Learning,” in Conference on Robot Learning (CoRL) , 2019. [9] H.-S. Fang, H. Fang et al. , “RH20T: A Comprehensive Robotic Dataset for Learning Diverse Skills in One-Shot,” in Interna-tional Conference on Robotics and Automation (ICRA) , 2024. [10] O. Collaboration et al. , “Open X-Embodiment: Robotic Learn-ing Datasets and RT-X Models,” in International Conference on Robotics and Automation (ICRA) , 2024. [11] A. Khazatsky, K. Pertsch, S. Nair et al. , “DROID: A Large-Scale In-the-Wild Robot Manipulation Dataset,” in Proceedings of Robotics: Science and Systems (RSS) , 2024. [12] M. Kim, K. Pertsch, S. Karamcheti, T. Xiao, A. Balakrishna 
+
+et al. , “OpenVLA: An Open-Source Vision-Language-Action Model,” in Conference on Robot Learning (CoRL) , 2024. [13] J. Gao, A. Xie, T. Xiao et al. , “Efficient Data Collection for Robotic Manipulation via Compositional Generalization,” in 
+
+Proceedings of Robotics: Science and Systems (RSS) , 2024. [14] F. Lin, Y. Hu, P. Sheng, C. Wen et al. , “Data Scaling Laws in Imitation Learning for Robotic Manipulation,” in International Conference on Learning Representations (ICLR) , 2025. [15] V. Saxena, M. Bronars et al. , “What Matters in Learning from Large-Scale Datasets for Robot Manipulation,” in International Conference on Learning Representations (ICLR) , 2025. [16] P. Atreya, K. Pertsch, T. Lee, M. J. Kim et al. , “RoboArena: Dis-tributed Real-World Evaluation of Generalist Robot Policies,” in 
+
+Conference on Robot Learning (CoRL) , 2025. [17] D. Driess, F. Xia, M. S. Sajjadi, C. Lynch, A. Chowdhery et al. ,“PaLM-E: An Embodied Multimodal Language Model,” in 
+
+International Conference on Machine Learning (ICML) , 2023. [18] J. Gao, B. Sarkar, F. Xia, T. Xiao et al. , “Physically Grounded Vision-Language Models for Robotic Manipulation,” in Inter-national Conference on Robotics and Automation (ICRA) , 2024. [19] B. Chen et al. , “SpatialVLM: Endowing Vision-Language Mod-els with Spatial Reasoning Capabilities,” in Conference on Computer Vision and Pattern Recognition (CVPR) , 2024. [20] S. Nasiriany, T. Gao, A. Mandlekar, and Y. Zhu, “Learning and Retrieval From Prior Data for Skill-Based Imitation Learning,” in Conference on Robot Learning (CoRL) , 2022. [21] M. Du, S. Nair, D. Sadigh, and C. Finn, “Behavior Retrieval: Few-Shot Imitation Learning by Querying Unlabeled Datasets,” in Proceedings of Robotics: Science and Systems (RSS) , 2023. [22] L.-H. Lin, Y. Cui, A. Xie, T. Hua, and D. Sadigh, “FlowRe-trieval: Flow-Guided Data Retrieval for Few-Shot Imitation Learning,” in Conference on Robot Learning (CoRL) , 2024. [23] M. Memmel, J. Berg, B. Chen et al. , “STRAP: Robot Sub-Trajectory Retrieval for Augmented Policy Learning,” in Inter-national Conference on Learning Representations (ICLR) , 2025. [24] A. Xie, R. Chand, D. Sadigh, and J. Hejna, “Data Retrieval with Importance weights for Few-Shot Imitation Learning,” in 
+
+Conference on Robot Learning (CoRL) , 2025. [25] A. Majumdar, M. Sharma, D. Kalashnikov, S. Singh et al. ,“Predictive Red Teaming: Breaking Policies Without Breaking Robots,” in Conference on Robot Learning (CoRL) , 2025. [26] L. Zha, A. Badithela, M. Zhang, J. Lidard, J. Bao, E. Zhou 
+
+et al. , “Guiding Data Collection via Factored Scaling Curves,” 
+
+arXiv preprint arXiv:2505.07728 , 2025. [27] P. Lewis, E. Perez, A. Piktus et al. , “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” in Advances in Neural Information Processing Systems (NeurIPS) , 2020. [28] L. Beyer, A. Steiner, A. S. Pinto et al. , “PaliGemma: A versatile 3B VLM for transfer,” arXiv preprint arXiv:2407.07726 , 2024. [29] A. Steiner et al. , “PaliGemma 2: A Family of Versatile VLMs for Transfer,” arXiv preprint arXiv:2412.03555 , 2024. [30] M. Tschannen et al. , “SigLIP 2: Multilingual Vision-Language Encoders with Improved Semantic Understanding, Localization, and Dense Features ,” arXiv preprint arXiv:2502.14786 , 2025. [31] O. Sim´ eoni, H. V. Vo, M. Seitzer, F. Baldassarre, M. Oquab 
+
+et al. , “DINOv3,” arXiv preprint arXiv:2508.10104 , 2025. [32] D. Driess, J. T. Springenberg, B. Ichter, L. Yu, A. Li-Bell 
+
+et al. , “Knowledge Insulating Vision-Language-Action Models: Train Fast, Run Fast, Generalize Better,” in Advances in Neural Information Processing Systems (NeurIPS) , 2025. [33] G. DeepMind, “Gemini 3.1 Flash-Lite,” https://deepmind. google/models/model-cards/gemini-3-1-flash-lite/, Mar. 2026. [34] ——, “Gemini 3 Flash,” https://deepmind.google/models/ model-cards/gemini-3-flash/, Dec. 2025. [35] ——, “Gemini 3.1 Pro,” https://deepmind.google/models/ model-cards/gemini-3-1-pro/, Feb. 2026. [36] Q. Li et al. , “CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation,” arXiv preprint arXiv:2411.19650 , 2024. 9
+
+APPENDIX AEXPERIMENTAL DETAILS 
+
+A. Embeddings 
+
+For π0 and π0.5, we obtain embeddings using the KV cache corresponding to image tokens from the second-to-last transformer layer of their PaliGemma backbones. This results in an embedding with dimensionality 131072. For CogACT, for embeddings we use the 4096 dimension “cognition feature” produced by its VLM backbone to condi-tion its action expert. For SigLIP 2, we use the Hugging Face model 
+
+google/siglip2-giant-opt-patch16-384 .For DINOv3, we use 
+
+facebook/dinov3-vitl16-pretrain-lvd1689m .For SigLIP 2 and DINOv3, we only embed the overhead camera view, rather than all camera views as for the VLA embeddings. 
+
+B. VLM Analysis Details 
+
+In Fig. 9, we provide Part 1 of the VLM prompt we use when incorporating ⋆-Gen axes guidance. In Fig. 10, we provide Part 2 of this prompt when also using object detection, and in Fig. 11 we provide Part 2 when not using object detection. In Fig. 12, we provide the full VLM prompt we use when not using ⋆-Gen axes guidance nor object detection. For Gemini, we set temperature to 0 and set thinking to 
+
+high . Also, we enforce the response to follow a JSON schema for more reliable generation and extraction of per-axis predictions and generalization classifications. When analyzing τ test against a particular d, we ask the VLM to explicitly predict a perturbation classification. However, if also predicting ⋆-Gen axes differences, we instead use these axes predictions to construct the perturbation classification rather than the explicitly predicted one, as we found this generally performed better, especially for Gemini 3.0 Flash. 
+
+C. Tasks and Datasets 
+
+Our Pick-and-Place task setup involves a plate in the center of a table. There is one object to the left of the plate, and one object to the right. The robot is instructed to place one of these two objects on the plate. There are 4 different possible manipulated objects (green bowl, red bowl, red apple, yellow lemon). There are also 2 different positions on the plate’s left and two different positions on plate’s right for these objects. In addition, there are 3 different configurations of distractor objects (including none), and 2 different plate positions. We collect scenes that cover every possible combination of this variability, which results in a total of  42
+
+ (which objects are chosen) * 2 (which object is on the left, right) * 2 (left object position) * 2 (right object position) * 3 (distractor configuration) * 2 (plate position) = 288 unique scenes. Each scene has 2 language instructions (one for the left object, one for the right object), for a total of 576 unique tasks. Our Unzip Lunchbag task setup involves 6 different possible lunchbags. 3 of them have the same geometry, but have visual differences (tag or bag color). The other 3 have significantly different geometries. We further vary the task by having 4 different table backgrounds and 5 different lunchbag poses. This results in a total of 6 * 4 * 5 = 120 unique scenes/tasks. Our Fold Dress task setup involves 4 different dresses. 3 of them have the same visual design but are of different sizes, while the other has the same geometry as another but has a different visual design. We further vary the task by having 4 different dress orientations, and 5 different configurations of other objects (this includes no other objects, 2 configurations with distractor objects that do not affect task behavior, and 2 with clutter where objects are placed on the dress). This results in a total of 4 * 4 * 5 = 80 unique scenes/tasks. After collecting data for each scene/task, we create 2additional variants of each with different levels of image brightness. This results in a total of (576 + 120 + 80) * 3 = 2328 task variations. 
+
+D. Experimental Setup 
+
+For each task family, we randomly reserve 50 scenes as held-out for evaluation. This results in 100 evaluation tasks for Pick-and-Place , because there are two possible tasks per scene, and 50 for the other task families. Then separately for each evaluation task τtest , we construct different versions of 
+
+Din-dist , Dvisual , and Dbehavioral as follows:  
+
+> •
+
+For Din-dist , we start with every non-evaluation task across all task family datasets. Then, for the given τtest , we include two different versions of d∗, which have the same image observation, but with small random changes to their brightness. Each also has their language instruction slightly modified (e.g., “put the red apple on the plate” 
+
+→ “put the red apple on the dish”, “unzip the lunchbag” 
+
+→ “open the lunchbag”), . These modifications are intro-duced such that in-distribution retrieval is not trivial, as if d∗ has identical observations and instructions as τtest ,then any function would work for retrieval (same input 
+
+→ same output).  
+
+> •
+
+For Dvisual , we start with every non-evaluation task that involves different behavior as τtest across all task family datasets. We then sample and include up to 5 examples of dv that involve the same behavior as τtest . We sample less than 5 if less than 5 exist.  
+
+> •
+
+For Dbehavioral , we use every non-evaluation task that involves different behavior as τtest across all task family datasets. For our retrieval recall scaling results (Fig. 4 and Fig. 5), we do not explicitly construct these datasets. Instead, we start with the versions of each dataset without d∗/dv , and sort them according to their embedding distances. Then, for every possible d∗ and dv (not just 5 samples of dv , but all examples in the dataset that could serve as dv ), we determine where in the sorted order they would fall in, which is the retrieval size that would be needed to recover it. Then, in the recall scaling plots, each point on a curve indicates what percent of d∗/dv
+
+are found in a retrieval set of that size relative to Din-dist /Dvisual ,across all d∗/dv for all evaluation tasks. 10 
+
+A robot is given a task, which consists of a physical scene it interacts with, and a language instruction that specifies what behavior the robot needs to perform. To perform the task, the robot must predict actions to execute given image observations of its scene and the language instruction. The robot may encounter tasks that represent generalization from the tasks in its training data. Tasks can require visual generalization, which means the robot does not need to generalize to new physical motion, but must be robust to visual perturbations. An example of this is performing a task present in the training data, but with unseen lighting conditions that affect the robot’s visual observations. Tasks can also require behavioral generalization, which means the robot must execute new physical motion that is unseen in its training data. An example of this is grasping an object with unseen geometry that requires a new grasp motion. To help categorize what kind of generalization a task represents, consider the following axes that tasks can differ, grouped based on whether they involve visual or behavioral generalization: **Visual** - Image Augmentations: Changes to the scene image observation that does not affect the physical composition of the scene (e.g., scene lighting, image blur). Pay attention to any such visual changes in the image observations. - Visual Task Object: Changes to the appearance (e.g., color, visual texture, transparency) of objects that are involved in the task (e.g., an object to be grasped, a container an object is to be put in). This does not include aspects of objects that also affect their physical configuration (e.g., pose, geometry). - Visual Scene: Changes to visual elements of the scene besides objects involved in the task (e.g., the color of a tabletop surface, distractor objects that do not affect the required task behavior). **Behavioral** - Object Poses: Changes to the pose (position and orientation) of objects involved in the task that affect the required task behavior. - Morphed Objects: Changes to the geometry (size and shape) of objects involved in the task that affect the required task behavior. This does not include changes to the type of an object (e.g., this includes changing the shape of a cup, but not changing the cup to a bottle). - New Object: Changes to objects involved in the task to entirely new types of objects with different appearances and physical characteristics, such as geometry, that affect the required task behavior. - Interacting Scene: Changes to other physical components of the scene besides objects involved in the task that affect the required task behavior (e.g., tabletop surface height, object clutter that blocks objects involved in the task). This only includes changes that affect the required task behavior (e.g., object clutter is only included if the change forces the robot to perform different behavior, such as to avoid the objects). The robot is trained on data for the following tasks, each represented by its language instruction and initial scene image observation: Task ID: 1 Instruction: {retrieved instruction 1 }
+
+Scene Image: {retrieved image 1 }
+
+Task ID: 2 Instruction: {retrieved instruction 2 }
+
+Scene Image: {retrieved image 2 }
+
+... After being trained on data for these tasks, the robot is asked to perform the following evaluation task: Instruction: {test instruction }
+
+Scene Image: {test image }  
+
+> Fig. 9: VLM prompt with ⋆-Gen axes guidance (Part 1). 11
+
+Your goal is to analyze how the evaluation task represents generalization from the training tasks. First, detect all objects in the evaluation task scene, providing a label and bounding box (formatted as [y min, x min, y max, x max], with coordinates normalized between 0-1000) for each object. Also, for each of the training task, detect all objects in the same format. Next, for each training task, provide its Task ID, and then a qualitative description of how the evaluation task and the training task differ for each axis, and whether or not the evaluation task is in-distribution with respect to the training task for that axis (True or False). If there is a difference between the tasks for that axis, then it is not in-distribution. Also do this for an “Other” axis that captures any other ways the tasks can differ that are not covered by the other axes. Use the object detections to help reason about these differences. When analyzing behavioral axes, pay especially close attention to any differences, even minor ones, that can affect the actions needed to perform the task. Consider estimating the surface area of objects involved in the task to help with analyzing behavioral axes. Also, pay attention to the language instruction for each task when making comparisons, as the instruction can change what objects are involved in each task (e.g., the same object can appear in different tasks, but may only be involved in one depending on the instruction). Then, use this to categorize the evaluation task as either in-distribution, visual generalization, or behavioral generalization for each chosen training task. If some behavioral axes are not in-distribution, then the task is behavioral generalization, even if some visual axes are also not in-distribution. If the only axes that are not in-distribution are visual, then the task is visual generalization. If all axes are in-distribution, then the task is in-distribution. IMPORTANT: Make sure to provide an analysis for every training task, do not skip any. Provide your response in JSON format.   
+
+> Fig. 10: VLM prompt with ⋆-Gen axes guidance and object detection (Part 2).
+
+Your goal is to analyze how the evaluation task represents generalization from the training tasks. For each of the training tasks, provide a qualitative description of how the evaluation task and the training task differ for each axis, and whether or not the evaluation task is in-distribution with respect to the training task for that axis (True or False). If there is a difference between the tasks for that axis, then it is not in-distribution. Also do this for an “Other” axis that captures any other ways the tasks can differ that are not covered by the other axes. When analyzing behavioral axes, pay especially close attention to any differences, even minor ones, that can affect the actions needed to perform the task. Consider estimating the surface area of objects involved in the task to help with analyzing behavioral axes. Also, pay attention to the language instruction for each task when making comparisons, as the instruction can change what objects are involved in each task (e.g., the same object can appear in different tasks, but may only be involved in one depending on the instruction). Then, use this to categorize the evaluation task as either in-distribution, visual generalization, or behavioral generalization for each chosen training task. If some behavioral axes are not in-distribution, then the task is behavioral generalization, even if some visual axes are also not in-distribution. If the only axes that are not in-distribution are visual, then the task is visual generalization. If all axes are in-distribution, then the task is in-distribution. IMPORTANT: Make sure to provide an analysis for every training task, do not skip any. Provide your response in JSON format.   
+
+> Fig. 11: VLM prompt with ⋆-Gen axes guidance, but without object detection (Part 2). 12
+
+A robot is given a task, which consists of a physical scene it interacts with, and a language instruction that specifies what behavior the robot needs to perform. To perform the task, the robot must predict actions to execute given image observations of its scene and the language instruction. The robot may encounter tasks that represent generalization from the tasks in its training data. Tasks can require visual generalization, which means the robot does not need to generalize to new physical motion, but must be robust to visual perturbations. An example of this is performing a task present in the training data, but with unseen lighting conditions that affect the robot’s visual observations. Tasks can also require behavioral generalization, which means the robot must execute new physical motion that is unseen in its training data. An example of this is grasping an object with unseen geometry that requires a new grasp motion. The robot is trained on data for the following tasks, each represented by its language instruction and initial scene image observation: Task ID: 1 Instruction: {retrieved instruction 1 }
+
+Scene Image: {retrieved image 1 }
+
+Task ID: 2 Instruction: {retrieved instruction 2 }
+
+Scene Image: {retrieved image 2 }
+
+... After being trained on data for these tasks, the robot is asked to perform the following evaluation task: Instruction: {test instruction }
+
+Scene Image: {test image }
+
+Your goal is to analyze how the evaluation task represents generalization from the training tasks. Categorize the evaluation task as either in-distribution, visual generalization, or behavioral generalization for each training task. IMPORTANT: Make sure to provide an analysis for every training task, do not skip any. Provide your response in JSON format.
