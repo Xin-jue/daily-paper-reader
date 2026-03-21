@@ -1,0 +1,270 @@
+Title: RoboLight: A Dataset with Linearly Composable Illumination for Robotic Manipulation
+
+URL Source: https://arxiv.org/pdf/2603.04249v1
+
+Published Time: Thu, 05 Mar 2026 02:18:46 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# RoboLight: A Dataset with Linearly Composable Illumination for Robotic Manipulation 
+
+Shutong Jin ∗, Jin Yang ∗, Muhammad Zahid and Florian T. Pokorny 
+
+Abstract — In this paper, we introduce RoboLight , the first real-world robotic manipulation dataset capturing synchronized episodes under systematically varied lighting conditions. Robo-Light consists of two components. (a) RoboLight-Real contains 2,800 real-world episodes collected in our custom Light Cube 
+
+setup, a calibrated system equipped with eight programmable RGB LED lights. It includes structured illumination variation along three independently controlled dimensions: color, direc-tion, and intensity. Each dimension is paired with a dedicated task featuring objects of diverse geometries and materials to induce perceptual challenges. All image data are recorded in high-dynamic-range (HDR) format to preserve radiometric accuracy. Leveraging the linearity of light transport, we in-troduce (b) RoboLight-Synthetic , comprising 196,000 episodes synthesized through interpolation in the HDR image space of RoboLight-Real . In principle, RoboLight-Synthetic can be arbitrarily expanded by refining the interpolation granularity. We further verify the dataset quality through qualitative anal-ysis and real-world policy roll-outs, analyzing task difficulty, distributional diversity, and the effectiveness of synthesized data. We additionally demonstrate three representative use cases of the proposed dataset. The full dataset, along with the system software and hardware design, will be released as open-source to support continued research. 
+
+I. INTRODUCTION Data has emerged as a critical asset in robotics [1]. Large-scale datasets [2], [3] support the training of foundation models [4], [5] and world models [6], [7], by providing broad coverage of robotic interaction patterns. At the same time, datasets function as diagnostic benchmarks [8], [9]. Evaluating policies across heterogeneous datasets reveals failure modes and motivates improvements in generaliza-tion [10], [11]. These combined roles have driven significant data curation efforts in robotic manipulation, emphasizing both scale and diversity across embodiments, tasks and environments [2], [3]. Despite these advances, lighting, a pervasive factor in real-world environments, remains notably underrepresented as a focus area in existing datasets. While prior studies indicate that learned policies are highly sensitive to lighting changes [10], [12], [13], most of the existing datasets are collected under stable laboratory lighting with little variation. Several factors contribute to this data gap. First, environ-mental illumination complicates data collection. Robotic data                      
+
+> ∗Equal contribution. The authors are with the School of Electrical Engineering and Computer Science, KTH Royal Institute of Technol-ogy {shutong, jin4, mzmi, fpokorny }@kth.se . This work was partially supported by the Wallenberg AI, Autonomous Systems and Soft-ware Program (WASP) funded by the Knut and Alice Wallenberg Foun-dation. The computations were enabled by the supercomputing resource Berzelius provided by the National Supercomputer Centre at Link¨ oping University and the Knut and Alice Wallenberg Foundation, Sweden.
+
+Fig. 1: The Light Cube system developed for controlled and repeatable robotic lighting data curation. We use this system to collect RoboLight , the first real-world robotic manipulation dataset capturing synchronized episodes under systematically varied light-ing conditions. 
+
+collection often spans long time horizons, during which uncontrolled light sources, such as light shining through windows or display monitors, can introduce unintended variation. This interference can obscure the designed lighting conditions and reduce dataset consistency and reliability. Second, achieving dense coverage of lighting variations is costly and often impractical. Even with a single light source, multiple interacting factors, such as color, intensity, and direction, must be considered. When multiple light sources are present, these factors interact combinatorially, making large-scale curation with sufficient distributional coverage difficult. Moreover, limited reproducibility of lighting condi-tions constrains practical dataset reuse. Unlike manipulation object sets [14] that can be reproduced through purchasing or 3D printing, lighting re-creation depends on precise spatial configuration. As a result, even when lighting datasets are available, reproducing identical lighting conditions for eval-uation is difficult, which further limits cross-group usability. However, illumination remains a primary source of vari-ability in real-world environments, changing across spatial locations and over time. There is an urgent need for a dataset that captures such variations and enables systematic study of their impact on robotic policies. Motivated by this, we propose RoboLight , the first real-world robotic manip-ulation dataset with systematic lighting variation. To elimi-nate uncontrolled external illumination and provide precisely controlled internal lighting, we construct a fully enclosed environment ( Fig. 1, the Light Cube ). By systematically 
+
+> arXiv:2603.04249v1 [cs.RO] 4 Mar 2026
+
+controlling eight programmable RGB LED lights in the Light Cube , we collect RoboLight-Real , comprising 2,800 episodes with structured lighting variations. The variations are orga-nized along three illumination dimensions: color (red, green, blue), direction (front, rear, left, right), and intensity (140, 700, and 1400 lux). Additional subsets are collected under white lighting for common robotic settings and under com-posed lighting for data quality verification. Each illumination dimension is paired with a task designed to expose perceptual challenges, involving 11 objects with material properties ranging from matte to highly specular. Illumination is the only varying factor, with robot trajectories synchronized across conditions. All images are recorded in high-dynamic-range (HDR) format to preserve radiometric accuracy. Lever-aging this linear radiometric representation and trajectory synchronization, we further synthesize RoboLight-Synthetic 
+
+via weighted interpolation in HDR space, generating 196,000 episodes. In principle, RoboLight-Synthetic can be arbitrarily expanded by refining the interpolation granularity. To con-clude, our contributions are fourfold:  
+
+> •
+
+We propose RoboLight , the first real-world robotic manipulation dataset capturing synchronized episodes under systematically varied lighting conditions.  
+
+> •
+
+We introduce an interpolation-based data scaling strat-egy that synthesizes new lighting conditions via linear interpolation in HDR space, leveraging the linearity of light transport.  
+
+> •
+
+We verify the dataset quality through qualitative analysis and real-world policy roll-outs, assessing task diffi-culty, distributional diversity, and the effectiveness of 
+
+RoboLight-Synthetic . 
+
+> •
+
+We demonstrate three representative use cases of the proposed dataset, ranging from lighting robustness benchmarking to HDR-enabled visual condition scaling. II. RELATED WORK 
+
+A. Large-Scale Datasets for Robotic Manipulation 
+
+The robotics community has been actively accumulating large-scale datasets to support both robust single-task learn-ing and generalist training. Single-task datasets typically focus on repeated task execution under object and envi-ronment variation. A prominent example is the MIT Push dataset [15], where object geometry and material properties are systematically varied, resulting in over one million planar pushing interactions. Such datasets cover a broad range of manipulation skills, including pushing [15], [16], grasp-ing [17], [18],assembly [19], [9], pouring [20] and etc. Re-cent work has increasingly focused on datasets for generalist training, characterized by multiple embodiments, multiple tasks, and multiple environments [2], [3]. One representative example is the Open X-Embodiment dataset [2], which covers 22 embodiments and 527 tasks. Across existing real-world datasets, lighting is typically limited to stable indoor illumination, with fluctuations treated as real-world noise rather than an explicit variable. Among the few datasets that explicitly consider lighting variation [17], [18], illumination is grouped into broad “in-the-wild” categories such as indoor and window lighting. These variations can verify policy robustness; however, they are difficult to reproduce, and uncontrolled natural light undermines dataset consistency, limiting their suitability for systematic analysis. Lighting has also been studied in simulation [21], [10], yet achieving high-fidelity rendering remains challenging, as accurate light transport requires precise geometry and calibrated material properties that are rarely available in robotic simulation assets [22]. In this paper, we present RoboLight , the first real-world robotic manipulation dataset that treats illumination as a primary variation axis, with systematic and repeatable variation in color, direction, and intensity. 
+
+B. Illumination Studies in Computer Vision and Graphics 
+
+Two types of lighting have been widely studied in com-puter vision and graphics: low-light conditions and direc-tional lighting. Low-light conditions are commonly incorpo-rated into datasets to assess model robustness, given their challenges for vision-centric tasks. Representative low-light datasets cover applications such as object detection [23], segmentation [24], autonomous driving [25], face recogni-tion [26], and hand gesture recognition [27]. Another major line of work focuses on directional lighting [22], [28]. In this setting, images are typically captured in dark environments while a single point light source illuminates the subject from different directions. The Yale Face Database [29] and the CMU Pose, Illumination, and Expression dataset [30] are two prominent examples, where human faces are pho-tographed under individually controlled lighting directions in an enclosed dark environment. This type of design has prompted investigations into lighting composition, exploiting the linearity of light transport to model human faces under a wide range of illumination conditions [31], [32]. A notable contribution is the Light Stage system [33], which employs thousands of directional light sources to enable arbitrary lighting synthesis and has been widely adopted in the film industry [34]. Motivated by these approaches, we construct the Light Cube with eight directional lights to investigate illumination effects for robotic manipulation. III. P RELIMINARIES 
+
+A. HDR and LDR Images 
+
+An image results from the interaction between illumi-nation and scene components, as recorded by a camera. High-dynamic-range (HDR) and low-dynamic-range (LDR) images differ in how they represent the recorded illumi-nation. HDR images store pixel intensities in a linear, ra-diometrically calibrated space that is proportional to scene radiance, typically with 16-bit precision or higher. Common HDR formats include OpenEXR (.exr) and Radiance (.hdr). LDR images encode pixel intensities in a gamma-corrected, compressed representation, usually with 8-bit precision per channel. Common LDR formats include JPEG (.jpg) and PNG (.png). Given their differences, HDR images are typ-ically used in scenarios where accurate illumination mod-eling is required, such as scene relighting and photometric reconstruction, whereas LDR images are primarily suited for visualization and display due to their compressed representa-tion. An HDR image may be mapped to an LDR image, but the inverse conversion is not possible because radiometric information is irreversibly lost. 
+
+B. Linearity of Light Transport 
+
+Light transport describes how light travels through a scene and forms an image. Let L denote the illumination, a HDR image I can be expressed as: 
+
+I = T (L). (1) where T is the light transport operator determined by the scene geometry and material properties, and can be instantiated using different reflectance models [35]. The linearity of light transport indicates that the result-ing image intensity scales linearly with emitted or inci-dent radiance [36]. As a result, illumination from multiple light sources combines linearly, and the corresponding HDR images can be obtained by superposing their individual contributions. Formally, let L1 and L2 denote the illumination from two distinct light sources, according to the linearity of light transport, the following satisfies: 
+
+T (L1 + L2) = T (L1) + T (L2), (2) Equivalently, in HDR image form, 
+
+I1+2 = I1 + I2, where Ii = T (Li). (3) This behavior has been experimentally validated in real-world measurements [33], [37]. IV. T HE Light Cube SYSTEM 
+
+A. Hardware Construction 
+
+The real-world view and top-down schematic of the Light Cube are shown in Fig. 1 and Fig. 3a, respectively. The system consists of five components: an enclosure, a pro-grammable RGB LED lighting system, a workspace table, a camera system, and a robot platform. The enclosure covers the surroundings and ceiling with light-blocking curtains to eliminate external illumination and maintain dataset consis-tency and experimental reproducibility. The main frame is built from aluminum extrusion profiles, with overall dimen-sions of 1980 mm × 1120 mm × 1120 mm. These dimen-sions are selected based on lighting intensity simulations conducted in Blender [38] to guarantee adequate workspace coverage. The lighting system consists of eight Godox C10R RGB LED bulbs, connected via Bluetooth and individually controllable in both color and intensity. Each bulb supports a 255 3 RGB color space, with intensity ranging from 0 lux to 320 lux as measured at the geometric center of the cube. The workspace consists of a fixed 1000 mm × 720 mm table with height 850 mm, centered within the Light Cube . The camera system includes two viewpoints: a side-mounted Intel RealSense D435i (Cam Top ) that captures a static external view for HDR image acquisition, and a wrist-mounted Intel RealSense D405 (Cam Wrist ) that provides accurate close-range depth (70-500 mm). The robotic platform consists of a 7-DoF UFactory xArm7 equipped with a force-torque sensor, mounted on a rigid base that is aligned with the workspace. 
+
+B. HDR Image Processing Pipeline 
+
+HDR formats are commonly supported by professional photography cameras. However, such cameras are often incompatible with typical robotic RGB-D setups and are costly to deploy at scale. In this section, we describe a custom pipeline for deriving HDR images using the widely accessible Intel RealSense D435i: 1) RAW16 acquisition : Enable uncompressed 16-bit RAW output on the RealSense camera using compatible firmware to preserve linear radiometric measurements. RAW16 serves as the HDR image format for Re-alSense cameras, and HDR interpolation is performed in this space. 2) Bilateral denoising : Apply edge-preserving bilateral filtering to suppress sensor noise while maintaining structural details. 3) Lens shading correction : Correct lens-induced spatial brightness attenuation. 4) White balance correction : Normalize color responses under varying lighting conditions. 5) Color and gamma correction : Map sensor responses to a calibrated color space. 6) PNG compression : Encode processed images for visu-alization and policy training. A visualization of the processing pipeline is provided in 
+
+Fig. 2. This pipeline is custom-developed based on es-tablished HDR imaging and radiometric calibration proce-dures [39] and is not included in the official RealSense software development kit (SDK). Parameters for steps (5) and (6) are determined through the calibration procedure described in Sec. IV-D.      
+
+> (a) (b) (c)
+> (d) (e) (f)
+> Fig. 2: Overview of the HDR image processing pipeline. (a) Unpro-cessed RAW16 HDR image. (b-e) Effects of removing individual processing steps: bilateral denoising, lens shading correction, white balance correction, and color and gamma correction. (f) Final PNG output after full HDR processing, used for policy training.
+
+C. Data Collection Protocol 
+
+To collect synchronized episodes under varying lighting conditions, we employ a record-replay-reset protocol. A hu-man demonstrator first provides a kinesthetic demonstration, where the trajectory is recorded. The robot then replays the same trajectory multiple times under different lighting conditions until all target configurations are covered. At the (a)     
+
+> (b)
+> (c)
+> (d)
+> Fig. 3: (a) Top-down schematic of the Light Cube . Overview of the RoboLight-Real dataset: (b) the color subset, with lighting conditions from left to right: white, red, green, blue, and purple; (c) the direction subset, including all, front, rear, left, right, and left+right directional illumination; and (d) the intensity subset, featuring lighting levels of 1400 lux, 700 lux, and 140 lux. All images are cropped and zoomed in on the object sets for clearer visualization.
+
+end of each replay session, the robot resets the scene by executing the recorded trajectory in reverse. We perform dataset synchronization checks after each trajectory has been replayed under all lighting conditions. 
+
+D. Calibration 
+
+Calibration of the lighting system and image processing pipeline is performed before each data collection session. As shown in Fig. 3a, the lights are positioned in an octagonal configuration to ensure even angular coverage and to sup-port structured lighting composition. Illumination intensity, measured in lux at the geometric center of the Light Cube, is averaged from four directions (front, rear, left, and right). Each measurement is repeated three times and documented to ensure consistent lighting conditions within each subset. For camera calibration, intrinsic parameters and lens distortion coefficients are estimated using a standard checkerboard-based procedure implemented in OpenCV [40]. Depth cali-bration follows the standard procedure provided in the Intel RealSense SDK. For HDR image processing, we follow a standard color calibration pipeline using a color correction board to derive the color correction matrix (CCM), exposure, and white balance parameters required in Sec. IV-B. V. T HE RoboLight DATASET 
+
+A. Tasks a) RGB Stacking: The robot picks up three randomly scattered cubes and stack them in a fixed order: red at the bottom, green, and blue on the top. This task is designed to amplify the perceptual effects of lighting color variation. As shown in Fig. 3b, object appearance changes significantly under different lighting colors and may become nearly im-perceptible when illumination matches object color. 
+
+b) Donut Hanging: The robot picks up a randomly placed donut-shaped object and hangs it on a Y-shaped tree, with success defined as hooking the donut onto the nearest branch. This task is designed to amplify the perceptual effects of variations in lighting direction. As shown in Fig. 3c, changes in lighting direction produce pronounced shadows from both the donut and the Y-shaped structure, which can significantly affect grasping and placement. Improper handling of shadow-induced perception errors can lead to suboptimal grasp points and incorrect hanging trajectories. All objects in this task are dark-colored, minimizing the influence of lighting intensity and concentrating the analysis on directional lighting variations. 
+
+c) Sparkling Sorting: The robot picks up three silver target objects coated with distinct surface materials (matte, glossy, and metallic) into a basket in the presence of three matte black distractors. This task is designed to amplify the perceptual effects of variations in lighting intensity. As shown in Fig. 3d, the target objects exhibit strong variations in reflectance due to their different surface finishes, whereas the matte distractors maintain a nearly constant appearance under varying lighting intensity. 
+
+B. RoboLight-Real 
+
+As shown in Fig. 3, the three tasks are individually paired with systematic variation in color, direction, and intensity, yielding 14 curated subsets. Color variation for 
+
+RGB Stacking includes the three primary components of the color space: red, green, and blue. Direction variation for Donut Hanging includes four principal directions: front, rear, left, and right. Intensity variation for Sparkling Sorting 
+
+comprises two levels: 140 lux under low-light conditions and 1400 lux under common ambient lighting. In addition, each task includes a lighting condition used as ground truth for validating RoboLight-Synthetic , consisting of purple color, combined left and right illumination, and 700 lux intensity. An ambient white lighting condition is also included for 
+
+RGB Stacking and Donut Hanging to reflect common training settings. Each subset contains 200 episodes, totaling 2,800 episodes. Detailed per-episode information is listed in Tab. Iand a summary of RoboLight-Real is provided in Tab. II                                 
+
+> TABLE I: Episode-level information in RoboLight-Real .
+> Modality Dimension Frequency
+> Cam Top RGB 1920 ×1080 ×330 Hz Cam Top Depth 640 ×480 30 Hz Cam Wrist RGB 640 ×480 ×330 Hz Cam Wrist Depth 640 ×480 30 Hz Force-torque 610 Hz Proprioception 14 30 Hz Additional metadata includes object positions, lighting parameters, cal-ibration matrices, and sensor timestamps.
+
+Real Real 
+
+Synthesized 
+
+Fig. 4: Examples from RoboLight-Synthetic . New episodes are synthesized by interpolating between HDR images from RoboLight-Real .In each row, only the first and last images are real; all intermediate images are synthesized. 
+
+TABLE II: Dataset overview for RoboLight-Real .                                 
+
+> Task Color Direction Intensity
+> RGB Stacking White All 700 lux Red All 172 lux Green All 335 lux Blue All 72 lux Purple All 95 lux Donut Hanging White Four-Directional 330 lux White Front 82 lux White Rear 80 lux White Left 73 lux White Right 76 lux White Left+Right 144 lux Sparkling Sorting White All 140 lux White All 700 lux White All 1400 lux Detailed description of color and direction settings: “Red” (255, 0, 0), “Green” (0, 255, 0), “Blue” (0, 0, 255), and “Purple” (255, 0, 255). Using the notation in Fig. 3a, “All” (L 1, L 2, L 3, L 4, L 5, L 6, L 7, L 8), “Four-Directional” (L 1, L 3, L 5, L 8) “Front” (L 5), “Rear” (L 1), “Left” (L 8), “Right” (L 3), and “Left+Right” (L 3, L 8).
+
+C. RoboLight-Synthetic 
+
+Based on the linearity of light transport ( Eq. 3), new images can be synthesized by linearly interpolating between two synchronized HDR images. We extend this principle to the episode level and generate new episodes from RoboLight-Real by interpolating between synchronized episodes cap-tured under different lighting conditions. Let an episode be a sequence of T synchronized HDR frames: 
+
+E1 = {It
+
+> 1
+
+}Tt=1, E2 = {It
+
+> 2
+
+}Tt=1. (4) Then a synthesized episode is defined as: 
+
+Eλ = λ E1 + ( 1 − λ )E2, λ ∈ [0, 1]. (5) By discretizing λ in steps of 0.01 between each pair of structured lighting components, we construct RoboLight-Synthetic , comprising 196,000 episodes without additional real-world collection. The interpolation is performed in HDR image space using RAW16 data and is subsequently processed through the custom HDR pipeline described in Sec. IV-B to produce PNG images for policy training. In principle, RoboLight-Synthetic can be arbitrarily expanded by refining the interpolation granularity. Examples are shown in Fig. 4. VI. D ATASET QUALITY EVALUATION 
+
+A. Task Difficulty 
+
+We assess task difficulty by training a policy from scratch and evaluating it under the same lighting conditions as in training data. We employ Diffusion Policy [41] as a strong manipulation baseline and conduct 20 roll-outs per setting. Evaluation success rates are listed in Tab. III. We hypothesize that the higher difficulty of Sparkling Sorting is due to the large number of objects and their wide spatial distribution. For RGB Stacking , difficulty arises from error accumulation in the long-horizon stacking sequence, where imprecise grasps can lead to instability and failure. Donut Hanging is the least difficult, likely due to its shorter execution horizon. 
+
+TABLE III: Task difficulty evaluated by success rate.          
+
+> RGB Stacking Donut Hanging Sparkling Sorting
+> 0.70 0.95 0.35 A vanilla Diffusion Policy with a CNN backbone and default hyperpa-rameters is used. Evaluation is performed on the RGB Stacking (Purple),
+> Donut Hanging (Left+Right), and Sparkling Sorting (700 lux).
+
+B. Distribution Diversity 
+
+Previous studies have shown that balanced object distri-butions are important for unbiased policy training [42]. To ensure this, we avoid manual resetting and instead perform robot-assisted random sampling within predefined initial placement ranges for each data collection session. A visu-alization of sampled object positions across the three tasks is shown in Fig. 5. The placement ranges are determined through iterative task difficulty test as described in Sec. VI-A, aiming to avoid extreme difficulty settings. 
+
+C. Verification of RoboLight-Synthetic 
+
+We evaluate the quality of RoboLight-Synthetic from two perspectives: visual fidelity and effectiveness in policy train-ing. Fig. 6 compares the ground-truth frame, the synthesized −300 −200 −100 0 100 200 300   
+
+> y (mm)
+> 350
+> 400
+> 450
+> x (mm)
+> RGB Stacking Donut Hanging Sparkling Sorting
+
+Fig. 5: Initial object position distributions for the three tasks, each computed from 200 episodes. Coordinates are in millimeters and referenced to the robot base frame. Point density varies across tasks due to differences in object count. Within each task, object positions are randomized across placement patches. 
+
+frame from RoboLight-Synthetic , and frames generated by averaging PNG images within the color, direction, and in-tensity subsets. The corresponding luminance histograms are included to provide a quantitative characterization of the il-lumination distribution. The synthesized RoboLight-Synthetic 
+
+frames closely match the ground-truth frame, reflecting the radiometric accuracy preserved in HDR space. Averaging LDR PNG images introduces deviations from the ground-truth frame, due to the limited illumination precision and non-linearity of LDR representations. Ground Truth RoboLight-Synthetic PNG-Average   
+
+> (a)
+> (b)
+> (c)
+> Ground Truth RoboLight-Synthetic PNG-Average
+
+Fig. 6: Visual fidelity verification. From left to right, we compare the ground-truth frame, the synthesized frame from RoboLight-Synthetic , and frames generated by averaging PNG images across (a) color, (b) direction, and (c) intensity. For each comparison, the luminance histogram is included to provide a quantitative view of the luminance distribution. 
+
+We further evaluate the effectiveness of RoboLight-Synthetic for policy training by training Diffusion Policy from scratch using synthesized data and comparing it against a policy trained with data collected under the corresponding ground-truth lighting. Evaluation is conducted using 20 roll-outs per task. As reported in Tab. IV, the results are compara-ble, with minor differences that may stem from small discrep-ancies between the ground-truth and synthesized lighting, as indicated by the luminance histogram in Fig. 6. 
+
+TABLE IV: Policy training effectiveness evaluation.         
+
+> RGB Stacking Donut Hanging Sparkling Sorting
+> Ground Truth 0.70 0.95 0.35
+> RoboLight-Synthetic 0.65 0.80 0.25 Experimental settings follow those described in Tab. III.
+
+VII. D ATASET USAGE 
+
+A. A Lighting Robustness Benchmark 
+
+Policy robustness to viewpoint and texture shifts has been extensively studied and guides future dataset design in robotics [10]. With the precise lighting control of the Light Cube and the RoboLight dataset, we evaluate the robustness of Diffusion Policy to lighting shifts. Three lighting shift conditions are defined: (a) color variation, where the blue channel value in the lighting RGB configuration is reduced by 50% relative to the training setup; (b) direction variation, where illumination from the right-side lights is reduced by 50%; and (c) intensity variation, where overall light intensity is reduced by 50%, all relative to the lighting configuration in the training dataset. As shown in Fig. 7, lighting color shifts lead to the most consistent performance drop across the three tasks, compared to direction and intensity shifts. Among the tasks, RGB Stacking exhibits the highest sensi-tivity to lighting variation. During evaluation, we find most failures under lighting shifts stem from object mislocalization during grasping, where the gripper closes without securing the object and proceeds to stack with an empty grasp. To further analyze the effect of lighting variation, we introduce additional evaluation metrics. We report stage-wise success rates ( S. R. ) for the sequential task of stacking the red, green, and blue cubes, as well as prediction error ( P. E. ), defined as the distance (in millimeters) between the predicted object position at gripper closure and the ground-truth position. As shown in Tab. V, prediction error correlates with stage success rates, suggesting that lighting primarily affects policy performance through object localization. We also observe lighting-dependent biases: color shifts disproportionately af-fect localization of certain colored objects (e.g., the green cube), while direction shifts produce more uniform degrada-tion across objects. However, with only 20 roll-outs per task under each lighting shift (180 in total), these findings may be influenced by evaluation variability, such as differences in initial object configurations. We will extend this protocol to the full dataset and additional policy architectures to establish a broader lighting robustness benchmark and conduct a more rigorous analysis of lighting effects on robotic policies. 
+
+TABLE V: Policy performance on the RGB Stacking task under lighting shifts, reporting stage-wise success rate ( S. R. , ↑) and prediction error ( P. E. , ↓).                                      
+
+> Red Cube Green Cube Blue Cube
+> S. R. P. E. S. R. P. E. S. R. P. E.
+> Reference 0.80 11.83 0.70 13.15 0.70 5.96 Color-Shifted 0.80 15.62 0.40 21.81 0.40 12.89 Direction-Shifted 0.55 26.89 0.30 26.60 0.10 15.19 Intensity-Shifted 0.50 24.55 0.25 18.98 0.20 15.82 RGB
+> Stacking
+> Donut
+> Hanging
+> Sparkling
+> Sorting
+> 0.70 /0.40
+> 0.95 /0.85
+> 0.35 /0.15 (a) Color RGB
+> Stacking
+> Donut
+> Hanging
+> Sparkling
+> Sorting
+> 0.70 /0.10
+> 0.95 /0.85
+> 0.35 /0.25 (b) Direction RGB
+> Stacking
+> Donut
+> Hanging
+> Sparkling
+> Sorting
+> 0.70 /0.20
+> 0.95 /0.90
+> 0.35 /0.35 (c) Intensity Reference Lighting Shifted Lighting
+
+Fig. 7: Comparison of Diffusion Policy success rates under the reference lighting and under lighting shifted in (a) color, (b) direction, and (c) intensity across three tasks. The reference lighting setup is defined in Tab. III. 
+
+B. Lighting Estimation for Robotic Manipulation 
+
+Lighting estimation aims to recover scene illumination parameters from visual observations [43]. In robotics, these estimates could serve as illumination priors to guide data synthesis under previously unseen lighting conditions. As illustrated in Fig. 8, we apply DiffusionLight [43], a zero-shot lighting estimation method, to scenes in our dataset. The estimated lighting direction can then be used to select or synthesize training data with corresponding illumination, enabling policy training tailored to the current environment. For more complex lighting scenarios, this approach may be combined with illumination composition theory to construct datasets with richer lighting configurations [31]. The explicit lighting parameterization in RoboLight offers a structured basis for investigating lighting estimation and composition in robotic manipulation.  
+
+> (a) (b)
+
+Fig. 8: Lighting estimation results produced by DiffusionLight [43] on Donut Hanging (Right lighting). (a) DiffusionLight estimates scene illumination by inpainting a virtual mirror ball at the image center, which reflects the surrounding environment and lighting. (b) The unwrapped environment map derived from the mirror ball, visualizing the predicted lighting color, direction, and intensity; the bright region indicates the estimated light source. 
+
+C. HDR-enabled Visual Condition Scaling 
+
+HDR image formats are widely adopted in photography due to their ability to preserve scene radiance over a high dynamic range, enabling flexible post-hoc exposure adjust-ment and tone mapping to produce varied global visual appearances. Since our dataset is stored in HDR format, similar global radiometric transformations can be applied to generate diverse visual conditions. Examples are shown in 
+
+Fig. 9. By adjusting global exposure and tone mapping of the HDR images, we generate (a) ambient white lighting, (b) high-exposure conditions resembling industrial environ-ments, and (c) dimmer, yellow-toned illumination. These global transformations can be consistently applied to all HDR episodes in RoboLight , enabling scalable augmentation of visual conditions through post-hoc adjustments.   
+
+> (a) (b) (c)
+
+Fig. 9: Examples of visual condition scaling via HDR post-processing: (a) ambient white lighting, (b) high-exposure conditions and (c) dim illumination. 
+
+VIII. C ONCLUSION 
+
+a) Limitations and Future Work: A primary limitation lies in the procedure for collecting synchronized episodes, where we replay the same trajectory under varied lighting and rely on recorded sensor timestamps to preserve tem-poral alignment. However, this process remains sensitive to small deviations, such as slight object displacement during initialization or minor variations in grasp execution. These errors can accumulate along the trajectory, leading to desyn-chronization across episodes. Manual inspection is therefore required to ensure consistency across lighting conditions, making the data collection process more labor-intensive than standard procedures. Future work will explore replacing the current Bluetooth-controlled lighting system with a high-frequency illumination switching system driven by embed-ded controllers, enabling multiple lighting conditions to be captured in a single execution. 
+
+b) Conclusions: We propose RoboLight , the first dataset capturing synchronized episodes under systematically varied lighting conditions. The dataset comprises two com-ponents: (a) RoboLight-Real , a real-world dataset contain-ing 2,800 episodes collected within the Light Cube , which we designed for precise control of illumination; and (b) 
+
+RoboLight-Synthetic , a theoretically unbounded dataset syn-thesized based on the linearity of light transport. All image data are recorded in HDR format for maximized radiometric accuracy. We further verify dataset quality through qualita-tive analysis and real-world policy roll-outs, evaluating task difficulty, distributional diversity, and synthesized data effec-tiveness. Additionally, we demonstrate three representative use cases of the proposed dataset, ranging from lighting robustness benchmarking to collection-free visual scaling enabled by the HDR format. To support continued research, we will release the full dataset as open source, together with the system software for generating HDR frames using widely accessible Intel RealSense cameras. We will also provide hardware design specifications for constructing the Light Cube and object sets to support reproducibility and cross-group experimental use. REFERENCES [1] N. M. Amato, S. Hutchinson, A. Garg, A. Billard, D. Rus, R. Tedrake, F. Park, and K. Goldberg, ““data will solve robotics and automation: True or false?”: A debate,” Science Robotics , vol. 10, no. 105, p. eaea7897, 2025. [2] A. O’Neill, A. Rehman, A. Maddukuri, A. Gupta, A. Padalkar, A. Lee, A. Pooley, A. Gupta, A. Mandlekar, A. Jain et al. , “Open x-embodiment: Robotic learning datasets and rt-x models: Open x-embodiment collaboration 0,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 6892–6903. [3] A. Khazatsky, K. Pertsch, S. Nair, A. Balakrishna, S. Dasari, S. Karam-cheti, S. Nasiriany, M. K. Srirama, L. Y. Chen, K. Ellis et al. , “Droid: A large-scale in-the-wild robot manipulation dataset,” arXiv preprint arXiv:2403.12945 , 2024. [4] K. Black, N. Brown, D. Driess, A. Esmail, M. Equi, C. Finn, N. Fusai, L. Groom, K. Hausman, B. Ichter et al. , “ pi 0: A vision-language-action flow model for general robot control,” arXiv preprint arXiv:2410.24164 , 2024. [5] M. J. Kim, K. Pertsch, S. Karamcheti, T. Xiao, A. Balakrishna, S. Nair, R. Rafailov, E. Foster, G. Lam, P. Sanketi et al. , “Open-vla: An open-source vision-language-action model,” arXiv preprint arXiv:2406.09246 , 2024. [6] N. Agarwal, A. Ali, M. Bala, Y. Balaji, E. Barker, T. Cai, P. Chattopad-hyay, Y. Chen, Y. Cui, Y. Ding et al. , “Cosmos world foundation model platform for physical ai,” arXiv preprint arXiv:2501.03575 , 2025. [7] M. Assran, A. Bardes, D. Fan, Q. Garrido, R. Howes, M. Muckley, A. Rizvi, C. Roberts, K. Sinha, A. Zholus et al. , “V-jepa 2: Self-supervised video models enable understanding, prediction and plan-ning,” arXiv preprint arXiv:2506.09985 , 2025. [8] C. Mitash, F. Wang, S. Lu, V. Terhuja, T. Garaas, F. Polido, and M. Nambi, “Armbench: An object-centric benchmark dataset for robotic manipulation,” arXiv preprint arXiv:2303.16382 , 2023. [9] M. Heo, Y. Lee, D. Lee, and J. J. Lim, “Furniturebench: Reproducible real-world benchmark for long-horizon complex manipulation,” in 
+
+Robotics: Science and Systems , 2023. [10] A. Xie, L. Lee, T. Xiao, and C. Finn, “Decomposing the generalization gap in imitation learning for visual robotic manipulation,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) .IEEE, 2024, pp. 3153–3160. [11] J. Gao, A. Xie, T. Xiao, C. Finn, and D. Sadigh, “Efficient data collection for robotic manipulation via compositional generalization,” 
+
+arXiv preprint arXiv:2403.05110 , 2024. [12] Z. Mandi, H. Bharadhwaj, V. Moens, S. Song, A. Rajeswaran, and V. Kumar, “Cacti: A 578 framework for scalable multi-task multi-scene visual imitation learning. arxiv preprint 579,” arXiv preprint arXiv:2212.05711 , vol. 580, 2022. [13] R. Liu, A. Canberk, S. Song, and C. Vondrick, “Differentiable robot rendering,” arXiv preprint arXiv:2410.13851 , 2024. [14] B. Calli, A. Singh, A. Walsman, S. Srinivasa, P. Abbeel, and A. M. Dollar, “The ycb object and model set: Towards common benchmarks for manipulation research,” in 2015 international conference on ad-vanced robotics (ICAR) . IEEE, 2015, pp. 510–517. [15] K.-T. Yu, M. Bauza, N. Fazeli, and A. Rodriguez, “More than a million ways to be pushed. a high-fidelity experimental dataset of planar pushing,” in 2016 IEEE/RSJ international conference on intelligent robots and systems (IROS) . IEEE, 2016, pp. 30–37. [16] M. Bauza, F. Alet, Y.-C. Lin, T. Lozano-P´ erez, L. P. Kaelbling, P. Isola, and A. Rodriguez, “Omnipush: accurate, diverse, real-world dataset of pushing dynamics with rgb-d video,” in 2019 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2019, pp. 4265–4272. [17] B. Yang, J. Zhang, V. Pong, S. Levine, and D. Jayaraman, “Replab: A reproducible low-cost arm benchmark platform for robotic learning,” 
+
+arXiv preprint arXiv:1905.07447 , 2019. [18] S. Song, A. Zeng, J. Lee, and T. Funkhouser, “Grasping in the wild: Learning 6dof closed-loop grasping from low-cost demonstrations,” 
+
+IEEE Robotics and Automation Letters , vol. 5, no. 3, pp. 4978–4985, 2020. [19] D. Sliwowski, S. Jadav, S. Stanovcic, J. Orbik, J. Heidersberger, and D. Lee, “Reassemble: A multimodal dataset for contact-rich robotic assembly and disassembly,” arXiv preprint arXiv:2502.05086 , 2025. [20] G. Zhou, V. Dean, M. K. Srirama, A. Rajeswaran, J. Pari, K. Hatch, A. Jain, T. Yu, P. Abbeel, L. Pinto, C. Finn, and A. Gupta, “Train offline, test online: A real robot learning benchmark,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023. [21] J. Tobin, R. Fong, A. Ray, J. Schneider, W. Zaremba, and P. Abbeel, “Domain randomization for transferring deep neural networks from simulation to the real world,” in 2017 IEEE/RSJ international con-ference on intelligent robots and systems (IROS) . IEEE, 2017, pp. 23–30. [22] X. Zhou, J. Chen, P. Rao, T. Teufel, L. Lyu, T. Minasian, O. Sot-nychenko, X.-X. Long, M. Habermann, and C. Theobalt, “Olatverse: A large-scale real-world object dataset with precise lighting control,” 
+
+arXiv preprint arXiv:2511.02483 , 2025. [23] Y. P. Loh and C. S. Chan, “Getting to know low-light images with the exclusively dark dataset,” Computer vision and image understanding ,vol. 178, pp. 30–42, 2019. [24] L. Sun, K. Wang, K. Yang, and K. Xiang, “See clearer at night: towards robust nighttime semantic segmentation through day-night image conversion,” in Artificial Intelligence and Machine Learning in Defense Applications , vol. 11169. SPIE, 2019, pp. 77–89. [25] H. Lin, A. Parsi, D. Mullins, J. Horgan, E. Ward, C. Eising, P. Denny, B. Deegan, M. Glavin, and E. Jones, “A study on data selection for object detection in various lighting conditions for autonomous vehicles,” Journal of Imaging , vol. 10, no. 7, p. 153, 2024. [26] J. R. Beveridge, D. S. Bolme, B. A. Draper, G. H. Givens, Y. M. Lui, and P. J. Phillips, “Quantifying how lighting and focus affect face recognition performance,” in 2010 IEEE Computer Society Conference on Computer Vision and Pattern Recognition-Workshops . IEEE, 2010, pp. 74–81. [27] M. Haroon, S. Altaf, S. Ahmad, M. Zaindin, S. Huda, and S. Iqbal, “Hand gesture recognition with symmetric pattern under diverse illu-minated conditions using artificial neural network,” Symmetry , vol. 14, no. 10, p. 2045, 2022. [28] I. Liu, L. Chen, Z. Fu, L. Wu, H. Jin, Z. Li, C. M. R. Wong, Y. Xu, R. Ramamoorthi, Z. Xu et al. , “Openillumination: A multi-illumination dataset for inverse rendering evaluation on real objects,” 
+
+Advances in Neural Information Processing Systems , vol. 36, pp. 36 951–36 962, 2023. [29] K.-C. Lee, J. Ho, and D. J. Kriegman, “Acquiring linear subspaces for face recognition under variable lighting,” IEEE Transactions on pattern analysis and machine intelligence , vol. 27, no. 5, pp. 684– 698, 2005. [30] T. Sim, S. Baker, and M. Bsat, “The cmu pose, illumination, and expression (pie) database,” in Proceedings of fifth IEEE international conference on automatic face gesture recognition . IEEE, 2002, pp. 53–58. [31] P. N. Belhumeur and D. J. Kriegman, “What is the set of images of an object under all possible illumination conditions?” International journal of computer vision , vol. 28, no. 3, pp. 245–260, 1998. [32] R. Ramamoorthi and P. Hanrahan, “An efficient representation for irradiance environment maps,” in Proceedings of the 28th annual conference on Computer graphics and interactive techniques , 2001, pp. 497–500. [33] P. Debevec, T. Hawkins, C. Tchou, H.-P. Duiker, W. Sarokin, and M. Sagar, “Acquiring the reflectance field of a human face,” in 
+
+Proceedings of the 27th annual conference on Computer graphics and interactive techniques , 2000, pp. 145–156. [34] P. Debevec, “The light stages and their applications to photoreal digital actors,” 2012. [35] J. T. Kajiya, “The rendering equation,” in Proceedings of the 13th annual conference on Computer graphics and interactive techniques ,1986, pp. 143–150. [36] I. W. Busbridge, The mathematics of radiative transfer . Cambridge University Press, 1960. [37] P. Haeberli, “Synthetic lighting for photography,” http://www. grafi-caobscura. com/synth/index. html , 1992. [38] Blender, “Blender,” https://www.blender.org/, 2026. [39] E. Reinhard, G. Ward, S. Pattanaik, and P. Debevec, “High dynamic range imaging,” 2006. [40] Z. Zhang, “A flexible new technique for camera calibration,” IEEE Transactions on pattern analysis and machine intelligence , vol. 22, no. 11, pp. 1330–1334, 2002. [41] C. Chi, Z. Xu, S. Feng, E. Cousineau, Y. Du, B. Burchfiel, R. Tedrake, and S. Song, “Diffusion policy: Visuomotor policy learning via action diffusion,” The International Journal of Robotics Research , vol. 44, no. 10-11, pp. 1684–1704, 2025. [42] V. Saxena, M. Bronars, N. R. Arachchige, K. Wang, W. C. Shin, S. Nasiriany, A. Mandlekar, and D. Xu, “What matters in learning from large-scale datasets for robot manipulation,” arXiv preprint arXiv:2506.13536 , 2025. [43] P. Phongthawee, W. Chinchuthakun, N. Sinsunthithet, V. Jampani, A. Raj, P. Khungurn, and S. Suwajanakorn, “Diffusionlight: Light probes for free by painting a chrome ball,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,2024, pp. 98–108.
