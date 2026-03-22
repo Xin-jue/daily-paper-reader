@@ -6,72 +6,76 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-21
-- 运行时间：2026-03-21 19:20:20 UTC
+- 最新运行日期：2026-03-22
+- 运行时间：2026-03-22 19:21:42 UTC
 - 运行状态：成功
-- 本次总论文数：17
-- 精读区：6
+- 本次总论文数：18
+- 精读区：7
 - 速读区：11
 
 ### 今日简报（AI）
-今日聚焦具身智能前沿，深度解析第一视角世界模型与复杂柔性物体操控的突破性进展。
-重点关注
-- 详情：[/202603/21/README](/202603/21/README)
+今日精选 18 篇前沿论文，重点攻克人形机器人全身协同操作与复杂织物解结的 Sim-to-Real 难题。
+REFINE-DP 通过强化学习微调扩散策略提升人形机动性，而自适应力差量化技术让机器人能更稳健地处理缠绕布料。
+建议深入了解 VLA 模型的可控性与实时动作生成，把握具身智能从感知到物理交互的演进趋势。
+- 详情：[/202603/22/README](/202603/22/README)
 
 ### 精读区论文标签
-1. [Egocentric World Model for Photorealistic Hand-Object Interaction Synthesis](/202603/21/2603.13615v1-egocentric-world-model-for-photorealistic-hand-object-interaction-synthesis)  
-   标签：评分：9.0/10、query:q13
-   evidence：用于逼真交互合成和具身智能数据源的世界模型
-2. [Exploration-assisted Bottleneck Transition Toward Robust and Data-efficient Deformable Object Manipulation](/202603/21/2603.13756v1-exploration-assisted-bottleneck-transition-toward-robust-and-data-efficient-deformable-object-manipulation)  
+1. [REFINE-DP: Diffusion Policy Fine-tuning for Humanoid Loco-manipulation via Reinforcement Learning](/202603/22/2603.13707v2-refine-dp-diffusion-policy-fine-tuning-for-humanoid-loco-manipulation-via-reinforcement-learning)  
    标签：评分：9.0/10、query:q2
-   evidence：变形物体操作与机器人操作
-3. [TransDex: Pre-training Visuo-Tactile Policy with Point Cloud Reconstruction for Dexterous Manipulation of Transparent Objects](/202603/21/2603.13869v1-transdex-pre-training-visuo-tactile-policy-with-point-cloud-reconstruction-for-dexterous-manipulation-of-transparent-objects)  
+   evidence：人形机器人移动操作的扩散策略微调
+2. [Robust Sim-to-Real Cloth Untangling through Reduced-Resolution Observations via Adaptive Force-Difference Quantization](/202603/22/2603.13785v1-robust-sim-to-real-cloth-untangling-through-reduced-resolution-observations-via-adaptive-force-difference-quantization)  
+   标签：评分：9.0/10、query:q8
+   evidence：机器人织物解结的仿真到现实策略迁移
+3. [A Real-Time Neuro-Symbolic Ethical Governor for Safe Decision Control in Autonomous Robotic Manipulation](/202603/22/2603.14221v1-a-real-time-neuro-symbolic-ethical-governor-for-safe-decision-control-in-autonomous-robotic-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：利用视触觉融合和点云重建进行物体的灵巧操作
-4. [Fast-WAM: Do World Action Models Need Test-time Future Imagination?](/202603/21/2603.16666v1-fast-wam-do-world-action-models-need-test-time-future-imagination)  
-   标签：评分：9.0/10、query:q4
-   evidence：世界动作模型作为具身控制中VLA模型的替代方案
-5. [Consistency-Driven Dual LSTM Models for Kinematic Control of a Wearable Soft Robotic Arm](/202603/21/2603.17672v1-consistency-driven-dual-lstm-models-for-kinematic-control-of-a-wearable-soft-robotic-arm)  
+   evidence：自主机器人操作任务中的伦理决策控制机制
+4. [Gym-V: A Unified Vision Environment System for Agentic Vision Research](/202603/22/2603.15432v2-gym-v-a-unified-vision-environment-system-for-agentic-vision-research)  
+   标签：评分：9.0/10、query:q11
+   evidence：用于智能体训练的程序化生成视觉环境
+5. [MG-Grasp: Metric-Scale Geometric 6-DoF Grasping Framework with Sparse RGB Observations](/202603/22/2603.16270v1-mg-grasp-metric-scale-geometric-6-dof-grasping-framework-with-sparse-rgb-observations)  
    标签：评分：9.0/10、query:q2
-   evidence：可穿戴软体机械臂的运动学控制
-6. [Gym-V: A Unified Vision Environment System for Agentic Vision Research](/202603/21/2603.15432v1-gym-v-a-unified-vision-environment-system-for-agentic-vision-research)  
-   标签：评分：8.0/10、query:q11
-   evidence：用于训练智能体系统的程序化生成视觉环境
+   evidence：利用3D基础模型和RGB观测的六自由度机器人抓取框架
+6. [Efficient and Reliable Teleoperation through Real-to-Sim-to-Real Shared Autonomy](/202603/22/2603.17016v1-efficient-and-reliable-teleoperation-through-real-to-sim-to-real-shared-autonomy)  
+   标签：评分：9.0/10、query:q8
+   evidence：用于机械臂操作的实对虚对实共享自主框架
+7. [ManiDreams: An Open-Source Library for Robust Object Manipulation via Uncertainty-aware Task-specific Intuitive Physics](/202603/22/2603.18336v1-manidreams-an-open-source-library-for-robust-object-manipulation-via-uncertainty-aware-task-specific-intuitive-physics)  
+   标签：评分：9.0/10、query:q2
+   evidence：通过直觉物理模型进行鲁棒物体操作的框架
 
 ### 速读区论文标签
-1. [Beyond Pixel Histories: World Models with Persistent 3D State](/202603/21/2603.03482v1-beyond-pixel-histories-world-models-with-persistent-3d-state)  
+1. [RealWonder: Real-Time Physical Action-Conditioned Video Generation](/202603/22/2603.05449v1-realwonder-real-time-physical-action-conditioned-video-generation)  
    标签：评分：8.0/10、query:q13
-   evidence：用于训练智能体的3D场景模拟世界模型
-2. [RoboLight: A Dataset with Linearly Composable Illumination for Robotic Manipulation](/202603/21/2603.04249v1-robolight-a-dataset-with-linearly-composable-illumination-for-robotic-manipulation)  
+   evidence：机器人操作的动作条件视频生成
+2. [Observing and Controlling Features in Vision-Language-Action Models](/202603/22/2603.05487v1-observing-and-controlling-features-in-vision-language-action-models)  
+   标签：评分：8.0/10、query:q12
+   evidence：VLA架构的机械可解释性研究
+3. [RoboRouter: Training-Free Policy Routing for Robotic Manipulation](/202603/22/2603.07892v3-roborouter-training-free-policy-routing-for-robotic-manipulation)  
+   标签：评分：8.0/10、query:profile-1
+   evidence：包含 VLA 和 VA 策略的机器人操作策略路由框架
+4. [TRIP-Bag: A Portable Teleoperation System for Plug-and-Play Robotic Arms and Leaders](/202603/22/2603.09226v1-trip-bag-a-portable-teleoperation-system-for-plug-and-play-robotic-arms-and-leaders)  
    标签：评分：8.0/10、query:q5
-   evidence：具有多种光照条件的真实机器人操作数据集，用于训练
-3. [EmbodiedSplat: Online Feed-Forward Semantic 3DGS for Open-Vocabulary 3D Scene Understanding](/202603/21/2603.04254v1-embodiedsplat-online-feed-forward-semantic-3dgs-for-open-vocabulary-3d-scene-understanding)  
-   标签：评分：8.0/10、query:q9
-   evidence：具身任务中的在线3D场景重建与语义理解
-4. [Decoupling Task and Behavior: A Two-Stage Reward Curriculum in Reinforcement Learning for Robotics](/202603/21/2603.05113v1-decoupling-task-and-behavior-a-two-stage-reward-curriculum-in-reinforcement-learning-for-robotics)  
-   标签：评分：8.0/10、query:q2
-   evidence：用于机器人控制和奖励课程的强化学习
-5. [Towards Spatio-Temporal World Scene Graph Generation from Monocular Videos](/202603/21/2603.13185v1-towards-spatio-temporal-world-scene-graph-generation-from-monocular-videos)  
-   标签：评分：7.0/10、query:q9
-   evidence：4D场景重建与时空场景图生成
-6. [PhysMoDPO: Physically-Plausible Humanoid Motion with Preference Optimization](/202603/21/2603.13228v1-physmodpo-physically-plausible-humanoid-motion-with-preference-optimization)  
-   标签：评分：7.0/10、query:q8
-   evidence：通过偏好优化实现真实机器人控制的物理合理运动
-7. [Implicit Maximum Likelihood Estimation for Real-time Generative Model Predictive Control](/202603/21/2603.13733v1-implicit-maximum-likelihood-estimation-for-real-time-generative-model-predictive-control)  
+   evidence：用于收集高保真操作数据的便携式遥操作系统
+5. [Beyond Binary Success: Sample-Efficient and Statistically Rigorous Robot Policy Comparison](/202603/22/2603.13616v1-beyond-binary-success-sample-efficient-and-statistically-rigorous-robot-policy-comparison)  
+   标签：评分：7.0/10、query:q14
+   evidence：高效的机器人策略比较与基准测试
+6. [Amortizing Trajectory Diffusion with Keyed Drift Fields](/202603/22/2603.14056v1-amortizing-trajectory-diffusion-with-keyed-drift-fields)  
    标签：评分：7.0/10、query:q13
-   evidence：用于实时规划的生成式建模
-8. [ImagiNav: Scalable Embodied Navigation via Generative Visual Prediction and Inverse Dynamics](/202603/21/2603.13833v1-imaginav-scalable-embodied-navigation-via-generative-visual-prediction-and-inverse-dynamics)  
+   evidence：用于机器人任务规划的扩散轨迹规划器
+7. [SGR-OCC: Evolving Monocular Priors for Embodied 3D Occupancy Prediction via Soft-Gating Lifting and Semantic-Adaptive Geometric Refinement](/202603/22/2603.14076v1-sgr-occ-evolving-monocular-priors-for-embodied-3d-occupancy-prediction-via-soft-gating-lifting-and-semantic-adaptive-geometric-refinement)  
    标签：评分：7.0/10、query:q9
-   evidence：具身导航的生成式视觉预测
-9. [HomeGuard: VLM-based Embodied Safeguard for Identifying Contextual Risk in Household Task](/202603/21/2603.14367v1-homeguard-vlm-based-embodied-safeguard-for-identifying-contextual-risk-in-household-task)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：基于VLM的家庭任务风险识别安全保障
-10. [Chain-of-Trajectories: Unlocking the Intrinsic Generative Optimality of Diffusion Models via Graph-Theoretic Planning](/202603/21/2603.14704v1-chain-of-trajectories-unlocking-the-intrinsic-generative-optimality-of-diffusion-models-via-graph-theoretic-planning)  
+   evidence：用于具身智能场景感知的3D语义占据预测
+8. [Physics-Informed Policy Optimization via Analytic Dynamics Regularization](/202603/22/2603.14469v1-physics-informed-policy-optimization-via-analytic-dynamics-regularization)  
+   标签：评分：7.0/10、query:q2
+   evidence：物理感知的机器人控制策略优化
+9. [RenderMem: Rendering as Spatial Memory Retrieval](/202603/22/2603.14669v1-rendermem-rendering-as-spatial-memory-retrieval)  
    标签：评分：6.0/10、query:q13
-   evidence：用于轨迹规划的扩散模型
-11. [GNNVerifier: Graph-based Verifier for LLM Task Planning](/202603/21/2603.14730v2-gnnverifier-graph-based-verifier-for-llm-task-planning)  
+   evidence：用于具身推理和场景表示的空间记忆
+10. [GNNVerifier: Graph-based Verifier for LLM Task Planning](/202603/22/2603.14730v1-gnnverifier-graph-based-verifier-for-llm-task-planning)  
    标签：评分：6.0/10、query:q13
-   evidence：用于自主智能体 LLM 任务规划的图形验证器
+   evidence：基于图的LLM任务规划验证器
+11. [PerlAD: Towards Enhanced Closed-loop End-to-end Autonomous Driving with Pseudo-simulation-based Reinforcement Learning](/202603/22/2603.14908v1-perlad-towards-enhanced-closed-loop-end-to-end-autonomous-driving-with-pseudo-simulation-based-reinforcement-learning)  
+   标签：评分：6.0/10、query:q11
+   evidence：用于闭环训练的伪仿真技术
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,328 @@
+Title: Robust Sim-to-Real Cloth Untangling through Reduced-Resolution Observations via Adaptive Force-Difference Quantization
+
+URL Source: https://arxiv.org/pdf/2603.13785v1
+
+Published Time: Tue, 17 Mar 2026 00:53:04 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Robust Sim-to-Real Cloth Untangling through Reduced-Resolution Observations via Adaptive Force-Difference Quantization 
+
+Yoshihisa Tsurumine 1, Yuki Kadokawa 1, Kohei Hayashi 1, Christian Diehm 1,2, Takamitsu Matsubara 1
+
+Abstract — Robotic cloth untangling requires progressively disentangling fabric by adapting pulling actions to changing contact and tension conditions. Because large-scale real-world training is impractical due to cloth damage and hardware wear, sim-to-real policy transfer is a promising solution. However, cloth manipulation is highly sensitive to interaction dynamics, and policies that depend on precise force magnitudes often fail after transfer because similar force responses cannot be reproduced due to the reality gap. We observe that untangling is largely characterized by qualitative tension transitions rather than exact force values. This indicates that directly minimizing the sim-to-real gap in raw force measurements does not necessarily align with the task structure. We therefore hy-pothesize that emphasizing coarse force-change patterns while suppressing fine environment-dependent variations can improve robustness of sim-to-real transfer. Based on this insight, we propose Adaptive Force-Difference Quantization (ADQ), which reduces observation resolution by representing force inputs as discretized temporal differences and learning state-dependent quantization thresholds adaptively. This representation miti-gates overfitting to environment-specific force characteristics and facilitates direct sim-to-real transfer. Experiments in both simulation and real-world cloth untangling demonstrate that ADQ achieves higher success rates and exhibits greater ro-bustness in sim-to-real transfer than policies using raw force inputs. Supplementary video is available at https://youtu. be/ZeoBs-t0AWc 
+
+I. I NTRODUCTION 
+
+Robotic cloth untangling is a fundamental task for house-hold service robots [1, 2]. In this task, a robot grasps entangled cloth and progressively resolves the entanglement by adapting its pulling strategy [1, 3]. Cloth entanglement cannot be resolved by a single pulling motion and appears to require responses to contact and tension changes. Such adaptive behaviors are difficult to encode using hand-crafted strategies, and learning-based approaches are therefore more suitable. However, conducting large-scale real-world trials is impractical due to the risk of cloth damage and mechanical wear of the robotic hand [4]–[6]. Therefore, this paper addresses robotic cloth untangling through a sim-to-real policy transfer framework [7, 8], where policies are trained in simulation and directly deployed in the real world. Cloth untangling is governed by contact interactions, friction, and tension variations, and even small parameter discrepancies between simulation and the real world can alter contact transitions and force responses [9, 10]. Con-sequently, sim-to-real transfer is particularly challenging.    
+
+> 1All the authors are with the Nara Institute of Science and Technology, Japan. 2Christian Diehm is with the Karlsruhe Institute of Technology, Germany. Sim:  Only Entangled Portion Real World
+> Policy Transfer
+> Train
+> Policy
+> Pin
+> Pull
+> Pin
+> Pull
+> Fig. 1: Overview of sim-to-real policy transfer for cloth untangling. In simulation, only the entangled portion of the cloth is modeled, and the policy is trained to progressively resolve the entanglement by fixing one hand (pin hand) and pulling with the other (pull hand). Then, the learned policy is transferred to the real world.
+
+Force information is essential for handling such interaction-dominant dynamics; however, discrepancies in contact and friction modeling often lead to mismatched force signals across domains. Policies that rely heavily on precise force magnitudes or small variations may therefore fail to obtain similar responses after transfer [10, 11]. Thus, a central challenge is to design observation representations that exploit force cues without excessive dependence on their absolute precision. To address this issue, this paper revisits the objective of cloth untangling, which is to progressively resolve entan-glement rather than to precisely regulate force magnitude [1, 3]. Although force information serves as a primary cue for action selection, what often matters for untangling is whether tension is increasing or decreasing, indicating contact transitions, rather than the exact force value [12, 13]. We therefore hypothesize that emphasizing coarse force-change patterns while suppressing fine-grained, environment-dependent variations can better align with the task structure than directly minimizing the sim-to-real gap in force mea-surements. Concretely, we lower observation resolution in both simulation and the real world to mitigate overfitting to 
+
+> arXiv:2603.13785v1 [cs.RO] 14 Mar 2026
+
+environment-specific force characteristics and facilitate direct sim-to-real transfer. Based on this insight, this paper proposes Adaptive Force-Difference Quantization (ADQ), a policy learning frame-work that intentionally reduces observation resolution. ADQ represents force inputs using temporal differences instead of absolute values and discretizes them into three states: increase, decrease, or no change. This representation weak-ens dependence on absolute force scale and small varia-tions while emphasizing contact transition tendencies shared across environments. Rather than fixing the discretization thresholds, ADQ treats them as policy-controlled variables, allowing the sensitivity of the representation to adapt to envi-ronmental conditions and task progression. Policies trained in simulation under this observation design are then deployed in the real world using the same representation, aiming to achieve robust behavior despite environment-dependent force variations. To evaluate the proposed framework, we developed a simulation environment for policy learning and transferred the trained policies to the real world for cloth untangling experiments. We compared ADQ with policies that directly use raw force inputs. ADQ achieved higher task success rates in the real world while maintaining stable behavior across different friction properties and entanglement condi-tions. In contrast, policies using raw force inputs exhibited clear performance degradation after transfer, indicating poor robustness to environment-dependent force variations. These findings suggest that reducing observation resolution im-proves robustness of sim-to-real transfer compared to directly using raw force signals. II. R ELATED WORK 
+
+A. Cloth Untangling and Deformable Object Manipulation 
+
+Cloth manipulation is a representative challenge in deformable object manipulation, characterized by high-dimensional configurations, self-occlusion, and contact-induced discontinuities. Early work addressed laundry sep-aration and folding using heuristic planning and geometric reasoning [3, 14]. More recently, learning-based approaches integrating vision and tactile feedback have been proposed for complex cloth interactions [1, 2]. In particular, disentan-glement and dressing require long-horizon reasoning over successive contact transitions, and sim-to-real training has been explored in both dressing and untangling tasks [15]– [17]. Compared to rope, cloth exhibits more severe occlu-sions and frictional variability, reducing the reliability of purely vision-based topology inference. Consequently, force feedback becomes essential for detecting interaction-state changes. However, deformable contact dynamics are difficult to reproduce accurately in simulation, leading to force dis-crepancies across domains. Robust sim-to-real transfer there-fore requires force representations that remain informative under such mismatches. Unlike prior approaches that focus on improving simula-tion fidelity or directly using raw force signals, we empha-𝑡            
+
+> ∆𝑓 !𝛥 𝜏 !
+> Ternary Quantization
+> Threshold Update
+> Value 𝛥 𝜏 !
+> Raw Force 𝑓 !
+> Observation
+> History O!
+> Force Difference
+> Pull Action
+> 𝑡
+> 𝑓 !
+> ∆𝑡
+> 𝑡
+> 𝑞 !
+> #
+> 0
+> −1
+> +1
+> Ternary force
+> ∆𝑓 !=𝑓 !−𝑓 !$%
+> Policy
+> Environment
+> Fig. 2: Overview of ADQ. Raw force measurements are converted into force differences and discretized into three states (increase: +1 , decrease:
+> −1, no change: 0). The quantization thresholds are treated as policy-controlled variables, enabling adaptive sensitivity during execution. The resulting quantized force-difference representation is fed back into the policy to determine both the pulling actions and the thresholds. Policy training is performed within a reinforcement learning framework using this observation design.
+
+size observation design. Instead of matching absolute force distributions, we reshape force signals to highlight contact-state changes while suppressing environment-dependent vari-ations. Cloth untangling is thus treated not as a problem of precise force reproduction, but as one of robust force representation under sim-to-real discrepancies. 
+
+B. Sim-to-Real for Contact-Rich Manipulation and Robust Contact-Signal Representations 
+
+Sim-to-real transfer in contact-rich manipulation has pri-marily focused on reducing discrepancies at the dynam-ics level. Common strategies include domain randomiza-tion [18], active randomization [19], and parameter identi-fication via optimization [20], all of which aim to align sim-ulated and real dynamics. Representation-level approaches have also been explored, for example through feature adapta-tion networks or real-to-sim signal translation to compensate for sensor differences [21, 22]. These methods typically attempt to preserve or recover the fidelity of continuous signals across domains. However, in contact-rich deformable manipulation, small mismatches in friction, compliance, or contact timing can induce structural distortions in force and tactile time series. In such settings, the issue is not only sensor bias or scale differences, but also domain-dependent reshaping of the signal trajectory itself [10, 11]. When policies rely on precise continuous magnitudes, even well-randomized simulations may fail to reproduce the interaction patterns required for stable transfer. Unlike approaches that seek to better match or reconstruct raw contact signals, we adopt a different perspective: in-stead of increasing signal fidelity, we intentionally reduce observation resolution to suppress domain-specific variations. By emphasizing change-level interaction cues and discarding fine-grained magnitude information, our approach shifts the objective from force-distribution alignment to representation robustness. This positions our method as structurally dis-tinct from prior dynamics-matching or signal-reconstruction strategies in contact-rich sim-to-real learning. III. A DAPTIVE FORCE -D IFFERENCE QUANTIZATION 
+
+This section presents ADQ, an observation design that mit-igates sim-to-real discrepancies in force signals, which often differ across simulation and real robots (Fig. 2). Because force measurements vary due to sensor scale, bias, noise, and contact stiffness, directly using raw continuous forces can lead to unstable transfer. ADQ addresses this issue through three components: (i) force differencing to emphasize change patterns, (ii) ternary quantization to provide robustness to distribution mismatch, and (iii) adaptive thresholding, where the policy controls quantization thresholds online. Together, these designs suppress environment-dependent variations while preserving contact transition cues relevant to the task. 
+
+A. Force-Difference Representation 
+
+Let the 3-axis force signal at time t be ft ∈ R3. We focus on changes rather than absolute magnitudes and use 
+
+∆ft = ft − ft−1 (1) Differencing relatively suppresses the effect of steady bias and emphasizes force rise/fall associated with switching contact states, yielding features that are more likely to be consistent between real and simulated environments. 
+
+B. Ternary Quantization 
+
+For robustness to sim-to-real gaps (scale mismatch and noise mismatch), we coarsely quantize the difference signal 
+
+∆ft into ternary values for each axis. For axis i ∈ { x, y, z },using a threshold τ it > 0, we define 
+
+qit = Quant (∆ f it ; τ it ), Quant (x; τ ) = 
+
+
+
+−1 x < −τ
+
+0 |x| ≤ τ
+
++1 x > τ 
+
+(2) and set qt = [ qxt , q yt , q zt ]⊤ ∈ {− 1, 0, +1 }3. Here, qt preserves the sign-level information of force changes—increase, no change, or decrease—while providing a discrete observation that is less sensitive to small noise and scale differences. 
+
+C. Observation Design with Adaptation State 
+
+The observation ot concatenates the quantized force differ-ence qt, the previous threshold update ∆τt−1 ∈ R3, and other observation states zt ∈ Rn as ot = [ qt, ∆τt−1, z t] ∈ R6+ n.
+
+By including ∆τt−1 in the input, the policy can estimate the recent quantization sensitivity (i.e., what magnitude of change is being detected as ±1), enabling stable adaptation based on the history of sensitivity adjustments. Since the exact computation of ∆ft depends on the task control rate and action design, we estimate ∆ft from the force sequence observed within each action interval in our implementation (Sec. IV-B.1). 
+
+D. Action Design: Threshold-as-Action 
+
+The action at concatenates the robot control input ut ∈
+
+Rm and the incremental update of the quantization thresholds 
+
+∆τt ∈ R3 as at = [ ut, ∆τt]. Here, the pulling command 
+
+ut ∈ [−1, 1] 3 represents a normalized Cartesian direction vector of the pull hand. During execution, ut is scaled by a task-level parameter α > 0 specified in the experimental setup. In this work, we use α = 3 cm . Each component of ut
+
+corresponds to the directional contribution along the x, y, z 
+
+axes, allowing the policy to modulate pulling direction in response to interaction-state changes. In this work, we use the same range constraint and initial value for all axes: τmin = 0 .005 , τmax = 2 .5, τ0 =0.15 . The key idea is to treat the threshold τ not as a fixed preprocessing hyperparameter that must be tuned externally, but as a controllable variable embedded in the policy’s action space via threshold-as-action. This enables the policy to autonomously adjust the resolution of force changes to be detected depending on the environment gap and contact conditions. 
+
+E. Inference Procedure 
+
+At inference time, we first compute the force difference 
+
+∆ft from the raw force signal ft. Since the ternary state depends on whether the change magnitude exceeds a thresh-old, the quantized observation is inherently determined by the current sensitivity parameter τt. We therefore apply ternary quantization using τt to obtain qt, which encodes whether the recent interaction change is significant relative to the current sensitivity level. The resulting observation 
+
+ot = [ qt, ∆τt−1, z t] is fed into the policy πθ , which outputs both the pulling command ut and the threshold update ∆τt.The threshold is then updated sequentially before the next timestep, allowing the policy to adjust its own observation sensitivity online according to the interaction phase and contact condition. IV. L EARNING CLOTH UNTANGLING 
+
+In this section, we describe the task formulation for learn-ing the cloth untangling task within a sim-to-real framework, as well as the simulation environment we developed to support this learning process. 
+
+A. Task Setting 
+
+This work study garment-knot untangling as a con-trolled proxy of laundry disentanglement, focusing on local contact/tension transitions that dominate decision making. Specifically, we consider a double-overhand knot formed us-ing actual clothing such as sleeves and hems, which induces contact-rich transitions governed by friction and tension. The robot grasps two garment points with two hands (pin/pull): The pin hand provides a fixed constraint, while the pull hand executes pulling motions. We assume that a human provides a solvable grasp configuration. However, the knot cannot be resolved by naively pulling left/right with brute force under a force budget, and thus the policy must switch strategies based on interaction cues. We enforce a hard force limit such that the robot cannot pull beyond a threshold. That is, the force is saturated/limited at execution time rather than penalized in the reward. As a result, policies that simply repeat pulling actions are un-likely to succeed, and fine-grained switching of manipulation strategies conditioned on the contact state is required. Collision disable pairs    
+
+> Collision enable pairs
+> particle ii-1i+ 1
+> Spherical joint
+> i+2Capsule particle Fig. 3: Local entanglement model for simulating cloth entangling. The entangled cloth portion is approximated as a chain of capsule segments connected by spherical joints where neighboring segments overlap to form a continuous body. To represent self-contact without introducing unstable persistent contacts, collisions are disabled for adjacent (overlapping) pairs and enabled only for non-neighboring pairs.
+
+B. POMDP Formulation and Temporal Observation Stack 
+
+Since the full state of the cloth entanglement, such as knot topology and contact/friction conditions, is not directly observable, we formulate the task as a partially observable Markov decision process (POMDP). Let the latent state at time t be st, the observation be ot, and the action be at.The policy πθ takes the observation sequence over the past 
+
+H steps as input and outputs an action. 
+
+1) Intra-action force-difference estimation: In our task, one step (time t) corresponds to a single pulling motion executed by the pull hand. Untying a double knot requires repeatedly switching subtle manipulations under a force limit. During a pull, friction/contact conditions can transition gradually, while instantaneous vibrations and noise can also be injected. Therefore, rather than using a single difference at the step boundary, it is more appropriate to use a difference representation that stably summarizes the trend of changes within the action interval. Specifically, let the force sequence observed at a high rate during the action execution interval at time t be {ft,k ∈
+
+R3}Kk=0 , and define the intra-action difference sequence as 
+
+δf t,k = ft,k − ft,k −1, k = 1 , . . . , K. (3) In this work, we use the average of these intra-action differences as the force difference observed in one step: 
+
+∆ft = 1
+
+K
+
+> K
+
+X
+
+> k=1
+
+δf t,k = 1
+
+K
+
+> K
+
+X
+
+> k=1
+
+(ft,k − ft,k −1). (4) This averaging suppresses the effect of instantaneous fluc-tuations while preserving, as a step-level representation, the direction (increase/decrease) of contact transitions that occur during pulling. The ternary quantization described below is applied to this ∆ft to construct qt.
+
+2) Temporal Observation Stack: We use a temporal stack of length H = 5 and define the policy input as Ot =[ot−4, . . . , o t], where at ∼ πθ (· | Ot). Each observation ot
+
+consists of the ternary-quantized force difference qt, the most recent threshold update ∆τt−1, and a geometric feature zt
+
+defined as the direction vector from the pin hand to the pull hand. Because contact states cannot be reliably inferred from a single timestep, stacking qt−H+1 , . . . , q t allows the policy to capture short-horizon change patterns such as sign flips and sustained trends that indicate interaction-state transitions. 
+
+C. Reward and Success Criterion 
+
+During training, we design the reward by combining (i) an entanglement metric Gt, (ii) the free-end length on the pulling side ℓt, and (iii) a success indicator. The entanglement metric Gt is computed based on the Gauss linking integral [23] and can be obtained from geometric information in simulation. Let ∆ℓt = ℓt − ℓt−1 denote the increase in the free-end length. We define the reward as 
+
+rt = wℓ ∆ℓt − wG Gt + ws I[success ], where wℓ, w G, w s > 0
+
+are weighting coefficients. In this work, we regard the state where the free-end length on the pulling side disappears as the first loop of the double knot has been resolved, and define success as success ⇔ ℓt ≤ ε where ε > 0 is a threshold. Note that in real-robot experiments, Gt cannot be computed directly. Therefore, we use Gt for reward shaping during training, and evaluate performance in the real world using task-level metrics such as the success rate. 
+
+D. Sim-to-Real Training Setup 1) Local Entanglement Model: Although training is per-formed in simulation, reproducing full cloth entanglement with high fidelity is challenging in terms of computational cost and numerical stability. Therefore, we adopt local en-tanglement model that captures the local contact and tension transitions that dominate knot/entanglement resolution in cloth. Concretely shown in Fig.3, we represent the interacting cloth part (e.g., sleeve/hem segment involved in the knot) as a chain of capsule-shaped segments with overlapping neighbors. This proxy preserves the essential interaction regime for force-driven decision making, while enabling stable large-scale RL training. 
+
+2) Domain Randomization for Sim-to-Real: To facilitate sim-to-real transfer, we apply domain randomization during training. Specifically, we randomize, for each episode, (1) the scale and bias of the force-sensor signals, (2) the z-axis rotation of the object being pulled, and (3) the assignment of the pin/pull hand roles. In addition, we randomize (4) the hand orientation vector (observation error) at every step. This encourages learning policies that are robust to variations in observation distributions and contact transitions. V. E XPERIMENTS 
+
+This section evaluates the proposed observation design from four perspectives: (i) whether the force-difference rep-resentation improves transfer robustness, (ii) whether coarse ternary quantization provides tolerance to scale and noise mismatch in force signals, (iii) whether adaptive thresholding reduces manual tuning across environments, and (iv) whether the learned policy relies on force features for action selection, analyzed using Grad-CAM [24]. They are validated through sim-to-sim transfer from Isaac Gym to Gazebo, where rep-resentation components can be systematically ablated and disentanglement progress quantified using simulator state. We then demonstrate end-to-end sim-to-real deployment on a Random 
+
+> (heuristic)
+> Opposite
+> (heuristic)
+> Naive
+> Naive+Fix Ternary
+> Naive+Adap. Ternary
+> ADQ w/o Ternary
+> ADQ w/o Adaptive
+> ADQ (Ours)
+> 20
+> 15
+> 10
+> 5
+> 0
+> 5
+> Writhe value reduction
+> *
+> *
+> *
+> *
+> *
+> *
+> *
+
+Fig. 4: Sim-to-Sim performance comparison in Gazebo. Lower (more nega-tive) writhe reduction indicates better untangling. Statistical significance is assessed using one-sided Welch’s t-tests (Ours vs. each baseline; alternative: Ours is better), with Holm correction for multiple comparisons. * indicates significance level of p < 0.05 . Each method was evaluated over n=10 
+
+trials. ADQ (Ours)    
+
+> Gazebo Environment
+> Opposite
+> Initial Scene Last Scene
+> Failure
+> Success
+
+Fig. 5: Snapshots of learned policy execution in the Gazebo simulator. The initial scene before policy execution and the final scene after execution are shown. An overview of the developed Gazebo-based cloth untangling environment is illustrated on the right side. 
+
+physical robot with real cloth to verify transfer under sensing, execution, and material-dependent interaction gaps. Policies are trained in Isaac Gym and evaluated in two stages: sim-to-sim transfer to Gazebo and sim-to-real de-ployment. Gazebo mirrors the real execution stack while providing access to the simulator state for quantitative anal-ysis. Each subsequent subsection specifies its own setup and evaluation protocol. 
+
+A. Learning Force-Based Policy in Simulation 
+
+Training was performed in the NVIDIA Isaac Gym frame-work on an NVIDIA GeForce RTX 4090 GPU. The policy converged after approximately 157 M training steps over a duration of 12 hours. We set the policy’s observable steps 
+
+H to 5 and apply domain randomization during training to facilitate sim-to-real transfer. Table I summarizes the ran-domized parameters and ranges. In addition, the initial local entanglement model orientation is randomized by sampling a yaw rotation about the world z-axis uniformly from [0 , 2π).We also randomize the grasp points from some handmade candidates. 8       
+
+> 6
+> 4
+> 2
+> 0
+> 2ADQ w/o Adaptive
+> ADQ (Ours)
+> 0.0 0.5 1.0 1.5 2.0 2.5 3.0
+> Force threshold
+> 17
+> 16
+> Writhe value reduction
+
+Fig. 6: Threshold sensitivity in Gazebo. We sweep the fixed ternary quantization threshold τ for ADQ w/o Adaptive and compare it with ADQ (Ours), which adapts τ online. Although ADQ w/o Adaptive was trained with τ =0 .5 in Isaac Gym, its best-performing threshold in Gazebo shifts to 
+
+τ =2 .0 (average writhe reduction −7.3), indicating a hyperparameter shift across simulators. In contrast, ADQ (Ours) remains stable and achieves larger writhe reduction, reducing the manual tuning burden. TABLE I: Ranges of randomized simulation parameters Randomized Variables unit min max Force-sensor scale coefficient [-] 0.95 1.05 
+
+Force-sensor bias N −0.6 0.6
+
+Pull-vector multiplier [-] 0.05 10 .0
+
+Linear density of each chain kg/m 0.267 0.445 
+
+Joint friction coefficient [-] 0.375 0.625 
+
+Joint damping coefficient [-] 0.375 0.625 
+
+Surface friction coefficient [-] 0.3 0.5
+
+B. Representation Ablation in Sim-to-Sim (Isaac Gym →
+
+Gazebo) 
+
+This experiment analyzes how force differencing (FD), ternary quantization, and adaptive thresholding contribute to transfer robustness under a simulator gap. Policies trained in Isaac Gym are transferred to Gazebo, which mirrors the real execution stack (robot model, control interface, and safety limits) while isolating execution and contact-model discrepancies. Grasping is approximated using a rigid joint, and other settings follow the sim-to-real experiments. We compare proposed ADQ against heuristic baselines (Random : a fixed random pulling direction per episode, and 
+
+Opposite : pulling directly away from the pinning hand along the inter-hand line) and representation ablations/baselines derived from the learned policy. Naive removes both FD and ternary quantization, serving as a no-FD/no-quantization ref-erence. To isolate the effect of ternary quantization without FD, we additionally evaluate Naive+Fix Ternary (ternary quantization with a fixed threshold) and Naive+Adaptive Ternary (ternary quantization with adaptive thresholding) while still omitting FD. We further test ablations of the proposed representation: ADQ w/o Ternary removes ternary quantization, and ADQ w/o Adaptive replaces adaptive thresholds with a fixed one. Disentanglement progress is quantified by a Gauss-integral-based entanglement metric computed from simulator state (writhe reduction), where more negative values indicate stronger disentanglement. Fig. 4 presents the performance comparison, and Fig. 5 Fig. 7: Experimental setup showing the cloth/textile configurations used during sim-to-real testing. 
+
+shows representative snapshots of policy execution in Gazebo. ADQ achieves the largest writhe reduction, out-performing all baselines and ablations, which is consistent with the claim that emphasizing coarse force-change patterns improves transfer robustness. In contrast, variants that rely on raw force signals perform poorly. Adding ternary quanti-zation alone does not improve Naive , and Naive+Adaptive Ternary yields the lowest performance, suggesting that raw force magnitudes are difficult to exploit reliably even with adaptive thresholding. Among FD-based variants, a clear progression is observed: ADQ w/o Ternary remains limited, 
+
+ADQ w/o Adaptive provides moderate improvement, and the full ADQ achieves a substantial gain. These results indicate that robust transfer benefits from combining change-centered observations with coarse discretization and adaptive sensitiv-ity to suppress environment-dependent force variations. 
+
+C. Adaptive Thresholding Reduces Hyperparameter Tuning (Sim-to-Sim) 
+
+This experiment evaluates the sensitivity of fixed-threshold ternary quantization (i.e., ADQ w/o Adaptive ) and the stability of adaptive thresholding (i.e., ADQ ). A fixed quan-tization threshold can be optimal in the training simulator but suboptimal after transfer due to shifts in force scale and noise characteristics. We focus on Gazebo evaluation and sweep the fixed quantization threshold over a range of values. We compare this sweep to the proposed adaptive policy, which adapts the quantization threshold online during execution. We use the same metric as in Sec. V-B (writhe reduction in Gazebo). Fig. 6 shows that the optimal fixed threshold shifts after transfer and performance becomes sensitive to τ , whereas ADQ remains stable and achieves better disentanglement, reducing the need for manual tuning. 
+
+D. Sim-to-Real Performance Across Clothing 
+
+We evaluated sim-to-real performance on the Nextage dual-arm humanoid robot equipped with a Robotiq FT 300 force-torque sensor and a 1-DoF gripper. To assess robustness to material-dependent interaction dynamics, ex-periments were conducted on clothing with different friction                                                                             
+
+> TABLE II: Success rate across materials and knot configurations under the sim-to-real protocol (success within 15 pulls and below a 30 N force safety limit). Each configuration was evaluated over n=10 trials. Configuration Opposite Naive ADQ (Ours) Loose  Low Friction 1.0 0.9 1.0 Medium Friction 1.0 0.9 1.0 High Friction 0.9 0.6 0.9 Tight  Low Friction 0.9 0.5 0.9 Medium Friction 1.0 0.5 1.0 High Friction 0.1 0.4 0.7 Total Average 0.82 0.63 0.92
+> TABLE III: Efficiency and safety statistics over successful trials. We report the average number of pulls (pulls) and the peak force (peak), defined as the maximum force observed during a pulling action, for each configuration. Opposite Naive ADQ (Ours) Configuration pulls peak pulls peak pulls peak Loose  Low Friction 6.9 9.3 7.3 8.1 9.7 7.1 Medium Friction 7.4 10.3 7.7 8.5 11.1 6.9 High Friction 6.8 19.3 8.4 18.4 11.3 14.8 Tight  Low Friction 6.9 22.1 7.0 23.0 10.2 20.1 Medium Friction 7.0 23.0 7.6 19.8 9.3 17.2 High Friction 6.0 23.4 9.0 28.5 8.7 19.2 Total Average 6.8 17.9 7.8 17.7 10.1 14.2
+
+and stiffness (e.g., synthetic, cotton, thick textile), each tested in loose and tight double-overhand knot configurations. A trial was defined as successful if the knot was resolved within 15 pulls without exceeding a 30 N force safety limit. We compared ADQ with two baselines, Opposite and Naive .The success rates are summarized in Table II. While the baselines performed adequately in low-friction and loose conditions, their performance degraded in high-friction or tight configurations that required force-aware adaptation. In particular, Opposite , which simply pulls in the opposite direction of the two end-effectors, often failed under high-friction conditions because such geometric heuristics cannot account for friction-induced resistance. In contrast, ADQ 
+
+achieved consistently high success rates across materials, indicating robustness to environment-dependent variations. Efficiency and safety analysis further showed that although the baselines required fewer pulls in simple cases, ADQ 
+
+maintained lower peak forces, reflecting stable closed-loop adaptation aligned with the proposed observation design. 
+
+E. Explainability and Learned Strategy Analysis 
+
+This experiment analyzes how the learned policy uses change-centered force features during execution and how adaptive thresholding maintains informative ternary-quantized FD signals. 
+
+a) Analysis of policy behavior in simulation (Fig. 8): 
+
+Fig. 8 illustrates representative rollout phases in simulation together with Grad-CAM attribution over time. The policy initially explores multiple pulling directions when interaction information is limited. During this early phase, attribution concentrates around recent force-difference features (e.g., Fig. 8: Snapshots of a tightly entangled case. The commanded pulling force is overlaid as a yellow arrow in each frame. The bottom plots show the observed force components (x, y, z ) over time. Circled numbers denote the step index, and the step t at the bottom corresponds to the highlighted frame.              
+
+> Fig. 9: Analysis of policy behaviors. (a) Scene snapshots. The left arm is fixed, and the right arm pulls 3 cm per step. Yellow arrows denote the pulling direction. If the force exceeds 30 N, the gripper opens to ensure safety. The bottom three rows show different knot orientations and friction levels. (b)
+> Grad-CAM features. Stacked areas indicate the feature contribution to the policy output. Solid lines show the pulling direction of x, y , and z. The pulling command utis a normalized direction vector in [−1,1] 3. During execution, utis scaled by α= 3 cm .
+
+near k−1), indicating that the policy uses short-window haptic cues to establish an initial pulling direction compatible with the current constraint. As execution proceeds, the policy maintains a dominant pulling direction while continuously monitoring the latest ternary-quantized FD features. When the sign of the x-component flips ( −1 ↔ +1 ), attribution peaks around the change point and the policy switches its lateral pulling direction accordingly. This pattern suggests a closed-loop strategy: the policy detects discrete interaction-state changes through recent FD signals and updates the action to avoid worsening geometric constraints. Intervals 0 0.5 1.0 1.5 2.0 2.5    
+
+> Wasserstein Distance [N]
+> Ours
+> Raw
+> Force
+> Fig. 10: Sim-to-real gap measured by the 1D Wasserstein distance between observation distributions (Isaac Gym: n=500 , Gazebo: n=150 ). Bars show bootstrap means with 95% CI (2000 resamples).
+
+where the x-component remains constant (e.g., −1) receive sustained attribution and correspond to consistent lateral pulling, while sign flips trigger directional reversal. These behaviors demonstrate that action updates are event-driven rather than dependent on absolute force magnitudes. 
+
+b) Analysis in the real world (Fig. 9): Fig. 9(a) shows snapshots of real-world execution, and Fig. 9(b) presents the corresponding Grad-CAM attribution. Despite sim-to-real discrepancies, ternary-quantized FD features consistently exhibit high attribution throughout the episode. Directional changes in the x-component of the pulling command align with sign transitions in the quantized FD signal, mirroring the simulation observations. This indicates that the learned strat-egy transfers: the policy continues to rely on recent force-difference events to detect contact or constraint transitions and adjust its pulling direction. Overall, the analysis supports the intended design principle of ADQ. The policy does not depend on precise force magnitudes; instead, it reacts to short-term, resolution-reduced force-difference signals to form a structured closed-loop disentanglement strategy. 
+
+F. Sim-to-Real Gap in Force Representations 
+
+To quantify whether the proposed representation mitigates the sim-to-real discrepancy in force observations, we execute the trained policy both in the training simulator (Isaac Gym) and on the real robot, and compare the empirical distributions of force-related observations across domains. For each force axis, we compute the 1D Wasserstein distance W1 between the two distributions as a measure of domain gap [25]. Fig. 10 shows the comparison between raw force inputs and the proposed representation. The baseline using raw force signals exhibits an average gap of W1 = 2 .51 (95% CI: [2.44, 2.57]). In contrast, the proposed representation reduces the average gap to 0.71 (95% CI: [0.65, 0.80]), corresponding to an approximately 71% reduction. This statistically significant reduction in W1 indicates that the proposed observation design, based on force differences and ternary quantization, effectively reduces the sim-to-real gap in force-related observations. VI. D ISCUSSION 
+
+Our results suggest that the bottleneck in leveraging force feedback for sim-to-real transfer lies not in reproducing the absolute magnitude of force, but in consistently capturing interaction changes induced by contact transitions. Raw force signals can undergo substantial distribution shifts due to sen-sor bias, scale mismatches, and subtle differences in friction and grasp stiffness, which can cause the features relied on by the learned policy to break at transfer time. In contrast, force differences (FD) are less sensitive to quasi-static offsets and slow drift. When combined with ternary quantization, they further gain invariance to noise and scale differences. As a result, the domain gap in the observation space is reduced, making it easier for the closed-loop behavior to remain valid after transfer. We discuss two limitations and future directions. First, be-cause our method discretizes force differences, performance may saturate on tasks where high-frequency vibrations or subtle force variations are critical. Second, if the threshold updates are too rapid, the quantized representation can be-come non-stationary and destabilize learning. Therefore, it is important to design constraints and smoothing mechanisms (e.g., a penalty on the rate of change of the thresholds). In future work, we will investigate multi-level quantization to gradually increase resolution, and evaluate generalization across a wider range of garment shapes, materials, and grasp conditions. A natural direction for future work is to further isolate the effects of quantization and threshold adaptation on real clothing, where variability in fabric properties and knot tightness can be explicitly controlled. VII. C ONCLUSION 
+
+We proposed an observation design for sim-to-real cloth untangling that reduces observation resolution by empha-sizing coarse force-difference patterns rather than precise force magnitudes. The proposed policy learning framework ADQ suppresses environment-dependent force variations while preserving contact transition cues relevant to resolv-ing entanglement. Policies trained in simulation achieved improved robustness and post-transfer performance in both Gazebo and the real world compared to raw force inputs, and feature attribution analysis confirmed reliance on quantized force-difference signals. These results demonstrate that task-aligned resolution reduction can enhance stability in sim-to-real transfer. REFERENCES [1] A. Longhini, Y. Wang et al. , “Unfolding the literature: A review of robotic cloth manipulation,” arXiv preprint arXiv:2407.01361 , 2024. [2] H. A. Kadi and K. Terzic, “Data-driven robotic manipulation of cloth-like deformable objects: The present, challenges and future prospects,” 
+
+Sensors , vol. 23, no. 5, p. 2389, 2023. [3] K. Hamajima and M. Kakikura, “Planning strategy for task untangling laundry - isolating clothes from a washed mass -,” J. Robot. Mecha-tron. , vol. 10, no. 3, pp. 244–251, 1998. [4] X. B. Peng, M. Andrychowicz, W. Zaremba, and P. Abbeel, “Sim-to-real transfer of robotic control with dynamics randomization,” in 
+
+IEEE International Conference on Robotics and Automation , 2018, pp. 3803–3810. [5] R. Watanabe, T. Miki, F. Shi, Y. Kadokawa, F. Bjelonic, K. Kawa-harazuka, A. Cramariuc, and M. Hutter, “Learning quiet walking for a small home robot,” in IEEE International Conference on Robotics and Automation , 2025, pp. 15 285–15 291. [6] S. Gu, E. Holly, T. Lillicrap, and S. Levine, “Deep reinforcement learn-ing for robotic manipulation with asynchronous off-policy updates,” in IEEE International Conference on Robotics and Automation , 2017, pp. 3389–3396. [7] Y. Kadokawa, H. Tahara, and T. Matsubara, “Progressive-resolution policy distillation: Leveraging coarse-resolution simulations for time-efficient fine-resolution policy learning,” IEEE Transactions on Au-tomation Science and Engineering , vol. 22, pp. 18 682–18 693, 2025. [8] Y. Kadokawa, J. Frey, T. Miki, T. Matsubara, and M. Hutter, “Dap-per: Discriminability-aware policy-to-policy preference-based rein-forcement learning for query-efficient robot skill acquisition,” IEEE Robotics & Automation Magazine , pp. 2–17, 2026. [9] J. Matas, S. James et al. , “Sim-to-real reinforcement learning for deformable object manipulation,” in Conf. Robot Learn. , 2018, pp. 734–743. [10] D. Blanco-Mulero, O. Barbany et al. , “Benchmarking the sim-to-real gap in cloth manipulation,” IEEE Robot. Autom. Lett. , vol. 9, no. 3, pp. 2981–2988, 2024. [11] X. Zhang, C. Wang et al. , “Efficient sim-to-real transfer of contact-rich manipulation skills with online admittance residual learning,” in 
+
+Conf. Robot Learn. , 2023, pp. 1621–1639. [12] S. Bernard-Tiong, Y. Tsurumine, R. Sota, K. Shibata, and T. Matsub-ara, “Cooperative grasping and transportation using multi-agent rein-forcement learning with ternary force representation,” in IEEE/SICE International Symposium on System Integration , 2025, pp. 973–978. [13] J. Collins, S. Chand et al. , “A review of physics simulators for robotic applications,” IEEE Access , vol. 9, pp. 51 416–51 431, 2021. [14] S. Miller, J. van den Berg et al. , “A geometric approach to robotic laundry folding,” Int. J. Robot. Res. , vol. 31, no. 2, pp. 249–267, 2012. [15] F. Zhang and Y. Demiris, “Learning garment manipulation policies to-ward robot-assisted dressing,” Sci. Robot. , vol. 7, no. 65, p. eabm6010, 2022. [16] P. Sundaresan, J. Grannen et al. , “Untangling Dense Non-Planar Knots by Learning Manipulation Features and Recovery Policies,” in Robot.: Sci. Syst. , Virtual, 2021. [17] F. Liu, E. Su et al. , “Robotic manipulation of deformable rope-like objects using differentiable compliant position-based dynamics,” IEEE Robot. Autom. Lett. , vol. 8, no. 7, pp. 3964–3971, 2023. [18] J. Tobin, R. Fong et al. , “Domain randomization for transferring deep neural networks from simulation to the real world,” in IEEE/RSJ Int. Conf. Intell. Robots Syst. , 2017, pp. 23–30. [19] B. Mehta, M. Diaz et al. , “Active domain randomization,” in Conf. Robot Learn. , 2020, pp. 1162–1176. [20] F. Muratore, C. Eilers et al. , “Data-efficient domain randomization with Bayesian optimization,” IEEE Robot. Autom. Lett. , vol. 6, no. 2, pp. 911–918, 2021. [21] S. James, P. Wohlhart et al. , “Sim-to-real via sim-to-sim: Data-efficient robotic grasping via randomized-to-canonical adaptation networks,” in 
+
+IEEE/CVF Conf. Comput. Vis. Pattern Recognit. , 2019, pp. 12 627– 12 637. [22] A. Church, J. Lloyd et al. , “Tactile sim-to-real policy transfer via real-to-sim image translation,” in Conf. Robot Learn. , 2022, pp. 1645–1654. [23] T. Matsubara, D. Shinohara et al. , “Reinforcement learning of a motor skill for wearing a T-shirt using topology coordinates,” Advanced Robotics , vol. 27, no. 7, pp. 513–524, 2013. [24] R. R. Selvaraju, M. Cogswell et al. , “Grad-cam: Visual explanations from deep networks via gradient-based localization.” in IEEE/CVF Int. Conf. Comput. Vis. , 2017, pp. 618–626. [25] N. Courty, R. Flamary et al. , “Optimal transport for domain adap-tation,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 39, no. 9, pp. 1853–1865, 2017.
