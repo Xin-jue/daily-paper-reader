@@ -6,76 +6,76 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-22
-- 运行时间：2026-03-22 19:21:42 UTC
+- 最新运行日期：2026-03-23
+- 运行时间：2026-03-23 19:46:49 UTC
 - 运行状态：成功
 - 本次总论文数：18
 - 精读区：7
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选 18 篇前沿论文，重点攻克人形机器人全身协同操作与复杂织物解结的 Sim-to-Real 难题。
-REFINE-DP 通过强化学习微调扩散策略提升人形机动性，而自适应力差量化技术让机器人能更稳健地处理缠绕布料。
-建议深入了解 VLA 模型的可控性与实时动作生成，把握具身智能从感知到物理交互的演进趋势。
-- 详情：[/202603/22/README](/202603/22/README)
+今日聚焦 VLA 模型与强化学习的深度融合，涵盖分布式异步框架及自动驾驶纠错等 18 篇前沿进展。
+重点推荐 AcceRL 分布式异步框架及利用接管数据优化驾驶 VLA 的新范式，展现了具身智能在复杂任务中的高效进化。
+建议关注 VLA 模型在分布式训练与长程推理场景下的落地，探索如何通过错误反馈实现技能的快速精通。
+- 详情：[/202603/23/README](/202603/23/README)
 
 ### 精读区论文标签
-1. [REFINE-DP: Diffusion Policy Fine-tuning for Humanoid Loco-manipulation via Reinforcement Learning](/202603/22/2603.13707v2-refine-dp-diffusion-policy-fine-tuning-for-humanoid-loco-manipulation-via-reinforcement-learning)  
+1. [AcceRL: A Distributed Asynchronous Reinforcement Learning and World Model Framework for Vision-Language-Action Models](/202603/23/2603.18464v2-accerl-a-distributed-asynchronous-reinforcement-learning-and-world-model-framework-for-vision-language-action-models)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于视觉-语言-动作模型的分布式强化学习和世界模型框架
+2. [Learning from Mistakes: Post-Training for Driving VLA with Takeover Data](/202603/23/2603.14972v1-learning-from-mistakes-post-training-for-driving-vla-with-takeover-data)  
+   标签：评分：9.0/10、query:q4
+   evidence：视觉-语言-动作 (VLA) 模型的后期训练
+3. [EFF-Grasp: Energy-Field Flow Matching for Physics-Aware Dexterous Grasp Generation](/202603/23/2603.16151v1-eff-grasp-energy-field-flow-matching-for-physics-aware-dexterous-grasp-generation)  
    标签：评分：9.0/10、query:q2
-   evidence：人形机器人移动操作的扩散策略微调
-2. [Robust Sim-to-Real Cloth Untangling through Reduced-Resolution Observations via Adaptive Force-Difference Quantization](/202603/22/2603.13785v1-robust-sim-to-real-cloth-untangling-through-reduced-resolution-observations-via-adaptive-force-difference-quantization)  
-   标签：评分：9.0/10、query:q8
-   evidence：机器人织物解结的仿真到现实策略迁移
-3. [A Real-Time Neuro-Symbolic Ethical Governor for Safe Decision Control in Autonomous Robotic Manipulation](/202603/22/2603.14221v1-a-real-time-neuro-symbolic-ethical-governor-for-safe-decision-control-in-autonomous-robotic-manipulation)  
-   标签：评分：9.0/10、query:q2
-   evidence：自主机器人操作任务中的伦理决策控制机制
-4. [Gym-V: A Unified Vision Environment System for Agentic Vision Research](/202603/22/2603.15432v2-gym-v-a-unified-vision-environment-system-for-agentic-vision-research)  
-   标签：评分：9.0/10、query:q11
-   evidence：用于智能体训练的程序化生成视觉环境
-5. [MG-Grasp: Metric-Scale Geometric 6-DoF Grasping Framework with Sparse RGB Observations](/202603/22/2603.16270v1-mg-grasp-metric-scale-geometric-6-dof-grasping-framework-with-sparse-rgb-observations)  
-   标签：评分：9.0/10、query:q2
-   evidence：利用3D基础模型和RGB观测的六自由度机器人抓取框架
-6. [Efficient and Reliable Teleoperation through Real-to-Sim-to-Real Shared Autonomy](/202603/22/2603.17016v1-efficient-and-reliable-teleoperation-through-real-to-sim-to-real-shared-autonomy)  
-   标签：评分：9.0/10、query:q8
-   evidence：用于机械臂操作的实对虚对实共享自主框架
-7. [ManiDreams: An Open-Source Library for Robust Object Manipulation via Uncertainty-aware Task-specific Intuitive Physics](/202603/22/2603.18336v1-manidreams-an-open-source-library-for-robust-object-manipulation-via-uncertainty-aware-task-specific-intuitive-physics)  
-   标签：评分：9.0/10、query:q2
-   evidence：通过直觉物理模型进行鲁棒物体操作的框架
+   evidence：机器人操作中感知物理的灵巧抓取生成
+4. [Cross-Domain Demo-to-Code via Neurosymbolic Counterfactual Reasoning](/202603/23/2603.18495v1-cross-domain-demo-to-code-via-neurosymbolic-counterfactual-reasoning)  
+   标签：评分：9.0/10、query:q4
+   evidence：用于视频指令机器人编程和控制代码生成的视觉语言模型
+5. [VAMPO: Policy Optimization for Improving Visual Dynamics in Video Action Models](/202603/23/2603.19370v1-vampo-policy-optimization-for-improving-visual-dynamics-in-video-action-models)  
+   标签：评分：9.0/10、query:q4
+   evidence：改进视觉语言动作系统中的视觉动力学
+6. [FlowScene: Style-Consistent Indoor Scene Generation with Multimodal Graph Rectified Flow](/202603/23/2603.19598v1-flowscene-style-consistent-indoor-scene-generation-with-multimodal-graph-rectified-flow)  
+   标签：评分：9.0/10、query:q3
+   evidence：用于室内场景生成的三分支场景生成模型
+7. [EgoForge: Goal-Directed Egocentric World Simulator](/202603/23/2603.20169v1-egoforge-goal-directed-egocentric-world-simulator)  
+   标签：评分：9.0/10、query:q9
+   evidence：针对动态环境的自我中心目标导向世界模拟器
 
 ### 速读区论文标签
-1. [RealWonder: Real-Time Physical Action-Conditioned Video Generation](/202603/22/2603.05449v1-realwonder-real-time-physical-action-conditioned-video-generation)  
-   标签：评分：8.0/10、query:q13
-   evidence：机器人操作的动作条件视频生成
-2. [Observing and Controlling Features in Vision-Language-Action Models](/202603/22/2603.05487v1-observing-and-controlling-features-in-vision-language-action-models)  
-   标签：评分：8.0/10、query:q12
-   evidence：VLA架构的机械可解释性研究
-3. [RoboRouter: Training-Free Policy Routing for Robotic Manipulation](/202603/22/2603.07892v3-roborouter-training-free-policy-routing-for-robotic-manipulation)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：包含 VLA 和 VA 策略的机器人操作策略路由框架
-4. [TRIP-Bag: A Portable Teleoperation System for Plug-and-Play Robotic Arms and Leaders](/202603/22/2603.09226v1-trip-bag-a-portable-teleoperation-system-for-plug-and-play-robotic-arms-and-leaders)  
-   标签：评分：8.0/10、query:q5
-   evidence：用于收集高保真操作数据的便携式遥操作系统
-5. [Beyond Binary Success: Sample-Efficient and Statistically Rigorous Robot Policy Comparison](/202603/22/2603.13616v1-beyond-binary-success-sample-efficient-and-statistically-rigorous-robot-policy-comparison)  
-   标签：评分：7.0/10、query:q14
-   evidence：高效的机器人策略比较与基准测试
-6. [Amortizing Trajectory Diffusion with Keyed Drift Fields](/202603/22/2603.14056v1-amortizing-trajectory-diffusion-with-keyed-drift-fields)  
+1. [EXPLORE-Bench: Egocentric Scene Prediction with Long-Horizon Reasoning](/202603/23/2603.09731v1-explore-bench-egocentric-scene-prediction-with-long-horizon-reasoning)  
+   标签：评分：8.0/10、query:q9
+   evidence：具身智能体的第一视角场景预测
+2. [From Prior to Pro: Efficient Skill Mastery via Distribution Contractive RL Finetuning](/202603/23/2603.10263v1-from-prior-to-pro-efficient-skill-mastery-via-distribution-contractive-rl-finetuning)  
+   标签：评分：8.0/10、query:q7
+   evidence：通过强化学习优化预训练的生成式机器人策略
+3. [Contact Coverage-Guided Exploration for General-Purpose Dexterous Manipulation](/202603/23/2603.10971v1-contact-coverage-guided-exploration-for-general-purpose-dexterous-manipulation)  
+   标签：评分：8.0/10、query:q2
+   evidence：通用灵巧操作的探索方法
+4. [Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics](/202603/23/2603.11383v1-vision-based-hand-shadowing-for-robotic-manipulation-via-inverse-kinematics)  
+   标签：评分：8.0/10、query:q8
+   evidence：动作在机器人复现前先在物理仿真中预览
+5. [On Globally Optimal Stochastic Policy Gradient Methods for Domain Randomized LQR Synthesis](/202603/23/2603.14197v1-on-globally-optimal-stochastic-policy-gradient-methods-for-domain-randomized-lqr-synthesis)  
+   标签：评分：7.0/10、query:q8
+   evidence：用于减少仿真到现实差距的领域随机化
+6. [WorldVLM: Combining World Model Forecasting and Vision-Language Reasoning](/202603/23/2603.14497v1-worldvlm-combining-world-model-forecasting-and-vision-language-reasoning)  
+   标签：评分：7.0/10、query:q4
+   evidence：视觉语言模型与世界模型
+7. [Physically Accurate Rigid-Body Dynamics in Particle-Based Simulation](/202603/23/2603.14634v1-physically-accurate-rigid-body-dynamics-in-particle-based-simulation)  
    标签：评分：7.0/10、query:q13
-   evidence：用于机器人任务规划的扩散轨迹规划器
-7. [SGR-OCC: Evolving Monocular Priors for Embodied 3D Occupancy Prediction via Soft-Gating Lifting and Semantic-Adaptive Geometric Refinement](/202603/22/2603.14076v1-sgr-occ-evolving-monocular-priors-for-embodied-3d-occupancy-prediction-via-soft-gating-lifting-and-semantic-adaptive-geometric-refinement)  
-   标签：评分：7.0/10、query:q9
-   evidence：用于具身智能场景感知的3D语义占据预测
-8. [Physics-Informed Policy Optimization via Analytic Dynamics Regularization](/202603/22/2603.14469v1-physics-informed-policy-optimization-via-analytic-dynamics-regularization)  
-   标签：评分：7.0/10、query:q2
-   evidence：物理感知的机器人控制策略优化
-9. [RenderMem: Rendering as Spatial Memory Retrieval](/202603/22/2603.14669v1-rendermem-rendering-as-spatial-memory-retrieval)  
-   标签：评分：6.0/10、query:q13
-   evidence：用于具身推理和场景表示的空间记忆
-10. [GNNVerifier: Graph-based Verifier for LLM Task Planning](/202603/22/2603.14730v1-gnnverifier-graph-based-verifier-for-llm-task-planning)  
-   标签：评分：6.0/10、query:q13
-   evidence：基于图的LLM任务规划验证器
-11. [PerlAD: Towards Enhanced Closed-loop End-to-end Autonomous Driving with Pseudo-simulation-based Reinforcement Learning](/202603/22/2603.14908v1-perlad-towards-enhanced-closed-loop-end-to-end-autonomous-driving-with-pseudo-simulation-based-reinforcement-learning)  
+   evidence：机器人物理精确仿真
+8. [Ego to World: Collaborative Spatial Reasoning in Embodied Systems via Reinforcement Learning](/202603/23/2603.14811v1-ego-to-world-collaborative-spatial-reasoning-in-embodied-systems-via-reinforcement-learning)  
+   标签：评分：7.0/10、query:q10
+   evidence：具身系统中的动作导向抓取和空间推理
+9. [Sample-Efficient Hypergradient Estimation for Decentralized Bi-Level Reinforcement Learning](/202603/23/2603.14867v1-sample-efficient-hypergradient-estimation-for-decentralized-bi-level-reinforcement-learning)  
    标签：评分：6.0/10、query:q11
-   evidence：用于闭环训练的伪仿真技术
+   evidence：通过双层强化学习进行仓库机器人环境设计
+10. [NavThinker: Action-Conditioned World Models for Coupled Prediction and Planning in Social Navigation](/202603/23/2603.15359v2-navthinker-action-conditioned-world-models-for-coupled-prediction-and-planning-in-social-navigation)  
+   标签：评分：6.0/10、query:q11
+   evidence：用于场景几何预测的动作条件世界模型
+11. [Kimodo: Scaling Controllable Human Motion Generation](/202603/23/2603.15546v1-kimodo-scaling-controllable-human-motion-generation)  
+   标签：评分：6.0/10、query:q13
+   evidence：用于仿真中人体动作合成的生成模型
 
 
 <div class="dpr-home-promo-card">

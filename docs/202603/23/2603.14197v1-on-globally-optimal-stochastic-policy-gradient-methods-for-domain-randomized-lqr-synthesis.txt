@@ -1,0 +1,2337 @@
+Title: On Globally Optimal Stochastic Policy Gradient Methods for Domain Randomized LQR Synthesis
+
+URL Source: https://arxiv.org/pdf/2603.14197v1
+
+Published Time: Tue, 17 Mar 2026 04:37:26 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# On Globally Optimal Stochastic Policy Gradient Methods for Domain Randomized LQR Synthesis 
+
+Alex Nguyen-Le and Nikolai Matni 
+
+Abstract — Domain randomization is a simple, effective, and flexible scheme for obtaining robust feedback policies aimed at reducing the sim-to-real gap due to model mismatch. While domain randomization methods have yielded impressive demonstrations in the robotics-learning literature, general and theoretically motivated principles for designing optimization schemes that effectively leverage the randomization are largely unexplored. We address this gap by considering a stochastic policy gradient descent method for the domain randomized linear-quadratic regulator synthesis problem, a situation simple enough to provide theoretical guarantees. In particular, we demonstrate that stochastic gradients obtained by repeatedly sampling new systems at each gradient step converge to global optima with appropriate hyperparameters choices, and yield better controllers with lower variability in the final controllers when compared to approaches that do not resample. Sampling is often a quick and cheap operation, so computing policy gradients with newly sampled systems at each iteration is preferable to evaluating gradients on a fixed set of systems. 
+
+I. I NTRODUCTION 
+
+Domain randomization (DR) has gained wide adoption in reinforcement learning and robot learning for enabling sim-to-real transfer [1]. By harnessing massive GPU parallelism, DR trains controllers across randomized environments to robustify controllers against model uncertainty by minimiz-ing expected cost over a sampled uncertainty distribution. In contrast, control theoretic approaches typically handle uncertainty via robust control, designing for the worst case over the uncertainty set. While the robust control methods come with theoretical guarantees that are largely absent in DR, robust control methods frequently suffer from over-conservatism due to their pessimistic formulation. DR trades these theoretical guarantees for straightforward implementa-tion and effective use of GPU computing resources, which are major contributor to DR’s practical success. An intermediate formulation between DR and robust control, introduced by Fujinami et al. [2], [3], is the domain-randomized linear-quadratic regulator (DR-LQR), which retains DR’s ease of implementation while adding stability guarantees. The only missing benefit of DR in Fujinami et al. [2], [3] is the effective utilization of available compute resources, which we address in our work. While Fujinami et al. can scale their policy gradient method with available GPU compute, their approach is inherently limited by the surrogate cost function employed instead of the DR                  
+
+> A. Nguyen-Le and N. Matni are with the Department of Elec-trical and Systems Engineering, University of Pennsylvania. Emails:
+> {atn,nmatni }@seas.upenn.edu
+
+cost function, which we directly optimize with stochastic gradient descent (SGD) methods. 
+
+A. Related Work: LQR Policy Gradient Methods 
+
+The seminal work in applying policy gradient methods to LQR synthesis is Fazel et al. [4], which established that the policy gradient satisfies a gradient-domination condi-tion [5] that can find global optimal solutions to (LQR) synthesis problem despite nonconvexity in the cost-function and feasible set. This has been greatly refined and ex-tended over the past decade; many other optimal control synthesis problems also support globally convergent policy optimization, notably H2/H ∞ and H∞ control synthesis [6], Markov jump linear system control synthesis [7], and even to the reinforcement learning settings [8]. Despite the impact of Fazel et al. [4] in the control-literature, many extensions to LQR-synthesis problems possess convex-optimization formulations so policy-gradient methods are not the only techniques that can produce optimal controllers [9]. A notable exception is that of the domain randomized LQR (DR-LQR) problem [2], [3] where Fujinami et al. [3] show that gradient descent applied to a surrogate sample-average cost converges to a nearly optimal controller. In contrast, we show that an optimal controller can be found by applying stochastic gradient descent directly to the DR-LQR objective. 
+
+B. Related Work: Domain Randomization 
+
+Domain randomization, popularized in the reinforcement learning and robotics literature [1], [10], randomizes simula-tor parameters towards reducing the sim-to-real gap. While the parameters chosen for randomization are highly task dependent, tasks employing dynamics simulations typically vary physical constants like masses, geometries, or scaling factors [10]–[12]. Similarly, when vision is an important component for solving the task at hand, randomization is typically employed over features like textures, lighting, or field-of-view of the vision system [1] [13]. This randomiza-tion is typically employed by sampling new parameters at each training episode, as opposed to fixed at the outset as in predecessors to DR, like the scenario-approach [14], [15] from robust control or ensemble randomization techniques from robot learning [16] [17]. This ability to sample and roll out randomized environments in parallel is a key factor in the success of domain randomization: we show how this capability can be leveraged to efficiently compute an optimal DR-LQR controller. 
+
+> arXiv:2603.14197v1 [eess.SY] 15 Mar 2026
+
+C. Main Contributions  
+
+> •
+
+Stochastic Policy Gradient Convergence: We estab-lish the first proof of linear convergence of minibatched SGD to a ε-suboptimal solution of the DR-LQR prob-lem. We further characterize sufficient conditions on the amount of samples a minibatch should containas a function of this suboptimality level.  
+
+> •
+
+Computational Advantage: We empirically show that, for a fixed computational budget, solving the DR-LQR problem via SGD yields a policy that outperforms a controller obtained from the surrogate sample-average formulation of [3]. II. P ROBLEM DESCRIPTION 
+
+Consider a fully observed linear dynamical system, with state xt ∈ Rnx , input ut ∈ Rnu , and noise wt ∈ Rnx . The system evolves as 
+
+xt+1 = Ax t + Bu t + wt
+
+where wt ∼ N (0 , Σw) and we assume that Σw ⪰ I. For fixed system parameters, θ := [ A, B ] the infinite-horizon stochastic LQR cost is given by, 
+
+J(K, θ ) = lim sup  
+
+> T→∞
+
+EKw
+
+"
+
+1
+
+T
+
+> T
+
+X
+
+> t=0
+
+xt
+
+ut
+
+  Q SS⊤ R
+
+  xt
+
+ut
+
+#
+
+= tr( P (K, θ )Σ w) (1) where P (K, θ ) is the cost-to-go matrix and satisfies [18], 
+
+P (K, θ ) = dlyap(( A−BK )⊤, Q −SK −S⊤K⊤ +K⊤RK )
+
+and, 
+
+dlyap( A − BK, X ) = 
+
+> ∞
+
+X
+
+> ℓ=0
+
+(A − BK )ℓX(A − BK )ℓ⊤.
+
+Further, the superscript K indicates that the expectation is taken under the closed-loop policy ut = −Kx t with respect to the noise process wt. We also assume that the quadratic cost parameter Q := 
+
+ Q SS⊤ R
+
+
+
+satisfies Q ⪰ I.We model the system parameters θ as random variables supported on a convex and compact set Θ with density 
+
+pΘ, and define the domain randomized linear-quadratic-regulator (DR-LQR) synthesis problem as seeking a feed-back gain K which minimizes the expecation of the LQR cost (1) with respect to the system parameters: minimize  
+
+> K
+
+Eθ [J(K, θ )] 
+
+subject to: sup 
+
+> θ∈Θ
+
+J(K, θ ) < ∞ (DR-LQR) We define JDR (K) := Eθ [J(K, θ )] and drop the expecation subscript, as all expectations will be with respect to θ, i.e., 
+
+JDR (K) = E[J(K, θ )] .Solving problem (DR-LQR) is challenging because both the objective and constraint set is nonconvex, and neither the objective nor its gradient can be exactly computed. Nevertheless, we show that we can solve (DR-LQR) via the minibatched SGD scheme in Algorithm 1. In § III, we first show that despite the nonconvexity of the underlying problem, gradient descent converges to a global optimum as the objective function enjoys a gradient dominance property. In § IV, we then show that stochastic gradient descent imple-mented with approximate gradients estimated via minibatch sampling also converge to a globally optimal solution, albeit at a degraded rate. 
+
+Algorithm 1 DR Minibatched Stochastic Gradient Descent  
+
+> 1:
+
+Input: System Probability Distribution pΘ(·), Minibatch Size M , Step-Size, η, Number of Gradient Steps t,Starting Point K0 
+
+> 2:
+
+Output: K 
+
+> 3:
+
+K ← K0 
+
+> 4:
+
+for n ∈ { 1, . . . , N } do  
+
+> 5:
+
+Sample M systems from pΘ
+
+θ1, . . . , θ M ∼ pΘ(θ) 
+
+> 6:
+
+Compute the minibatched gradients 
+
+g(K) ← 1
+
+M
+
+> M
+
+X
+
+> i=1
+
+∇J(K, θ i) (MB-G)  
+
+> 7:
+
+Take a minibatched gradient step, 
+
+K ← K − ηg (K) (MB-SGD)  
+
+> 8:
+
+end for 
+
+Proofs of all intermediate results, as well as exact ex-pressions for constants and polynomials appearing in the sequel can be found in the appendix of our extended version available. III. C ONVERGENCE ANALYSIS OF GRADIENT DESCENT FOR DR-LQR We begin with the idealized setting in which the exact gradient ∇JDR (K) of the DR-LQR objective is available. Even in this case, establishing convergence of gradient descent to a global optimum is nontrivial since the DR-LQR cost function is nonconvex in the feedback gain K. This difficulty already arises in the LQR problem parameterized by the control policy [4], where global convergence of policy gradient methods is shown by exploiting a gradient dominance property and suitable smoothness conditions. In particular, in addition to establishing gradience dominance, smoothness is needed to ensure that each update 
+
+Kℓ+1 = Kℓ − η∇JDR (K)
+
+remains stabilizing , i.e., in the feasible set of gains. In the standard LQR setting, Hu et al. [9] address this challenge through a modified smoothness argument: by re-stricting attention to line segments between feasible policies, they establish a form of local smoothness that guarantees cost decrease under an appropriately chosen step size. Here, we extend this reasoning to the DR-LQR setting by showing that the DR-LQR cost function is coercive, L-smooth (i.e., has L-Lipschitz gradients) on any sublevel set, and satisfies a (local) gradient dominance property near the optimal solution. To show convergence, we also assume that an initial controller K0 is available which simultaneously stabilizes all systems in Θ, i.e, that K0 ∈ K Θ := {K : sup θ∈Θ J(K, θ ) < ∞} .
+
+A. DR-LQR Cost is Coercive 
+
+We note that for any θ ∈ Θ, the LQR cost J(K, θ )
+
+is coercive over any sub-level set {K : J(K, θ ) ≤ c}
+
+for c < ∞ [19, Lemma 3.7]. A minor modification of Lemma 3.7 in [19] shows that J(K, θ ) satisfies the uniform in θ quadratic lower bound J(K, θ ) ≥ λmin (Σ w)∥K∥2 
+
+> F
+
+.Taking expectations of both sides then allows us to conclude coercivity of the DR-LQR cost JDR (K).
+
+B. DR-LQR Cost is Locally L-Smooth 
+
+The cost JDR (K) is not globally L-smooth because for any fixed θ ∈ Θ, the cost J(K, θ ) rapidly becomes infinite at the boundary between stable and unstable controllers, violating traditional smoothness conditions [9]: hence we do not expect the DR-LQR cost JDR (K) to satisfy global smoothness either. Instead, we fix a performance level c > o ,and show that within c-sublevel sets Sc := {K : JDR (K) ≤
+
+c}, local smoothness can be established. 
+
+Lemma 1 (Policy-Smoothness) . Fix c > 0. The cost 
+
+E[J(K, θ )] is LK -smooth at any K ∈ Sc, with LK given by 
+
+LK :=4 
+
+∥Q∥ op + 2 ¯θ 2op JDR (K0)
+
+σmin (Σ w)
+
+ · · · (2) 
+
+·
+
+1 + 4∥¯θ 2op JDR (K0)
+
+σmin (Σ w)2
+
+ 2JDR (K0)
+
+σmin (Q)
+
+Where the operator norm is given by the maximum singular value. Here, 
+
+E(K, θ ) = ( R+B⊤P (K, θ )B)K −B⊤P (K, θ )A−S⊤
+
+Σ( K, θ ) = dlyap(( A − BK )⊤, Σw)¯θ = sup 
+
+> θ∈Θ
+
+∥[A, B ]∥op .
+
+We note that all quantities in eq. (2) can be bounded above by polynomials in problem specific parameters and c.
+
+Proof. The Hessian of J(K, θ ) is given in Bu et al. [19]. Em-ploying this Hessian, submultiplicativity, subadditivity, the shorthands introduced, and finally noting that, by Appendix Corollary 2, ∥E[D2 
+
+> K
+
+J(K, θ )] ∥op ≤ LK .We next show that local L-smoothness can be used to select a step-size for gradient descent that ensures that the DR-LQR cost decreases at each iteration. The following is an adaptation of Hu et al. [9, Theorem 1] to obtain the following feasibility lemma. 
+
+Proposition 1 (Theorem 1 of Hu et al. [9]) . Let K1, K 2 ∈ Sc
+
+be two arbitrary policies in the sublevel set Sc. Denote by 
+
+I(K1, K 2) = {ϕK 1 + (1 − ϕ)K2 : ϕ ∈ [0 , 1] }, the line segment connecting K1, K 2. If I(K1, K 2) ⊆ Sc, then for 
+
+LK as given in equation (2), we have that 
+
+JDR (K2) ≤ JDR (K1) + ⟨∇ JDR (K1), K 2 − K1⟩
+
++ LK
+
+2 ∥K2 − K1∥2 
+
+> F
+
+(3) We can apply this result to show that if K0 ∈ Sc, then all future iterates Kℓ of gradient descent applied with step-size 
+
+η = L−1 
+
+> K
+
+remain in Sc. In particular, it holds that for any 
+
+K ∈ Sc, the segment I(K, K − L−1 
+
+> K
+
+∇E[J(K, θ )]) ⊆ Sc, so that by Prop. 1: 
+
+JDR (K − L−1 
+
+> K
+
+∇K JDR (K)) ≤
+
+JDR (K) − 12LK
+
+∥∇ K JDR (K)∥2 
+
+> F
+
+≤ JDR (K).
+
+This is called the implicit regularization property by Hu et al. [9], and importantly ensures that all iterates of gradient descent remain in KΘ if the initial iterate K0 ∈ K Θ.
+
+C. Gradient Dominance of DR-LQR Cost: 
+
+Fujinami et al. [3] show that a sample average surrogate of the DR-LQR cost enjoys gradient dominance in a neigh-borhood of the optimal policy under suitable heterogeneity assumptions, as captured by diam(Θ) .We show here that this argument can be extended to the true DR-LQR cost function JDR (K) under analogous assumptions. Our strategy is to first show that the DR-LQR cost satisfies an approximate gradient dominance property, then argue that this guarantees gradient dominance in a suitable neighborhood of the optimal controller K⋆.
+
+Lemma 2 (Approximate Gradient-Domination) . Fix c > 0
+
+and K ∈ Sc. Then the following bound holds: 
+
+JDR (K) − JDR (K⋆)
+
+≤ 2  ∥∇ K JDR (K)∥2 
+
+> F
+
++ 2 ∥E[R(K, K ⋆, θ )] ∥2
+
+> F
+
+
+
+where 
+
+R(K⋆, K, θ ) = E(K, θ )(Σ( K, θ ) − Σ( K⋆, θ )) ,
+
+Proof. This proof is an adapation of Fujinami et al. Lemma III.3 [3]. By the almost-smoothness lemma of Fazel et al. [4], combined with the monotonic property of the integrals, we have that: 
+
+JDR (K) − JDR (K⋆) ≤
+
+2 vec( K − K⋆)⊤ vec  E[Σ( K⋆, θ )E(K, θ ))] 
+
+− vec  K − K⋆)⊤E[ Σ( K⋆, θ ) ⊗ (B⊤P (K, θ )B + R)]( ·)
+
+≤ 2  ∥∇ K JDR (K)∥2 
+
+> F
+
++ 2 ∥E[R(K, K ⋆, θ )] ∥2 
+
+> F
+
+] .
+
+Where (·) is vec( K − K⋆); the result follows by employing completion of squares and adding/subtracting Σ( K, θ ).From here, we see that if we can bound the remainder term 
+
+R(K, K ⋆) by a sufficiently small multiple of E[J(K, θ ) −
+
+J(K⋆, θ )] , we can ensure gradient domination—this is the approach taken in Lemma III.4 of Fujinami et al. [3]. We do so in the following Lemma, which extends the arguments of [3, Lemmas III.5-7] to the DR-LQR cost JDR .Proposition 2. Let the diameter of the set be bounded above by, 
+
+diam(Θ) ≤ inf 
+
+> θ∈Θ
+
+150000 max( ∥¯θ∥, 1) J(KLQR (θ), θ )6
+
+where ΘB is the support of B. Within the set, 
+
+S := 
+
+KJDR (K) ≤ 8JDR (K⋆),
+
+∥∇ JDR (K)∥F ≤ 128 sup 
+
+> B∈Θ
+
+(∥B∥, 1) JDR (K)3
+
+ ,
+
+we have that 
+
+JDR (K) − JDR (K⋆) ≤ 4∥∇ JDR (K)∥2 
+
+> F
+
+.
+
+Convergence of Gradient Descent: 
+
+We now have all the ingredients needed to prove con-vergence of gradient descent to an optimal solution to problem (DR-LQR) assuming an initial stabilizing controller 
+
+K0 ∈ K Θ ∩ S.1
+
+Theorem 1 (Linear Convergence) . Let K0 ∈ K Θ ∩ S , set 
+
+η ≤ L−1 
+
+> K
+
+, and consider the gradient descent iterates 
+
+Kℓ+1 = K − η∇JDR (K).
+
+Then, the following are true:  
+
+> •
+
+For all ℓ = 0 , 1, 2, ... , we have that Kℓ ∈ K Θ ∩ S.  
+
+> •
+
+The iterates satisfy 
+
+JDR (Kℓ) − JDR (K⋆)
+
+≤
+
+
+
+1 − 18LK
+
+ℓ  JDR (K0) − JDR (K⋆). (4) In particular, if we take 
+
+N ≥ log 
+
+ JDR (K0) − JDR (K⋆)
+
+ε
+
+. 
+
+log 
+
+ 8Lk
+
+8LK − 1
+
+
+
+(5) gradient descent steps, we achieve suboptimality, 
+
+JDR (KN ) − JDR (K⋆) ≤ ε. 
+
+Proof. The result follows by [9, Theorem 1]. In particular, we have proved that for any K ∈ K Θ ∩ S, the DR-LQR cost 
+
+JDR (K) is coercive and is LK -smooth (Lem. 1). Further note that if K0 ∈ K Θ ∩ S then all future iterates Kℓ also belong to the set KΘ ∩ S follows from the descent guarantee following Prop. 1 and the definition of S, as gradient norms of iterates are bounded by a monotonically decreasing function. Finally, as the DR-LQR cost function satisfies a gradient dominance property of degree 2 with parameter 
+
+μ = 18 , the linear convergence rate (4) is guaranteed.    
+
+> 1We show in the appendix that under gradient dominance, a slight modification of the discounted-annealing scheme proposed in Fujinami et al. [3] enables one to find such an initial controller K0∈ K Θ∩ S .
+
+IV. C ONVERGENCE ANALYSIS OF SGD FOR DR-LQR This section provides an end-to-end convergence analysis for the minibatch SGD procedure in Algorithm 1, where the primary goal is find hyperparameters guaranteeing a ε-suboptimal solution with probability at least 1 − δ. This requires explicit characterization of a minibatch size M ,step size η, and number of descent steps, N . The main technical challenge is the potential for infeasibility arising from gradient approximation. While we know from Propo-sition 1 that gradient steps maintain feasibility, it is possible for approximate gradient steps to fail to maintain feasibility due to gradient-approximation errors. 
+
+A. SGD Analysis Setup 
+
+Throughout this section we assume that JDR (K), is LK -smooth on its sublevel-sets as previously established in Section III, and μ-gradient dominated on S (as in Propo-sition 2), and on a fixed sublevel set Sc. Further, we define, the minibatch gradient g(K), exact gradient step Kgd , and stochastic gradient step Ksgd as 
+
+g(K) := 1
+
+M
+
+> M
+
+X
+
+> i=1
+
+∇K J(K, θ i), θi
+
+> iid
+
+∼ pΘ (MB-G) 
+
+Kgd := K − L−1 
+
+> K
+
+∇JDR (K)
+
+Ksgd := K − L−1 
+
+> K
+
+g(K).
+
+This section analyzes the convergence properties of the SGD iterates: 
+
+Kℓ+1 = Kℓ − L−1 
+
+> K
+
+∇g(Kℓ) = Ksgd  
+
+> ℓ
+
+. (MB-SGD) To analyze how accurately g(K) must estimate the gradients, it is helpful to interpret the stochastic gradient update as a perturbation to the gradient update, 
+
+Ksgd  
+
+> ℓ
+
+= Kgd  
+
+> ℓ
+
++ ( Ksgd  
+
+> ℓ
+
+− Kgd  
+
+> ℓ
+
+).
+
+Employing this with known feasibility guarantees on 
+
+J(K, θ ), like the ones in Fazel et al. [4], allows us to derive similar guarantees for JDR (K). We condense and summarize the contents of lemma 22 through 27, relegating its proof to the appendix [4] . 
+
+Proposition 3 (DR Feasible Step Size) . Consider any K
+
+belonging to a sublevel set Sc of JDR . If 
+
+∥Ksgd − Kgd ∥op ≤ σmin (Q)σmin (Σ w)4JDR (K) ¯θ op 
+
+  ¯θ op + 1  =: cg
+
+then 
+
+|JDR (Kgd ) − JDR (Ksgd )| ≤ Lcost ∥Kgd − Ksgd ∥F .
+
+Furthermore, the entire line segment, I(K, K sgd ) is feasible. The derivations of the constant cg and Lcost , follow by application of matrix calculus identities are provided in the appendix of the extended version of this work. Proposition 3 ensures that we possess enough smoothness for gradient descent to be tunable and yield feasible iterates, a key step in invoking gradient-domination bounds. B. One-Step Decomposition 
+
+To analyze the iterates obtained by SGD eq. (MB-SGD), we first decompose the cost at each iteration into an exact gradient update step perturbed by an error due to sampling. 
+
+Lemma 3 (Cost Decomposition, [4] Thm. 31) . Assume that 
+
+∥Kgd − Ksgd ∥ satisfies Proposition 3. The cost difference can be bounded above by, 
+
+JDR (Ksgd )−JDR (K⋆) ≤
+
+
+
+1− μLK
+
+ JDR (K)−JDR (K⋆)
+
++ Lcost ∥Ksgd − Kgd ∥F (6) 
+
+Proof. By Proposition 1, we have that Kgd is feasible, and thus satisfies: 
+
+JDR (Kgd )−JDR (K⋆) ≤
+
+
+
+1 − μLK
+
+
+
+(JDR (K) − JDR (K⋆)) 
+
+Adding and subtracting JDR (Ksgd ) to the left-hand side, rearranging the terms, and applying Proposition 3 yields the result. This one-step decomposition reveals the terms that need to be controlled to establish convergence of SGD. In the upper bound of eq. (6), we have a contraction term of eq. (4), perturbed by an error term due to gradient approximation. We use a sufficient condition for descent adapted from Fazel et al. [4], which accounts for the error as a contraction rate degradation. 
+
+Lemma 4 (Degraded Contraction) . Fix a desired subopti-mality ε. For ℓ ∈ { 0, . . . , N − 1}, if we have 
+
+∥Ksgd  
+
+> ℓ
+
+− Kgd  
+
+> ℓ
+
+∥F ≤ με 
+
+2Lcost LK
+
+, ε ≤ JDR (Kℓ) − JDR ,
+
+we obtain the degraded contraction rate 
+
+JDR (Kℓ) − JDR (K⋆) ≤
+
+
+
+1− μ
+
+2LK
+
+ℓ
+
+(JDR (K0) − JDR (K⋆)) .
+
+Proof. This follows by an induction, following [4, Theorem 31], Lemma 3, and the additional assumptions we make. 
+
+Corollary 1 (Gradient Estimation Error) . If, at each iteration, we have that 
+
+∥g(Kℓ) − ∇ JDR (Kℓ)∥F ≤ με 
+
+2Lcost 
+
+,
+
+then we obtain the degraded contraction rate of Lemma 4. A direct consequence of Corollary 1, is a link between allowable gradient estimation errors to and the corresponding policy errors. We can arrive at an expression for the required accuracy of the minibatch gradients to remain feasible, and yield a degraded linear convergence rate. All of these quantities can be expressed in terms of problem specific constants. Finally, we address the issue of minibatch-gradient concentration. 
+
+C. Concentration of minibatched-gradient estimators 
+
+We start by denoting the gradient estimation error by ε∇,where we would like to ensure that: 
+
+∥g(K) − ∇ JDR (K)∥F ≤ ε∇.
+
+for some choice of gradient estimation error ε∇. We achieve this by invoking the Matrix Bernstein inequalities, which require that we find norm and variance bounds on (MB-G). This can be achieved by defining the zero-mean symmetrized matrix, 
+
+GM := 
+
+0 vec  g(K) − ∇ K JDR (K)
+
+∗ 0
+
+
+
+=
+
+> M
+
+X
+
+> i=1
+
+Gi (7) that we will bound with the rectangular matrix Bernstein inequality, found in Vershynin [20, Exercise 5.4.15], adapted to the task at hand. Bounds on the support norm ¯G and variance proxy σ2 as expressions in the problem constants are characterized in our appendix. Essentially, we employ the mean-value theorem to obtain these in terms of problem specific parameters and diam(Θ) .
+
+Lemma 5 (Matrix Bernstein Inequality) . Let Gi be defined as in (7), and assume that, 
+
+∥∇ K J(K, θ i) − ∇ JDR (K)∥F ≤ ¯G
+
+E[∥∇ K J(K, θ i) − ∇ K JDR (K)∥2 
+
+> F
+
+] ≤ σ2
+
+then, 
+
+Prob {∥ GM ∥F ≥ ε∇} ≤ 2( nxnu +1)exp 
+
+ −M ε 2
+
+> ∇
+
+4( σ2 + ¯Gε ∇/3) 
+
+
+
+.
+
+Thus, if we pick M as, 
+
+M ≥ 4( σ2 + ¯Gε ∇/3) 
+
+ε2
+
+> ∇
+
+log 
+
+ 2( nxnu + 1) 
+
+δ
+
+
+
+,
+
+with probability at least 1 − δ, each gradient-estimation error is bounded above by ε∇.
+
+Proof. The matrix Bernstein inequality we use is expressed as a Frobenius norm; the conversion and expression in prob-lem dependent constants is covered in Appendix Lemma 10. 
+
+D. Convergence of Stochastic Gradient Descent 
+
+Finally, we have all of the expressions needed to find an explicit set of hyperparameters to make algorithm 1 converge to an ε-suboptimal policy, expressed solely in terms of the problem specifications. 
+
+Theorem 2 (High-Probability Convergence of Minibatch SGD) . Consider (DR-LQR) problem where the conditions of Proposition 2 are satisfied. Then, we have that JDR (K)
+
+is μ-gradient dominated with μ = 1 /8 and with access to a feasible starting controller K0 ∈ S . Pick a desired subop-timality, ε and failure probability δ. If we run algorithm 1 with: 
+
+η ≤ L−1     
+
+> K02000 4000 6000 8000 10000
+
+Gradient Steps 
+
+> 01000 2000 3000 4000 5000
+> E[ f (K, θ ) − f (K?, θ )]
+
+DR-LQR Cost      
+
+> M=1 M=8 M=64 M=256
+> 02000 4000 6000 8000 10000
+
+Gradient Steps 
+
+> 292000 292500 293000 293500 294000
+> E[ f (K, θ )
+
+DR vs SA Cost    
+
+> SA DR
+> 34 .034 .535 .035 .5
+
+‖K‖2 Norm 
+
+> 10 1
+> 10 2
+> 10 3
+> Frequency
+
+‖K‖2 Histogram                  
+
+> SA DR Fig. 1. All figures are generated with 1000 independent trials with 10000 gradient steps. Left: We plot the median and the 25% and 75% percentiles for 1000 independent trials of optimizing the domain randomization cost with varying minibatch size. To approximate the DR-cost we employ the sample average estimator, JDR (K)≈1
+> ndr
+> Pndr
+> i=1 J(K, θ i)with a large amount of samples ( ndr = 10 5) used to visualize the descent dynamics of the DR-cost.
+> Center: We provide a zoomed in figure for the descent dynamics of the SA synthesized controller of [3] and the DR synthesized controller by algorithm 1 in this work with M= 8 for both optimization procedures, as well as the 25% and 75% percentiles of the cost trajectories. Right: We plot the empirical distribution (on a logarithmic scale) of the ℓ2norm of the final obtained controller to illustrate the reduced variance in the controller synthesized by DR versus SA.
+
+N ≥ log 
+
+ JDR (K0) − JDR (K⋆)
+
+ε
+
+. 
+
+log 
+
+ 8Lk
+
+8LK − 1
+
+
+
+M ≥ 4( √2σ2 + ¯Gε ∇/3) 
+
+ε2
+
+> ∇
+
+log 
+
+ 2N (nxnu + 1) 
+
+δ
+
+
+
+,ε∇ ≤ min 
+
+ με 
+
+2Lcost 
+
+, c g
+
+
+
+then, with probability at least 1 − δ over the randomness of the minibatch sampling, 
+
+JDR (K) − JDR (K⋆) ≤ ε. 
+
+Where all constants depend only on μ, K0, Q, Σw, nx, nu,
+
+diam(Θ) , ∥¯θ∥, ε, and δ.
+
+Proof. We already have expressions for the step size and the number of iterations, (that can also account for the degraded contraction rate) from eq. (2) and eq. (5),where we use the degraded contraction rate of Lemma 4. However, to find a minibatch size, we need to ensure that all N iterations to succeed. If we specify a probability of success δ, and set the failure probability at each stage to be δ/N , then M is given by Lemma 5. Finally, to find ε∇, ¯G, σ 2, we employ Corollary 1 and Lemma 3 to express ε∇ in terms of problem dependent parameters and a starting point, and Lemma 10 to express ¯G and σ2 in terms of in terms of problem dependent parameters and a starting point. We emphasize that with this batch size M , the intermedi-ate iterates are also feasible with high-probability, and that Algorithm 1 with parameters prescribed by Theorem 2 only yields a ε-suboptimal controller, but taking any additional steps is not guaranteed to yield any further progress. Refine-ments with step size tunings that yield globally convergent SGD we leave for future work. V. N UMERICAL EXPERIMENTS 
+
+We demonstrate that we can solve the DR-LQR problem defined in equation (DR-LQR) in practice with minibatched SGD. In our experiments, we consider stabilizing a cart-pole system linearized by automatic differentiation and discretized using the matched transformation. For our randomization domain, Θ, we randomize pendulum lengths that we assume come from a uniform distribution supported on [0 .2, 0.8] m ,a cart mass of 1kg, a pendulum mass of 1kg, a track-cart coefficient of friction 0.25 , and a pendulum joint friction 
+
+0.01 N · m. To generate our figures, we plot data from 1000 independent trials, with step-size η = 5 × 10 −8 and number of gradient steps t = 10000 . We do not use Theorem 2 directly to find M , N or η, instead finding them empirically by hyperparameter tuning. Our conservative step size was tuned specifically to ensure convergence on all batch sizes for equal comparisons of optimizer progress versus number of gradient steps. All other implementation details will be relegated to the appendix. Figure 1 (left) illustrates that that increasing minibatch size leads to more accurate estimates of the gradient which leads to faster convergence of minibatched SGD. Further, more accurate gradients lead to better estimation of the global optima due to the lower gradient error incurred by sampling, as predicted by standard SGD theory and tighter concentration of the minibatch gradient about ∇JDR (K)
+
+[21]. We also compare this to the sample-averaged (SA) approx-imation to the DR cost, which first fixes M = 8 systems to form a surrogate cost function to optimize with as in [3]. This is illustrates the case of limited memory, where the optimizer employed only has enough memory to store M
+
+systems, where differences between DR and SA are more substantial. We observe that the controllers found by DR achieve lower costs, and have lower variability compared to their SA counterparts in the sense that the 25 th and 
+
+75 th percentiles are closer together. Further, the right-figure plotting the ℓ2 norm of the eventual controller shows that in the parameter space, there is substantially lower variation in controllers found by DR when compared to SA. Finally, we emphasize that while the stochasticity in the DR cost in 1 (center) suggest that the controllers synthesized by DR can vary significantly in cost, this stems from the DR cost approximation, not from inconsistency in the final converged controller. In our experiments, the SA optimization procedure of Fujinami et al. [3] takes 33.1 s (on average) to synthesize a controller for a fixed set of M = 8 systems, while the DR optimization routine takes 40.5 s (on average) to run on a Nvidia A100 GPU. For a modest 22% increase in runtime, we obtain controllers with lower DR cost and lower ∥K∥2 variance. This demonstrates a clear and practical advantage of the DR formulation; for a marginal increase in computational effort, the algorithm produces controllers that are not only higher-performing but, critically, are also substantially more reliable and consistent. VI. C ONCLUSIONS AND FUTURE WORK 
+
+We have studied a stochastic policy gradient method for the domain randomized linear-quadratic regulator problem. We showed that repeatedly sampling new systems at each gradient step led to convergence to global optima under ap-propriate hyperparameter choices. Compared to approaches that rely on a fixed set of systems, our method produced better controllers with lower variability in the final perfor-mance. Since sampling is often computationally inexpensive, evaluating gradients on freshly sampled systems proves to be more effective than using a static collection. Our future directions are primarily targeted as loosening the heterogeneity conditions employed to establish gradient-dominance, as the ones employed here are very restrictive. Further, we also believe it is possible to strengthen our methods to yield globally convergent SGD instead of just 
+
+ε-suboptimality. As this is the case in analyses of SGD under conditions of gradient dominance, we suspect that the extension to settings with nonconvex feasible sets in accessible with the tools developed here and more broadly in the optimization literature. VII. A CKNOWLEDGEMENTS 
+
+A. Nguyen-Le thanks Bruce Lee and Tesshu Fujinami for their insightful comments. This work was supported in part by NSF CAREER award ECCS-204583. REFERENCES [1] J. Tobin, R. Fong, A. Ray, J. Schneider, W. Zaremba, and P. Abbeel, “Domain randomization for transferring deep neural networks from simulation to the real world,” in 2017 IEEE/RSJ international con-ference on intelligent robots and systems (IROS) . IEEE, 2017, pp. 23–30. [2] T. Fujinami, B. D. Lee, N. Matni, and G. J. Pappas, “Domain randomization is sample efficient for linear quadratic control,” arXiv preprint arXiv:2502.12310 , 2025. [3] ——, “Policy gradient for lqr with domain randomization,” arXiv preprint arXiv:2503.24371 , 2025. [4] M. Fazel, R. Ge, S. Kakade, and M. Mesbahi, “Global convergence of policy gradient methods for the linear quadratic regulator,” in 
+
+International conference on machine learning . PMLR, 2018, pp. 1467–1476. [5] H. Karimi, J. Nutini, and M. Schmidt, “Linear convergence of gra-dient and proximal-gradient methods under the polyak-łojasiewicz condition,” in Joint European conference on machine learning and knowledge discovery in databases . Springer, 2016, pp. 795–811. [6] K. Zhang, B. Hu, and T. Basar, “Policy optimization for H2 linear control with H∞ robustness guarantee: Implicit regularization and global convergence,” SIAM Journal on Control and Optimization ,vol. 59, no. 6, pp. 4081–4109, 2021. [7] J. P. Jansch-Porto, B. Hu, and G. E. Dullerud, “Policy optimization for markovian jump linear quadratic control: Gradient method and global convergence,” IEEE Transactions on Automatic Control , vol. 68, no. 4, pp. 2475–2482, 2022. [8] K. Zhang, B. Hu, and T. Basar, “On the stability and convergence of robust adversarial reinforcement learning: A case study on linear quadratic systems,” Advances in Neural Information Processing Sys-tems , vol. 33, pp. 22 056–22 068, 2020. [9] B. Hu, K. Zhang, N. Li, M. Mesbahi, M. Fazel, and T. Bas ¸ar, “Toward a theoretical foundation of policy optimization for learning control policies,” Annual Review of Control, Robotics, and Autonomous Sys-tems , vol. 6, no. 1, pp. 123–158, 2023. [10] X. B. Peng, M. Andrychowicz, W. Zaremba, and P. Abbeel, “Sim-to-real transfer of robotic control with dynamics randomization,” in 2018 IEEE international conference on robotics and automation (ICRA) .IEEE, 2018, pp. 3803–3810. [11] Y. Chebotar, A. Handa, V. Makoviychuk, M. Macklin, J. Issac, N. Ratliff, and D. Fox, “Closing the sim-to-real loop: Adapting simula-tion randomization with real world experience,” in 2019 International Conference on Robotics and Automation (ICRA) . IEEE, 2019, pp. 8973–8979. [12] A. Loquercio, E. Kaufmann, R. Ranftl, A. Dosovitskiy, V. Koltun, and D. Scaramuzza, “Deep drone racing: From simulation to reality with domain randomization,” IEEE Transactions on Robotics , vol. 36, no. 1, pp. 1–14, 2019. [13] L. Weng, “Domain randomization for sim2real transfer,” 
+
+lilianweng.github.io , 2019. [Online]. Available: https://lilianweng. github.io/posts/2019-05-05-domain-randomization/ [14] M. C. Campi, S. Garatti, and M. Prandini, “The scenario approach for systems and control design,” Annual Reviews in Control , vol. 33, no. 2, pp. 149–157, 2009. [15] R. Tempo, F. Dabbene, and G. Calafiore, Randomized algorithms for analysis and control of uncertain systems . Springer, 2005. [16] K. Lowrey, S. Kolev, J. Dao, A. Rajeswaran, and E. Todorov, “Re-inforcement learning for non-prehensile manipulation: Transfer from simulation to physical system,” in 2018 IEEE International Conference on Simulation, Modeling, and Programming for Autonomous Robots (SIMPAR) . IEEE, 2018, pp. 35–42. [17] I. Mordatch, K. Lowrey, and E. Todorov, “Ensemble-cio: Full-body dynamic motion planning that transfers to physical humanoids,” in 
+
+2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2015, pp. 5307–5314. [18] D. Bertsekas, Dynamic programming and optimal control: Volume II ,4th ed. Athena scientific, 2012. [19] J. Bu, A. Mesbahi, M. Fazel, and M. Mesbahi, “Lqr through the lens of first order methods: Discrete-time case,” arXiv preprint arXiv:1907.08921 , 2019. [20] R. Vershynin, High-dimensional probability: An introduction with applications in data science . Cambridge university press, 2018, vol. 47. [21] G. Garrigos and R. M. Gower, “Handbook of convergence theorems for (stochastic) gradient methods,” arXiv preprint arXiv:2301.11235 ,2023. [22] J. Perdomo, J. Umenberger, and M. Simchowitz, “Stabilizing dy-namical systems via policy gradient methods,” Advances in neural information processing systems , vol. 34, pp. 29 274–29 286, 2021. VIII. A PPENDIX 
+
+A. Gradient Domination 
+
+We step through the main points of the proof to establish that JDR is gradient dominated, which starts by establishing that under the prescribed homogeneity, we have that for all feasible K,
+
+JDR (K) ≤ 8JDR (K⋆) =⇒ JLQR (K, θ ) ≤ 2JDR (K)
+
+From here, we recall that with the substitution  ¯A ¯B = Σ 1/2
+
+> w
+
+A B, this allows us to consider noise covariance I to get 
+
+JDR (K) = E[tr( ˜P (K, θ ))] , where ¯P (K, θ ) = dlyap( ¯A − ¯BK, I ), where we will abuse notation with ¯P (K, ¯θ) = P (K, θ ).
+
+Lemma 6 ((B, s )-boundedness, [3] Lemma III.5) . Under the assumption that: 
+
+diam(Θ) ≤ inf 
+
+> θ∈Θ
+
+150000 sup 
+
+> B∈ΘB
+
+(∥B∥, 1) J(KLQR (θ), θ )6
+
+we have that: 
+
+JDR (K) ≤ 8JDR (K⋆) =⇒ JLQR (K, θ ) ≤ 2JDR (K)
+
+where B = 8 and s = 2 .
+
+Proof. Following the strategy in [2] Lemma III.5, we begin by: 
+
+JLQR (K, ˜θ) := min  
+
+> θ∈Θ
+
+JLQR (K, θ ) ≤ E 
+
+> θ
+
+[JLQR (K, θ )] ≤ 8E 
+
+> θ
+
+[JLQR (K⋆
+
+> DR
+
+, θ )] ≤ 8E 
+
+> θ
+
+[3 JLQR (K(θ), θ )] ≤ 24 JDR (K, θ )
+
+εhet ≤ 150000 · sup 
+
+> θ∈Θ
+
+τB (θ)JDR (K)6 ≤ 116(24) 2JDR (K)2 ≤ 116  24 JDR (K)2 ≤ 116 J(K, ˜θ)2
+
+Again, following [2] with tr( P (K, θ ) − P (K, ˜θ)) ≤ 8tr  P (K, θ ) P (K, ˜θ) 2op εhet ≤ 12 tr  P (K, θ )
+
+JLQR (K, θ ) − JLQR (K, ˜θ) ≤ 8JLQR (K, θ )∥P (K, ˜θ)∥2εhet ≤ 12 JLQR (K, θ )
+
+where the last inequality follows by plugging in the expression for εhet , which implies: 
+
+JLQR (K, θ ) ≤ 2JLQR (K, ˜θ) ≤ 2JDR (K)
+
+This is the first step in establishing gradient dominance, the major accomplishment in Fujinami et al. [3], which proceeds to employ a sequence of pointwise bounds to establish gradient dominance. Since all inequalities involved are pointwise, the analysis in [3] generalizes due to monotonicity of summation/integration. We jump to the crucial part of the analysis, sketching in the key points, remarking that all intermediate steps proceed in exactly the same way. 
+
+Lemma 7. Consider the domain-randomized LQR problem (DR-LQR) under the heterogeneity, 
+
+diam(Θ) ≤ inf 
+
+> θ∈Θ
+
+150000 sup 
+
+> B∈ΘB
+
+(∥B∥, 1) J(KLQR (θ), θ )6
+
+within the set, 
+
+S := 
+
+
+
+K JDR (K) ≤ 8JDR (K⋆), ∥∇ JDR (K)∥F ≤ 128 sup 
+
+> B∈Θ
+
+(∥B∥, 1) JDR (K)3
+
+
+
+we have that JDR (K) is gradient dominated. 
+
+Proof. We simply prove an analogous version of Fujinami et al. [3] Lemma III.7 which implies the desired result. 
+
+∥R(K, K ∗
+
+> DR
+
+)∥F = E
+
+h
+
+E(K, θ )Σ( K, θ )
+
+ Σ( K, θ )−1 Σ( K∗
+
+> SA
+
+, θ ) − Σ( K, θ )i 
+
+≤ E
+
+h
+
+∥∇ J(K, θ )∥F Σ( K, θ )−1 Σ( K∗
+
+> DR
+
+, θ ) − Σ( K, θ )
+
+> op
+
+i
+
+.
+
+Tackling the Σ( K∗
+
+> DR
+
+, θ ) − Σ( K, θ ) term, we see that: 
+
+Σ( K∗
+
+> DR
+
+, θ ) − Σ( K, θ ) = dlyap  A − BK, B (K∗ 
+
+> DR
+
+− K)Σ( K∗
+
+> DR
+
+, θ ) A − BK ⊤ +  A − BK Σ( K∗
+
+> DR
+
+, θ ) K∗ 
+
+> DR
+
+− K⊤B⊤
+
++ B(K − K∗
+
+> DR
+
+)Σ( K∗
+
+> DR
+
+, θ )( K − K∗
+
+> DR
+
+)⊤B⊤which implies that, 
+
+q
+
+∥Σ( K, θ )−1(Σ( K∗
+
+> DR
+
+, θ ) − Σ( K, θ )) ⊤Σ( K∗
+
+> DR
+
+, θ ) − Σ( K, θ ))Σ( K, θ )−1∥op ≤
+
+
+
+∥Σ( K∗
+
+> DR
+
+, θ )∥op ∥K − K⋆
+
+> DR
+
+∥2op ∥B∥2op + 2 ∥Σ( K∗
+
+> DR
+
+, θ )∥op ∥A − BK ∥op ∥K − K⋆
+
+> DR
+
+∥op ∥B∥op 
+
+
+
+and leads to, 
+
+∥R(K, K ∗
+
+> DR
+
+)∥F ≤ E
+
+h
+
+∇K J(K, θ ) F
+
+ ∥K − K∗
+
+> DR
+
+∥2op τ 2 
+
+> B
+
++ 2 ∥K − K∗
+
+> DR
+
+∥op τB
+
+J(K, θ )3/2i
+
+≤ s3/2JDR (K)3/2 ∥K − K∗
+
+> DR
+
+∥2op τ 2 
+
+> B
+
++ 2 ∥K − K∗
+
+> DR
+
+∥op τB
+
+E
+
+h
+
+∇K J(K, θ ) F
+
+i
+
+= s3/2JDR (K)3/2 ∥K − K∗
+
+> DR
+
+∥op τB + 1 E
+
+h
+
+∇K J(K, θ ) F
+
+i
+
+∥K − K∗
+
+> DR
+
+∥op .
+
+Now, we can bound K − K∗ 
+
+> DR
+
+by, 
+
+∥K − K∗
+
+> DR
+
+∥op ≤ E[∥K∗ 
+
+> DR
+
+− K∗(θ)∥op ] + E[∥K − K∗(θ)∥op ]
+
+≤ p2JDR (K)E  ∥∇ J(K, θ )∥op + ∥∇ J(K∗
+
+> DR
+
+, θ )∥op 
+
+ .
+
+From here, we see that our heterogeneity and gradient norm assumptions, we obtain that: 
+
+∇K J(K, θ ) ≤ 12
+
+ 128JDR (K)5/2 + 8s13 /2JDR (K)9/2
+
+50000 JDR (K)6 + 2s4JDR (K)4
+
+50000 2JDR (K)12 
+
+
+
+≤ 116 JDR (K)3/2 .
+
+The only detail that matters is the exponent on JDR (K) is 3/2, which cancels out JDR (K) and that denominator is large enough to yield: 
+
+∥R(K, K ∗
+
+> DR
+
+)∥F ≤ 14 ∥K − K⋆
+
+> DR
+
+∥F .
+
+which implies the desired result. 
+
+B. Discount Annealing 
+
+To initialize within S, we simply need to employ the discount annealing scheme introduced in Perdormo et al. [22] as discussed in Fujinami et al. [2]. To adapt the technique in Fujinami et al., we will employ the notation: 
+
+γθ = [ γA (θ), γB (θ)] , JDR (K, γ ) = E[J(K, γθ )] , K∗(γ) = arg min  
+
+> K
+
+JDR (K, γ ),
+
+and adapt the theorems as needed. 
+
+Proposition 4 (Pedormo et al. Thm. 1 Adaptation) . Let P (K, γθ ) satisfy, 
+
+P (K, γθ ) = Q + SK + K⊤S⊤ + KRK ⊤ + γ(A(θ) − B(θ)K)⊤P (K, γθ )( A(θ) − B(θ)K)
+
+If Q + SK + K⊤S⊤ + KRK ⊤ ⪰ I, for, 
+
+˜γ =
+
+ 18∥P (K, γθ )∥4op 
+
++ 1 
+
+2
+
+γ
+
+we have that, 
+
+tr( P (K, ˜γθ )) ≤ 2tr( P (K, γθ )) 
+
+We simply remark that in [3] and [22], the specific choice, S = 0 is made, but the theorem as established in [22] accommodates S̸ = 0 when Q ⪰ I because, 
+
+ I
+
+−K
+
+⊤ Q − I SS⊤ R − I
+
+  I
+
+−K
+
+
+
+= ( Q−I)−SK −K⊤S⊤ +K⊤(R−I)K ⪰ 0 =⇒ Q−SK −K⊤S⊤ +R ⪰ I +K⊤RK. 
+
+as required by Perdomo et al. [22, Thm. 1]. Thus, we can extend the discounting annealing scheme to many systems (with 
+
+S̸ = 0 ) by simply adapting Fujinami et al. [3, Theorem IV.1]. 
+
+Theorem 3 ( [3] Theorem IV.1 Adaptation) . Let γ0 be the largest γ satisfying (8). At the start of any iteration, it holds that 
+
+JDR (K, γ ) ≤ 8 inf ˜K JSA (K, γ ). Further, Algorithm 2 terminates after at most 1024 JDR (K⋆)4 log(1 /γ 0) iterations where the controller K′ returned jointly stabilizes all systems in Θ, satisfying JDR (K′) − JDR (K∗) ≤ ε.
+
+Proof. When γ ∈ (0 , 1] is picked so that JDR (K, γ ) ≤ 8dx, we see that 
+
+JDR (K, γ ) ≤ 8dx ≤ 8tr( I) ≤ 8 inf 
+
+> ˜K
+
+JDR ( ˜K, γ ),Algorithm 2 Discount Annealing, DR Adaptation  
+
+> 1:
+
+Input: Distribution of systems to sample θi
+
+> i.i.d.
+
+∼ pΘ, optimization tolerance ε 
+
+> 2:
+
+K ← 0 
+
+> 3:
+
+Find the largest γ ∈ (0 , 1] satisfying 
+
+JDR (K, γ ) ≤ 8dx. (8)  
+
+> 4:
+
+while γ < 1 do  
+
+> 5:
+
+Set K ← K′, where K′ satisfies, 
+
+JDR (K′, γ ) − inf 
+
+> ˜K
+
+JDR ( ˜K, γ ) ≤ dx. (9)  
+
+> 6:
+
+Find a discount factor γ′ ∈ [γ, 1] satisfying 
+
+2JDR (K, γ ) < J DR (K, γ ′) ≤ 4JDR (K, γ ) (10)  
+
+> 7:
+
+Update the discount factor γ ← γ′ 
+
+> 8:
+
+end while  
+
+> 9:
+
+Run Algorithm 1 starting from K to obtain K′ satisfying, 
+
+JDR (K′) − inf 
+
+> ˜K
+
+JDR ( ˜K) ≤ ε.  
+
+> 10:
+
+Return K′
+
+so we have the desired inequality for the first iteration within eq. (8). Next, we find a controller where, 
+
+JDR (K′, γ ) − inf 
+
+> ˜K
+
+JDR ( ˜K, γ ) ≤ dx = tr( I).
+
+We then use this controller K′ to update the discount factor γ′ where we ensure that γ′ ∈ [γ, 1] :
+
+2JDR (K′, γ ) < J DR (K′, γ ′) ≤ 4JDR (K′, γ )
+
+then, JDR (K, γ ) ≤ 8 inf ˜K JDR (K, γ ) because JDR (K′, γ ) is within a factor of 2 of the optimal cost, 
+
+JDR (K′, γ ) ≤ tr( I) + inf 
+
+> ˜K
+
+JDR ( ˜K, γ ) ≤ 2 inf 
+
+> ˜K
+
+JDR ( ˜K, γ ) (Update Inequality) (by the definition of the cost-to-go), and also, 
+
+2JDR (K′, γ )] < J DR (K′, γ ′) ≤ 4JDR (K′, γ )
+
+> Update Inequality
+
+z }| {
+
+≤ 8 inf 
+
+> ˜K
+
+JDR ( ˜K, γ ) 
+
+> Cost is nondecreasing in γ
+
+z }| {
+
+≤ 8 inf 
+
+> ˜K
+
+JDR ( ˜K, γ ′) .
+
+This establishes that at the start of each iteration, it holds that JDR (K, γ ) ≤ 8 inf ˜K JSA (K, γ ). Now, we establish that this procedure will terminate. For this, we appeal to Proposition 4 to analyze the minimum discount factor growth by employing a contradiction; assume for a contradiction that, 
+
+γ′ < inf 
+
+> θ∈Θ
+
+ 18∥P (K, γ, θ )∥4op 
+
++ 1 
+
+2
+
+γ. 
+
+By Proposition 4 and monotonicity of the cost in the discount factor, we must have that for each cost term, 
+
+J(K, γ ′θ) ≤ 2J(K, γθ ) =⇒ JDR (K′, γ ′) ≤ 2JDR (K′, γ )
+
+However, Step 6 in Algorithm 2 forces the value of γ′ found to ensure that JDR (K′, γ ′) > 2JDR (K′, γ ). This is a contradiction, so we must have that, 
+
+γ′ ≥ inf 
+
+> θ∈Θ
+
+ 18∥P (K, γ, θ )∥4op 
+
++ 1 
+
+2
+
+γ. 
+
+Next, we employ a sequence of inequalities to find the minimum growth, where we see that, 
+
+∥P (K, θ, γ )∥4op 
+
+> Trace Norm Inequality
+
+z }| {
+
+≤ tr( P (K, θ, γ )) 4(B, s )-boundedness 
+
+z }| {
+
+≤ 24JDR (K∗(γ), γ )) 
+
+> Update Inequality
+
+z }| {
+
+≤ 28JDR (K∗(γ), γ ′)4 
+
+> Definition of K∗(γ)
+
+z }| {
+
+≤ 28JDR (K∗
+
+> DR
+
+, γ ′)4 
+
+> Monotonicity in γ
+
+z }| {
+
+≤ 28JDR (K∗
+
+> DR
+
+)4 .From here, we can take the reciprocal (and reverse the inequality directions) to obtain that: 
+
+1
+
+∥P (K, θ i, γ )∥4op 
+
+≥ 1tr( P (K, θ i, γ )) 4 ≥ 124JDR (K⋆(γ), γ )4 ≥ 128JDR (K⋆)4
+
+and therefore, 
+
+ 18∥P (K, θ, γ )∥4op 
+
++ 1 
+
+2
+
+≥
+
+ 18tr( P (K, θ, γ )) 4 + 1 
+
+2
+
+≥
+
+ 18 · 24JDR (K, γ )4 + 1 
+
+2
+
+≥
+
+ 18 · 28JDR (K⋆)4 + 1 
+
+2
+
+.
+
+Inverting the minimum discount-factor growth expression (the right-most term) yields the result. 
+
+C. Lipschitz, and Gradient Norm/Variance Bounds 
+
+Thematically, many of the relationships we derive simply come from vectorizing the computations done in [4] and across the literature. results in making substitutions of Q ← R and Q ← Q.
+
+Lemma 8 (Useful Inequalities) .
+
+∥P (K, θ )∥op ≤ J(K, θ )
+
+σmin (Σ w)
+
+∥Σ( K, θ )∥op ≤ J(K, θ )
+
+σmin (Q)
+
+I K⊤ 2op ≤ J(K, θ )
+
+σmin (Q) σmin (Σ w)
+
+∥E(K, θ )∥op ≤
+
+
+
+∥Q∥ op + A B 2op ∥P (K, θ )∥op 
+
+  I
+
+−K
+
+
+
+> op
+
+∥R + B∗P (K)B∥op ≤
+
+
+
+∥Q∥ op + A B 2op ∥P (K, θ )∥op 
+
+
+
+∥B∆Σ( K, θ )( A − BK )∥F ≤ A B 2op ∥Σ( K, θ )∥op 
+
+I −K⊤
+
+> op
+
+∥∆∥F
+
+∥dlyap( A − BK, ·)∥op ≤ J(K, θ )
+
+σmin (Σ w)σmin (Q)
+
+Proof. The first three inequalities follow by the singular-value rearrangement inequality and the fact that A, B ⪰ 0.
+
+tr( AB ) ≥ σmax (A)σmin (B).
+
+Applying this to, 
+
+J(K, θ ) = tr( P (K, θ ), Σw) = tr 
+
+ IK
+
+⊤  Q SS⊤ R
+
+  IK
+
+
+
+Σ( K, θ )
+
+!
+
+= tr 
+
+ IK
+
+⊤
+
+Q
+
+ IK
+
+
+
+Σ( K, θ )
+
+!
+
+yields the first three results. The second three results follow by the block-matrix identites, 
+
+E(K, θ ) = − 0 I 
+
+Q +
+
+A⊤
+
+B⊤
+
+
+
+P (K) A B  I
+
+−K
+
+
+
+R + B⊤P (K, θ )B = 0 I 
+
+Q +
+
+A⊤
+
+B⊤
+
+
+
+P (K) A B  0
+
+I
+
+
+
+B∆Σ( K, θ )( A − BK ) = A B 0
+
+I
+
+
+
+∆Σ( K) I −K⊤ A⊤
+
+B⊤
+
+
+
+followed by judicious application of operator norm bounds. The very last inequality follows by the exact same argument as in Fazel et al. [4] These inequalities, along with Lemma 6, suffice to for finding bounds on the Lipschitz constant. Once again, we also introduce, ¯θ = sup 
+
+> θ∈Θ
+
+∥θ∥ (11) to simplify the notation. 
+
+Corollary 2 (Lipschitz Bound) .
+
+LK ≤ 4
+
+∥Q∥ op + 2 ¯θ 2op JDR (K0)
+
+σmin (Σ w)
+
+1 + 4∥¯θ 2op JDR (K0)
+
+σmin (Σ w)2
+
+ 2JDR (K0)
+
+σmin (Q)Lemma 9 (Useful Derivatives) .
+
+Dθ E(K, θ )[∆ θ ] = − 0 I  ∆⊤
+
+> A
+
+∆⊤
+
+> B
+
+
+
+P (K, θ ) A B  I
+
+−K
+
+
+
++ 0 I  A⊤
+
+B⊤
+
+
+
+Dθ P (K, θ )[∆ θ ] A B  I
+
+−K
+
+
+
++ 0 I  A⊤
+
+B⊤
+
+
+
+P (K, θ ) ∆A ∆B
+
+  I
+
+−K
+
+
+
+Dθ P (K, θ )[∆ θ ] = dlyap 
+
+
+
+(A − BK )∗,
+
+ I
+
+−K
+
+∗ A B∗ P (K, θ ) ∆A ∆B
+
+  I
+
+−K
+
+ 
+
++ dlyap 
+
+
+
+(A − BK )∗,
+
+ I
+
+−K
+
+∗ ∆A ∆B
+
+∗ P (K, θ ) A B  I
+
+−K
+
+ 
+
+Dθ Σ( K, θ )[∆ θ ] = dlyap A − BK, A B  I
+
+−K
+
+
+
+Σ( K, θ )
+
+ I
+
+−K
+
+⊤ ∆A ∆B
+
+⊤
+
+!
+
++ dlyap A − BK, ∆A ∆B
+
+  I
+
+−K
+
+
+
+Σ( K, θ )
+
+ I
+
+−K
+
+⊤ A B⊤
+
+!
+
+Similarly, we can find bounds on the operator norm bound, which are used twice to obtain Lemma 5. 
+
+Lemma 10 (Lipschitz System Perturbation Bound) .
+
+∥Dθ
+
+
+
+2E(K, θ )Σ( K, θ )
+
+
+
+[∆ θ ]∥op = ∥2Dθ E(K, θ )[∆ θ ]Σ( K, θ ) + 2 E(K, θ )Dθ Σ( K, θ )[∆ θ ]∥op 
+
+≤ 4
+
+ 25/2JDR (K0)5/2 ¯θ op 
+
+σmin (Σ w)3/2σmin (Q)3/2 + 27/2JDR (K0)7/2 ¯θ op ∥Q∥ op 
+
+σmin (Σ w)5/2σmin (Q)7/2 + 211 /2JDR (K)9/2 ¯θ 3op 
+
+σmin (Σ w)7/2σmin (Q)7/2
+
+
+
+Proof. We bound the expression termwise using the triangle inequality. The first term can be bounded above by, 
+
+∥Dθ E(K, θ )[∆ θ ]Σ( K, θ )∥F ≤ 2 P (K, θ ) op 
+
+A B
+
+> op
+
+I K⊤
+
+> op
+
+∥Σ( K, θ )∥op ∥∆θ ∥F
+
++ 2 A B 3op 
+
+I K⊤ 3op ∥Σ( K, θ )∥op ∥P (K, θ )∥op dlyap( A − BK, ·)∥op ∥∆θ ∥F
+
+≤
+
+2 J(K, θ )5/2 A B
+
+> op
+
+σmin (Σ w)3/2σmin (Q)3/2 + 2 J(K, θ )9/2 A B 3op 
+
+σmin (Σ w)7/2σmin (Q)7/2
+
+ ∥∆θ ∥F.
+
+The second term can be bounded above by, 
+
+∥E(K, θ )Dθ Σ( K, θ )[∆ θ ]∥F ≤≤ 2( ∥Q∥ op + A B 2op ∥P (K, θ )∥op ) I −K⊤ 3op dlyap( A − BK, ·) op 
+
+A B
+
+> op
+
+∥Σ( K, θ )∥op ∥∆θ ∥F
+
+≤ 2
+
+
+
+∥Q∥ op + A B 2op 
+
+J(K, θ )
+
+σmin (Σ w)
+
+ J(K, θ )7/2
+
+σmin (Σ w)5/2σmin (Q)7/2
+
+A B
+
+> op
+
+∥∆θ ∥F.
+
+Combining the two yields, and assuming ∥∆θ ∥F = 1 immediately yields the operator norm bound: 
+
+∥Dθ
+
+
+
+2E(K, θ )Σ( K, θ )
+
+
+
+[∆ θ ]∥op ≤ 4
+
+ J(K, θ )5/2 A B
+
+> op
+
+σmin (Σ w)3/2σmin (Q)3/2 + J(K, θ )9/2 A B 3op 
+
+σmin (Σ w)7/2σmin (Q)7/2
+
+
+
++ 4 
+
+
+
+∥Q∥ op + A B 2op 
+
+J(K, θ )
+
+σmin (Σ w)
+
+ J(K, θ )7/2 A B
+
+> op
+
+σmin (Σ w)5/2σmin (Q)7/2
+
+A minor simplification yields the result. 
+
+D. Matrix Bernstein Bounds 
+
+The bounds found in the previous section are with respect to the Frobenius norm, while the Matrix Bernstein concentration inequalities are with respect to the operator norm. These discrepancies in norm formulations occur frequently, and Fazel et al. [4] simply use vector Bernstein bounds to tackle concentration since ∥X∥op ≤ ∥ X∥F = ∥ vec( X)∥2. For the sake of completeness, we demonstrate how to derive the bound given in the main text. Lemma 11 (Matrix Bernstein Inequality) . Let Gi be defined as in (7), and define, 
+
+∥Gi∥F ≤ ¯G, E[∥Gi∥2 
+
+> F
+
+] ≤ σ2
+
+Then 2,
+
+Prob {∥ GM ∥F ≥ ε∇} ≤ 2( nxnu +1)exp 
+
+ −M ε 2
+
+> ∇
+
+4( √2σ2 + ¯Gε ∇/3) 
+
+
+
+,
+
+so if we pick M as, 
+
+M ≥ 4( √2σ2 + ¯Gε ∇/3) 
+
+ε2
+
+> ∇
+
+log 
+
+ 2( nxnu + 1) 
+
+δ
+
+
+
+.
+
+with probability at least 1 − δ, each gradient-estimation error is bounded above by ε∇.
+
+Proof. First, we transform the Frobenius norm into an operator norm so that we may use the rectangular matrix bernstein bound found in Vershynin [20] Exercise 5.4.15. 
+
+Prob ( ∥g(K) − ∇ JDR (K)∥F ≥ ε∇) = Prob 
+
+√2∥g(K) − ∇ JDR (K)∥op ≥ ε∇
+
+
+
+= Prob 
+
+√2
+
+M
+
+> M
+
+X
+
+> i=1
+
+Gi op 
+
+≥ ε∇
+
+!
+
+= Prob 
+
+> M
+
+X
+
+> i=1
+
+Gi op 
+
+≥ M
+
+√2 ε∇
+
+!
+
+In order to use the matrix Bernstein inequality, we need to bound ∥Gi∥op and E[∥G2 
+
+> M
+
+∥op ]. First, we see that ∥Gi∥op can be evaluated directly by obtaining its nontrivial eigenvalues, which are ±∥∇ K (J(K, θ i) − E[J(K, θ )] ∥F = ∥Gi∥F , and so, 
+
+∥Gi∥op = ∥Gi∥F ≤ ¯G. 
+
+Next, to evaluate E[∥G2 
+
+> M
+
+∥op ]/M , let v(θi) = vec  ∇K (J(K, θ i) − EJ(K, θ )) .
+
+E[G2 
+
+> M
+
+] = M
+
+E[v(θ)v(θ)⊤]
+
+E[v(θ)⊤v(θ)] 
+
+
+
+where we make judicious use of the i.i.d. assumption on θi. To find the operator norm, we observe that: 
+
+∥E[G2 
+
+> M
+
+]∥op = M max ∥E[v(θ)v(θ)⊤]∥op ], E[v(θ)⊤v(θ)] .
+
+Only the second term matters because, 
+
+E[v⊤v] = E[tr( v⊤v)] = E[tr( vv ⊤)] = tr( E[vv ⊤]) = σ1(E[vv ⊤]) + . . . + σn(E[vv ⊤]) ≥ ∥ E[vv ⊤]∥op ,
+
+and undoing the vectorization operation gives us that, 
+
+E[∥G2 
+
+> M
+
+∥op ] = M E[∥Gi∥2 
+
+> F
+
+] ≤ M σ 2
+
+Putting this all together, we see that 
+
+Prob ( ∥g(K) − ∇ JDR (K)∥F ≥ ε∇) = Prob 
+
+> M
+
+X
+
+> i=1
+
+Gi op 
+
+≥ M
+
+√2 ε∇
+
+!
+
+≤ 2( dxdu + 1) exp 
+
+
+
+− 
+
+> M2ε2
+> ∇
+> 2
+
+2 M σ 2 + ¯G
+
+> 3
+> M ε ∇√2
+
+
+
+= 2( dxdu + 1) exp 
+
+
+
+− 3√2M ε 2
+
+> ∇
+
+4 3√2σ2 + ¯Gε ∇
+
+
+
+Finally, we can fix a failure probability δ, plug in constants, and rearrange to obtain: 
+
+M ≥ 4 3√2 σ2 + ¯Gε ∇
+
+
+
+3√2 ε2
+
+> ∇
+
+log 
+
+ 2( nxnu + 1) 
+
+δ
+
+      
+
+> 2We remark that compactness of sublevel-sets and continuity of JDR ensure that ¯Gand σ2are finite.
+
+E. Polynomial Expressions 
+
+First, we collect, two expressions from lemma 27 in Fazel et. al. [4] that are used to establish convergence of zeroth-order gradient methods, adapted to the task at hand. 
+
+rg = inf 
+
+> θ∈Θ
+
+min 
+
+ σmin (Q)σmin (Σ w)4J(Kgd , θ )∥B∥op (∥A−BK gd ∥op +1) , ∥Kgd ∥op 
+
+
+
+(12) 
+
+Lcost = 4 JDR (K)∥Q∥ op 2∥K∥op + 14 ¯θ op 
+
+!
+
+∥K − K′∥op 
+
++ 23JDR (K)5/2 ¯θ op 
+
+σmin (Σ w)1/2σmin (Q)1/2
+
+
+
+¯θ op 
+
+21/2JDR (K)1/2
+
+σmin (Q)1/2σmin (Σ w)1/2 + 1 
+
+
+
+Note the dependence on ∥Kgd ∥op , which is detrimental to the task at hand because we employ the discount annealing scheme that starts at K = 0 . We slightly adapt the analysis from Fazel et al. [4] to circumvent this issue, and to avoid any dependence of the sampling size on the current controller. 
+
+Lemma 12. Let, 
+
+∥K′ − K∥op ≤ σmin (Q)σmin (Σ w)4JDR (K) ¯θ op 
+
+  ¯θ op + 1  =: cg (13) then, 
+
+|JDR (K′) − JDR (K)| ≤ 4JDR (K)∥Q∥ op 2∥K∥op + 14 ¯θ op 
+
+!
+
+∥K − K′∥op 
+
++ 23JDR (K)5/2 ¯θ op 
+
+σmin (Σ w)1/2σmin (Q)1/2
+
+
+
+¯θ op 
+
+21/2JDR (K)1/2
+
+σmin (Q)1/2σmin (Σ w)1/2 + 1 
+
+
+
+∥K − K′∥op 
+
+=: Lcost ∥K − K′∥op (14) 
+
+Proof. 
+
+∥P (K′, θ ) − P (K, θ )∥op = dlyap A − BK ′,
+
+ I
+
+−K′
+
+⊤
+
+Q
+
+ I
+
+−K′
+
+!
+
+− dlyap A − BK, 
+
+ I
+
+−K
+
+⊤
+
+Q
+
+ I
+
+−K
+
+!
+
+> op
+
+≤ dlyap A − BK ′,
+
+ I
+
+−K′
+
+⊤
+
+Q
+
+ I
+
+−K′
+
+!
+
+− dlyap A − BK, 
+
+ I
+
+−K′
+
+⊤
+
+Q
+
+ I
+
+−K′
+
+!
+
+> op
+
++ dlyap A − BK, 
+
+ I
+
+−K
+
+⊤
+
+Q
+
+ I
+
+−K
+
+!
+
+− dlyap A − BK, 
+
+ I
+
+−K′
+
+⊤
+
+Q
+
+ I
+
+−K′
+
+!
+
+> op
+
+≤ 2 ∥dlyap( A − BK, ·)∥op 
+
+ I
+
+−K
+
+⊤
+
+Q
+
+ I
+
+−K
+
+
+
+−
+
+ I
+
+−K′
+
+⊤
+
+Q
+
+ I
+
+−K′
+
+
+
+> op
+
++ 2 ∥dlyap( A − BK, ·)∥2op ∥(A − BK )( ·)( A − BK ) − (A − BK ′)( ·)( A − BK ′)∥op 
+
+·
+
+ I
+
+−K
+
+⊤
+
+Q
+
+ I
+
+−K
+
+
+
+> op
+
+≤ 2 ∥dlyap( A − BK, ·)∥op (2 ∥K∥op ∥Q∥ op ∥K − K′∥ + ∥Q∥ op ∥K − K′∥2)+ 2 ∥dlyap( A − BK, ·)∥2op 
+
+A B
+
+> op
+
+A B
+
+> op
+
+ I
+
+−K
+
+
+
+> op
+
++ 1 
+
+!
+
+∥K∥op ∥K − K′∥op 
+
+≤ 2J(K, θ )∥Q∥ op 2∥K∥op + σmin (Q)σmin (Σ w)4J(K, θ ) A B
+
+> op
+
+   A B 
+
+> op
+
++ 1 !
+
+∥K − K′∥op 
+
++ 2 J(K, θ )2 A B
+
+> op
+
+ A B
+
+> op
+
+ J(K, θ )1/2
+
+σmin (Q)1/2σmin (Σ w)1/2 + 1 
+
+
+
+∥K∥op ∥K − K′∥op 
+
+≤ 2J(K, θ )∥Q∥ op 2∥K∥op + 14 A B
+
+> op
+
+!
+
+∥K − K′∥op + 2 J(K, θ )2 A B
+
+> op
+
+ A B
+
+> op
+
+ J(K, θ )1/2
+
+σmin (Q)1/2σmin (Σ w)1/2 + 1 
+
+
+
+∥K∥op ∥K − K′∥op 
+
+Recall that, 
+
+∥K∥op ≤
+
+ I
+
+−K
+
+
+
+> op
+
+≤ J(K, θ )1/2
+
+σmin (Σ w)1/2σmin (Q)1/2
+
+Minor simplifications yields the result. 
+
+F. Additional Experimental Details 
+
+We use the following dynamical system model for the cart-pole system: 
+
+˙x = ˙ x
+
+¨x =
+
+mpg sin θ cos θ − 73
+
+h
+
+u + mpˆl ˙θ2 sin θ − μc ˙x
+
+i
+
+− μp ˙θ cos θ
+
+> ˆl
+
+mp cos 2 θ − 73 (mp + mc)˙θ = ˙θ
+
+¨θ = 37ˆl g sin θ − ¨x cos θ − μp ˙θmˆl
+
+!
+
+.
+
+where the sign convention is, a positive sign attached to x corresponds to a right displacement, θ = 0 corresponds to upright position, and a clockwise rotation for the pendulum is positive. Further, a positive sign attached to u, corresponds to rightward push, and this dynamical system is linearized by automatic differentiation about x = [ x, ˙x, θ, ˙θ] = 0 .
+
+TABLE I PARAMETERS FOR THE CARTPOLE SYSTEM 
+
+Parameter Description Default Value 
+
+u Force applied (Newtons) —
+
+mc Mass of cart 1.0 kg 
+
+mp Mass of pole 0.1 kg 
+
+l Length of pole 0.2–0.8 m 
+
+g Gravitational acceleration 9.81 (m/s 2)
+
+μc Friction coefficient between cart and track 0.25 
+
+μp Friction coefficient at pendulum joint 0.01 
+
+x State vector [x, ˙x, θ, ˙θ] —
