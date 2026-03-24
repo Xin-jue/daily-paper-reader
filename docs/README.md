@@ -6,76 +6,95 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-23
-- 运行时间：2026-03-23 19:46:49 UTC
+- 最新运行日期：2026-03-24
+- 运行时间：2026-03-24 19:56:59 UTC
 - 运行状态：成功
-- 本次总论文数：18
-- 精读区：7
+- 本次总论文数：25
+- 精读区：14
 - 速读区：11
 
 ### 今日简报（AI）
-今日聚焦 VLA 模型与强化学习的深度融合，涵盖分布式异步框架及自动驾驶纠错等 18 篇前沿进展。
-重点推荐 AcceRL 分布式异步框架及利用接管数据优化驾驶 VLA 的新范式，展现了具身智能在复杂任务中的高效进化。
-建议关注 VLA 模型在分布式训练与长程推理场景下的落地，探索如何通过错误反馈实现技能的快速精通。
-- 详情：[/202603/23/README](/202603/23/README)
+今日精选 25 篇前沿成果，深度攻克 VLA 模型在具身智能中的世界模型构建与执行鲁棒性
+- 详情：[/202603/24/README](/202603/24/README)
 
 ### 精读区论文标签
-1. [AcceRL: A Distributed Asynchronous Reinforcement Learning and World Model Framework for Vision-Language-Action Models](/202603/23/2603.18464v2-accerl-a-distributed-asynchronous-reinforcement-learning-and-world-model-framework-for-vision-language-action-models)  
+1. [Towards Practical World Model-based Reinforcement Learning for Vision-Language-Action Models](/202603/24/2603.20607v1-towards-practical-world-model-based-reinforcement-learning-for-vision-language-action-models)  
+   标签：评分：10.0/10、query:q12
+   evidence：基于世界模型的VLA模型强化学习
+2. [StageCraft: Execution Aware Mitigation of Distractor and Obstruction Failures in VLA Models](/202603/24/2603.20659v1-stagecraft-execution-aware-mitigation-of-distractor-and-obstruction-failures-in-vla-models)  
    标签：评分：10.0/10、query:q10
-   evidence：用于视觉-语言-动作模型的分布式强化学习和世界模型框架
-2. [Learning from Mistakes: Post-Training for Driving VLA with Takeover Data](/202603/23/2603.14972v1-learning-from-mistakes-post-training-for-driving-vla-with-takeover-data)  
-   标签：评分：9.0/10、query:q4
-   evidence：视觉-语言-动作 (VLA) 模型的后期训练
-3. [EFF-Grasp: Energy-Field Flow Matching for Physics-Aware Dexterous Grasp Generation](/202603/23/2603.16151v1-eff-grasp-energy-field-flow-matching-for-physics-aware-dexterous-grasp-generation)  
+   evidence：减轻机器人工作空间任务中视觉-语言-动作 (VLA) 模型的故障
+3. [RoboAlign: Learning Test-Time Reasoning for Language-Action Alignment in Vision-Language-Action Models](/202603/24/2603.21341v1-roboalign-learning-test-time-reasoning-for-language-action-alignment-in-vision-language-action-models)  
+   标签：评分：10.0/10、query:q12
+   evidence：通过语言-动作对齐推理提升 VLA 模型性能
+4. [VP-VLA: Visual Prompting as an Interface for Vision-Language-Action Models](/202603/24/2603.22003v1-vp-vla-visual-prompting-as-an-interface-for-vision-language-action-models)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于机器人控制的视觉-语言-动作（VLA）模型双系统框架
+5. [UniDex: A Robot Foundation Suite for Universal Dexterous Hand Control from Egocentric Human Videos](/202603/24/2603.22264v1-unidex-a-robot-foundation-suite-for-universal-dexterous-hand-control-from-egocentric-human-videos)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于通用灵巧手控制的统一视觉-语言-动作 (VLA) 策略
+6. [DualCoT-VLA: Visual-Linguistic Chain of Thought via Parallel Reasoning for Vision-Language-Action Models](/202603/24/2603.22280v1-dualcot-vla-visual-linguistic-chain-of-thought-via-parallel-reasoning-for-vision-language-action-models)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于复杂机器人操作任务的VLA模型并行推理思维链
+7. [Fast-WAM: Do World Action Models Need Test-time Future Imagination?](/202603/24/2603.16666v2-fast-wam-do-world-action-models-need-test-time-future-imagination)  
+   标签：评分：9.0/10、query:q12
+   evidence：世界动作模型 (WAM) 作为视觉-语言-动作 (VLA) 模型的替代方案
+8. [Efficient and Reliable Teleoperation through Real-to-Sim-to-Real Shared Autonomy](/202603/24/2603.17016v2-efficient-and-reliable-teleoperation-through-real-to-sim-to-real-shared-autonomy)  
+   标签：评分：9.0/10、query:q8
+   evidence：用于机器人操作的 real-to-sim-to-real 框架
+9. [AGILE: A Comprehensive Workflow for Humanoid Loco-Manipulation Learning](/202603/24/2603.20147v1-agile-a-comprehensive-workflow-for-humanoid-loco-manipulation-learning)  
+   标签：评分：9.0/10、query:q8
+   evidence：减轻常见仿真到现实失败模式的工作流
+10. [ROI-Driven Foveated Attention for Unified Egocentric Representations in Vision-Language-Action Systems](/202603/24/2603.20668v1-roi-driven-foveated-attention-for-unified-egocentric-representations-in-vision-language-action-systems)  
+   标签：评分：9.0/10、query:q10
+   evidence：用于机器人控制中VLA系统的ROI驱动数据表示
+11. [Cortical Policy: A Dual-Stream View Transformer for Robotic Manipulation](/202603/24/2603.21051v1-cortical-policy-a-dual-stream-view-transformer-for-robotic-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：机器人操作中感知物理的灵巧抓取生成
-4. [Cross-Domain Demo-to-Code via Neurosymbolic Counterfactual Reasoning](/202603/23/2603.18495v1-cross-domain-demo-to-code-via-neurosymbolic-counterfactual-reasoning)  
-   标签：评分：9.0/10、query:q4
-   evidence：用于视频指令机器人编程和控制代码生成的视觉语言模型
-5. [VAMPO: Policy Optimization for Improving Visual Dynamics in Video Action Models](/202603/23/2603.19370v1-vampo-policy-optimization-for-improving-visual-dynamics-in-video-action-models)  
-   标签：评分：9.0/10、query:q4
-   evidence：改进视觉语言动作系统中的视觉动力学
-6. [FlowScene: Style-Consistent Indoor Scene Generation with Multimodal Graph Rectified Flow](/202603/23/2603.19598v1-flowscene-style-consistent-indoor-scene-generation-with-multimodal-graph-rectified-flow)  
-   标签：评分：9.0/10、query:q3
-   evidence：用于室内场景生成的三分支场景生成模型
-7. [EgoForge: Goal-Directed Egocentric World Simulator](/202603/23/2603.20169v1-egoforge-goal-directed-egocentric-world-simulator)  
+   evidence：用于机器人操作的双流视图 Transformer
+12. [HyReach: Vision-Guided Hybrid Manipulator Reaching in Unseen Cluttered Environments](/202603/24/2603.21421v1-hyreach-vision-guided-hybrid-manipulator-reaching-in-unseen-cluttered-environments)  
+   标签：评分：9.0/10、query:q2
+   evidence：杂乱环境下混合机械臂的视觉引导控制与运动规划
+13. [Do World Action Models Generalize Better than VLAs? A Robustness Study](/202603/24/2603.22078v1-do-world-action-models-generalize-better-than-vlas-a-robustness-study)  
+   标签：评分：9.0/10、query:q12
+   evidence：世界动作模型与VLA模型的鲁棒性对比研究
+14. [PAM: A Pose-Appearance-Motion Engine for Sim-to-Real HOI Video Generation](/202603/24/2603.22193v1-pam-a-pose-appearance-motion-engine-for-sim-to-real-hoi-video-generation)  
    标签：评分：9.0/10、query:q9
-   evidence：针对动态环境的自我中心目标导向世界模拟器
+   evidence：手物交互的虚实迁移视频生成
 
 ### 速读区论文标签
-1. [EXPLORE-Bench: Egocentric Scene Prediction with Long-Horizon Reasoning](/202603/23/2603.09731v1-explore-bench-egocentric-scene-prediction-with-long-horizon-reasoning)  
+1. [Grounding Robot Generalization in Training Data via Retrieval-Augmented VLMs](/202603/24/2603.11426v1-grounding-robot-generalization-in-training-data-via-retrieval-augmented-vlms)  
+   标签：评分：8.0/10、query:q14
+   evidence：通过VLM评估机器人操作的泛化能力
+2. [SVLL: Staged Vision-Language Learning for Physically Grounded Embodied Task Planning](/202603/24/2603.11563v1-svll-staged-vision-language-learning-for-physically-grounded-embodied-task-planning)  
+   标签：评分：8.0/10、query:q4
+   evidence：具身任务规划的分阶段视觉语言学习
+3. [MV-SAM3D: Adaptive Multi-View Fusion for Layout-Aware 3D Generation](/202603/24/2603.11633v1-mv-sam3d-adaptive-multi-view-fusion-for-layout-aware-3d-generation)  
    标签：评分：8.0/10、query:q9
-   evidence：具身智能体的第一视角场景预测
-2. [From Prior to Pro: Efficient Skill Mastery via Distribution Contractive RL Finetuning](/202603/23/2603.10263v1-from-prior-to-pro-efficient-skill-mastery-via-distribution-contractive-rl-finetuning)  
-   标签：评分：8.0/10、query:q7
-   evidence：通过强化学习优化预训练的生成式机器人策略
-3. [Contact Coverage-Guided Exploration for General-Purpose Dexterous Manipulation](/202603/23/2603.10971v1-contact-coverage-guided-exploration-for-general-purpose-dexterous-manipulation)  
-   标签：评分：8.0/10、query:q2
-   evidence：通用灵巧操作的探索方法
-4. [Vision-Based Hand Shadowing for Robotic Manipulation via Inverse Kinematics](/202603/23/2603.11383v1-vision-based-hand-shadowing-for-robotic-manipulation-via-inverse-kinematics)  
+   evidence：用于实用场景级重建的布局感知3D生成
+4. [Sim-to-reality adaptation for Deep Reinforcement Learning applied to an underwater docking application](/202603/24/2603.12020v1-sim-to-reality-adaptation-for-deep-reinforcement-learning-applied-to-an-underwater-docking-application)  
    标签：评分：8.0/10、query:q8
-   evidence：动作在机器人复现前先在物理仿真中预览
-5. [On Globally Optimal Stochastic Policy Gradient Methods for Domain Randomized LQR Synthesis](/202603/23/2603.14197v1-on-globally-optimal-stochastic-policy-gradient-methods-for-domain-randomized-lqr-synthesis)  
-   标签：评分：7.0/10、query:q8
-   evidence：用于减少仿真到现实差距的领域随机化
-6. [WorldVLM: Combining World Model Forecasting and Vision-Language Reasoning](/202603/23/2603.14497v1-worldvlm-combining-world-model-forecasting-and-vision-language-reasoning)  
+   evidence：利用高保真数字孪生进行仿真到现实的适配
+5. [AutoMoT: A Unified Vision-Language-Action Model with Asynchronous Mixture-of-Transformers for End-to-End Autonomous Driving](/202603/24/2603.14851v1-automot-a-unified-vision-language-action-model-with-asynchronous-mixture-of-transformers-for-end-to-end-autonomous-driving)  
    标签：评分：7.0/10、query:q4
-   evidence：视觉语言模型与世界模型
-7. [Physically Accurate Rigid-Body Dynamics in Particle-Based Simulation](/202603/23/2603.14634v1-physically-accurate-rigid-body-dynamics-in-particle-based-simulation)  
+   evidence：用于自动驾驶的统一视觉-语言-动作模型
+6. [FAR-Drive: Frame-AutoRegressive Video Generation in Closed-Loop Autonomous Driving](/202603/24/2603.14938v1-far-drive-frame-autoregressive-video-generation-in-closed-loop-autonomous-driving)  
    标签：评分：7.0/10、query:q13
-   evidence：机器人物理精确仿真
-8. [Ego to World: Collaborative Spatial Reasoning in Embodied Systems via Reinforcement Learning](/202603/23/2603.14811v1-ego-to-world-collaborative-spatial-reasoning-in-embodied-systems-via-reinforcement-learning)  
-   标签：评分：7.0/10、query:q10
-   evidence：具身系统中的动作导向抓取和空间推理
-9. [Sample-Efficient Hypergradient Estimation for Decentralized Bi-Level Reinforcement Learning](/202603/23/2603.14867v1-sample-efficient-hypergradient-estimation-for-decentralized-bi-level-reinforcement-learning)  
-   标签：评分：6.0/10、query:q11
-   evidence：通过双层强化学习进行仓库机器人环境设计
-10. [NavThinker: Action-Conditioned World Models for Coupled Prediction and Planning in Social Navigation](/202603/23/2603.15359v2-navthinker-action-conditioned-world-models-for-coupled-prediction-and-planning-in-social-navigation)  
-   标签：评分：6.0/10、query:q11
-   evidence：用于场景几何预测的动作条件世界模型
-11. [Kimodo: Scaling Controllable Human Motion Generation](/202603/23/2603.15546v1-kimodo-scaling-controllable-human-motion-generation)  
+   evidence：用于闭环自动驾驶仿真的生成式视频模型
+7. [Panoramic Affordance Prediction](/202603/24/2603.15558v1-panoramic-affordance-prediction)  
+   标签：评分：7.0/10、query:q9
+   evidence：用于具身智能全局场景理解的全景可利用性预测
+8. [AsgardBench - Evaluating Visually Grounded Interactive Planning Under Minimal Feedback](/202603/24/2603.15888v1-asgardbench---evaluating-visually-grounded-interactive-planning-under-minimal-feedback)  
+   标签：评分：7.0/10、query:q14
+   evidence：具身智能中视觉落地交互式规划的基准测试
+9. [AutoMoT: A Unified Vision-Language-Action Model with Asynchronous Mixture-of-Transformers for End-to-End Autonomous Driving](/202603/24/2603.14851v2-automot-a-unified-vision-language-action-model-with-asynchronous-mixture-of-transformers-for-end-to-end-autonomous-driving)  
+   标签：评分：6.0/10、query:q4
+   evidence：用于自动驾驶的视觉-语言-动作模型
+10. [Bridging Scene Generation and Planning: Driving with World Model via Unifying Vision and Motion Representation](/202603/24/2603.14948v1-bridging-scene-generation-and-planning-driving-with-world-model-via-unifying-vision-and-motion-representation)  
    标签：评分：6.0/10、query:q13
-   evidence：用于仿真中人体动作合成的生成模型
+   evidence：统一视觉与运动表示以进行场景生成与规划
+11. [NavThinker: Action-Conditioned World Models for Coupled Prediction and Planning in Social Navigation](/202603/24/2603.15359v1-navthinker-action-conditioned-world-models-for-coupled-prediction-and-planning-in-social-navigation)  
+   标签：评分：6.0/10、query:q13
+   evidence：用于场景预测和规划的动作条件世界模型
 
 
 <div class="dpr-home-promo-card">

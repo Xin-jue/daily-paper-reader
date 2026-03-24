@@ -1,0 +1,342 @@
+Title: Sim-to-reality adaptation for Deep Reinforcement Learning applied to an underwater docking application
+
+URL Source: https://arxiv.org/pdf/2603.12020v1
+
+Published Time: Fri, 13 Mar 2026 01:16:35 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Sim-to-reality adaptation for Deep Reinforcement Learning applied to an underwater docking application 
+
+Alaaeddine Chaarani, Narcis Palomeras, and Pere Ridao 1
+
+Abstract — Deep Reinforcement Learning (DRL) offers a ro-bust alternative to traditional control methods for autonomous underwater docking, particularly in adapting to unpredictable environmental conditions. However, bridging the ”sim-to-real” gap and managing high training latencies remain significant bottlenecks for practical deployment. This paper presents a systematic approach for autonomous docking using the Girona Autonomous Underwater Vehicle (AUV) by leveraging a high-fidelity digital twin environment. We adapted the Stonefish simulator into a multiprocessing RL framework to significantly accelerate the learning process while incorporating realistic AUV dynamics, collision models, and sensor noise. Using the Proximal Policy Optimization (PPO) algorithm, we developed a 6-DoF control policy trained in a headless environment with randomized starting positions to ensure generalized perfor-mance. Our reward structure accounts for distance, orientation, action smoothness, and adaptive collision penalties to facilitate soft docking. Experimental results demonstrate that the agent achieved a success rate of over 90% in simulation. Furthermore, successful validation in a physical test tank confirmed the effi-cacy of the sim-to-reality adaptation, with the DRL controller exhibiting emergent behaviors such as pitch-based braking and yaw oscillations to assist in mechanical alignment. 
+
+I. INTRODUCTION Modern applications are increasingly utilizing Machine Learning (ML) to achieve superior results and more gen-eralized behavior in autonomous tasks. While certain ac-tions remain achievable through standard methods such as Proportional-Integral-Derivative Controller (PID) or Model Predictive Control (MPC), Deep Reinforcement Learn-ing (DRL) offers the distinct advantage of adapting to unaccounted-for environmental conditions. This robustness is the primary motivation for deploying DRL across multiple platforms, including Autonomous Surface Vehicles (ASVs), Unmanned Aerial Vehicles (UAVs), and Humanoid Robotics Platforms (HRPs). Currently, the primary bottlenecks for DRL are training latency and the ”sim-to-real” gap. Various approaches exist to accelerate training and achieve optimal policies using high-performance platforms like MJX [1] and Isaac Sim [2]. However, while training efficiency is rapidly improving, sim-to-real adaptation remains in its early stages. This research focuses on facilitating a seamless transfer from simulation to reality by leveraging high-fidelity environments. Underwater applications such as manipulation and docking can significantly benefit from DRL-based control strategies. In this work, we address the problem of autonomous docking 
+
+> 1Authors with the Faculty of Computer Science, Computer Vision and Robotics Research Group (vicorob) Universitat de Girona, 17003 Girona, Spain.
+
+using the Girona Autonomous Underwater Vehicle (AUV) [3]. This task involves several challenges inherent to under-water environments, making it a suitable testbed for evalu-ating the adaptive capabilities of modern DRL approaches. Recent advances in DRL-based docking aim to achieve robust performance under challenging conditions, such as ocean currents and sensor noise, where traditional control strategies often degrade. Nevertheless, only a limited number of studies have successfully transferred policies trained in simulation to real underwater platforms. The main contributions of this paper are as follows:  
+
+> •
+
+Adapting the Stonefish simulation to a multiprocessing RL framework, significantly accelerating the learning process.  
+
+> •
+
+Developing a high-fidelity environment within Stonefish that incorporates AUV dynamics, precise collision mod-els, and realistic sensor inputs to facilitate sim-to-real adaptation.  
+
+> •
+
+Integrating position-based servoing with DRL as arobust replacement for standard control systems and behavior trees.  
+
+> •
+
+Demonstrating successful autonomous docking in aphysical test tank using the proposed DRL methodol-ogy. II. S TATE OF THE ART 
+
+The development of DRL for underwater docking has evolved significantly over the last few years, moving from basic kinematic benchmarks to complex sim-to-real imple-mentations. Early work by Anderlini et al. (2019) [4] presented one of the first adaptations of RL to the docking problem. They compared DDPG and DQN against traditional PID and optimal control methods. To ensure a fair comparison, they utilized a fixed starting position and a standardized dynamic model based on the RAMMUS 100 AUV. Shortly after, Zhang et al. (2020) [5] explored path following by combining DRL with interactive RL. They introduced human-in-the-loop reward structures (DQNH and DQNHE) to accelerate the learning process compared to standard DQN, evaluating their results on the horizontal plane. In 2021, Patil et al. [6] established a benchmark for continuous docking control using a torpedo-shaped AUV and a fixed docking station. Their study evaluated PPO, TD3, and SAC, concluding that TD3 provided the most robust performance. The reward structures utilized in their benchmarking are further detailed in Table I. 
+
+> arXiv:2603.12020v1 [cs.RO] 12 Mar 2026
+
+TABLE I: Summary of DRL used for AUV control and Docking, check appendix for acronyms. 
+
+Reference Algorithm Observation Action Reward Sim. Real Env. 
+
+Anderlini (2019) [4] DDPG, DQN [xr , z r , θ r , ˙x, ˙z, ˙θ, n ] [Qm, δ s] Distance, Suc-cess Matlab None Zhang (2020) [5] DQNH/E [d, c, k, c d] Rudder values Custom reward Gazebo None Patil (2021) [6] TD3, SAC, PPO [x, y, ψ, u, v, r, 
+
+n1, n 2, n 3]
+
+[n1, n 2, n 3] Rdist , R thrust ,Ralign 
+
+UUV Simulator None Zhang (2023) [7] ARDR, ABPPO, SAC, TD3, PPO 
+
+[∆ dr , ∆dy , ∆ψc,
+
+∆ψg , θ, ψ, f, δ 1, δ 2][f, δ 1, δ 2] Reward, penalty Custom None Bharti (2025) [8] TD3 [e1×6, F 1×4] [Fxk , F yk , F zk , τ zk ] rd, r yaw , r bear ,relev , r smooth 
+
+Gazebo Test tank Zheng (2025) [9] SAC [ut, v t, r t, χ t, e y,t , δ t] Rudder values [ex, e y , δ ] Custom None Yu & Lin (2025) [10] TD3 + DDPG + YOLO 
+
+[Tu, T v , W b, h b] Rudder values rh +eδH +rψ +
+
+ry
+
+MATLAB Test Tank Chu (2025) [11] ARSPPO [dt, cos( ψr,t ), sin( ψr,t ),ψt, u t, w t, r t][ft, m t] rdist + rpost +
+
+raction + rtime 
+
+Gazebo Lake Tuncay (2026) [12] SHAC, PPO, DroQ, MPC 
+
+[δd, δ τ , V, W ] [Fx, F y , F z , τ ϕ, τ θ , τ ψ ] rpos + ratt +
+
+ract + rvel +
+
+ract-mavg 
+
+MJX / Stonefish Test Tank 
+
+More recent studies have shifted focus toward environ-mental robustness and 3D complexity. Zhang et al. (2023) [7] utilized PPO to perform docking under variable wave and current conditions. While their 3D environment closely mirrored real-world physics, they noted that the absence of a dedicated collision model meant that any contact resulted in immediate task termination—a factor that can significantly impact docking success rates. The transition from simulation to physical hardware rep-resents the current frontier of the field. In [13], several practical strategies to facilitate the transition from simulation to real-world deployment were proposed. However, it was not until the work of Bharti et al. [8] that a notable sim-to-real transfer was demonstrated on a BlueROV platform. TD3 was employed for visual servoing and docking, utilizing April-Tags for localization. Simultaneously, Zheng et al. (2025) [9] proposed a multi-layer simulation approach to bridge the reality gap. While their study targeted surface vehicles, their methodology—combining domain randomization with high-fidelity dynamics—is highly applicable to AUVs, despite the remaining challenges of sensor noise and hardware failure. The drive for efficiency led Chu et al. (2025) [11] to develop an Adaptive Reward Shape PPO (ARSPPO) frame-work. By accounting for collision impacts and utilizing a parallel simulation framework to speed up training, they successfully demonstrated docking in a real-world lake envi-ronment. Further integration of computer vision was shown by Yu and Lin (2025) [10], who integrated a YOLO-based model for light-ring detection with a DDPG controller to perform docking in a test tank. Most recently, Tuncay et al. (2026) [12], [14] have pushed the boundaries of training speed and validation. Their work highlights the necessity of realistic validation environments, where policies are trained in high-speed frameworks like MJX and subsequently validated in high-fidelity simula-tors like Stonefish. By utilizing the JAX-based MJX, they achieved 6-DoF control training in approximately five min-utes using over 4,000 parallel environments. Their results indicated that SHAC and PPO could outperform standard MPC in controlled environments, marking a breakthrough in controlling complex AUV structures where standard mathe-matical models often struggle to predict behavior. III. M ETHODOLOGY 
+
+A. Simulation 
+
+To mitigate the sim-to-real gap during the transition from simulation to real-world deployment, we develop an accurate digital twin of the docking task using the Stonefish simulator [15]–[17]. Figure 1a presents the Girona AUV with the dock-ing Station. Stonefish models the hydrodynamic behavior of the AUV, providing realistic vehicle dynamics. It also enables the direct integration of environmental disturbances such as currents, waves, and wind; however, in this work only ocean currents are considered as the primary perturba-tion. Additionally, the simulator provides realistic collision handling, allowing proper physical interaction and coupling between the AUV and the docking station during the docking maneuver, fig. 1b. Stonefish-RL, allows to make simulations significantly faster than real-time. This can increase the speed of each thread up to 5 times. The variation in simulation speed depends on the CPU capabilities as it is the responsible for the physics computation (e.g: in case of collision, simulation slows down). Beside that, we implemented a multiprocess adaptation for Stonefish, which allows it to run in multiple-threads. For this Study we used 20 parallel threads plus one for evaluation. This values are less than ISAAC Sim or MJX which can reach up to 4096 instances but they ensure realistic hydrodynamics and sensor models. The training threads runs headless (no graphical interface), while the evaluation use a graphical interface. This allows the trainer to observe the executed actions and the docking process.  
+
+> (a) Digital-twin Environment (b) Physics object model
+
+Fig. 1: Overview of the simulation environment: (a) visual rendering and (b) collision geometry. 
+
+B. Docking Problem Setup 
+
+In simulation, it is required to simplify the problem while keeping realistic assumptions of the docking problem. This is achieved in multiple phases. To learn the control behavior without being biased to a certain trajectory or path, the AUV and docking station spawning position is randomized in each episode. To ensure realistic collision handling and docking behav-ior, the Docking Station (DS) model includes all relevant collision points. As shown in fig. 1, the simulation employs a simplified version of the DS depicted in fig. 2. This simplified model includes only the guiding funnels, which facilitate docking by providing a clearance of ±25 cm along the X and Y axes. The external metal frame that supports the guiding funnels, see [18], is omitted in the simulation to simplify the meshes and improve computational performance. To localize the DS, position-based visual servoing is employed using an onboard camera and a Three Dimen-sional Binary Marker (3DBM) [19]. Since visual sensors are disabled during headless training (i.e., without a graphical interface), the camera model is simplified to a visibility condition. Specifically, when the DS lies within the field of view of the AUV, its pose is updated with accurate measurements (see section III-C.1). Prior to the first visual detection, we assume that an approximate estimate of the DS pose, subject to uncertainty, is available through Ultra Short Baseline (USBL) positioning or another external source. The parameters used during training for the simulation, re-ward function, and model variables are presented in Table III included in Appendix.III. 
+
+Fig. 2: DS used in test tank 
+
+C. Algorithms And Policies 
+
+The docking task is modeled as a Markov Decision Process (MDP) defined by the tuple (S, A, P, R, γ ). At each time step k, the agent observes a state sk ∈ S, selects an action ak ∈ A according to its policy π, receives a scalar reward rk = R(sk, a k), and transitions to the next state sk+1 
+
+according to the transition probability P (sk+1 |sk, a k)
+
+To learn the control policy π, we employ the Proximal Policy Optimization (PPO) DRL algorithm. PPO is an on-policy actor-critic method that employs a clipped surrogate objective to prevent large, destabilizing policy updates. PPO is selected for its reliability and ease of tuning in continuous control tasks. While Soft Actor-Critic (SAC) was also evalu-ated during the initial stages of this study, PPO demonstrated superior stability and performance during physical experi-mentation in the test tank. Consequently, PPO was selected as the primary algorithm for the final deployment presented in this work. The objective of a DRL algorithm is to learn an optimal policy π∗ that maximizes the expected discounted return, defined as 
+
+J(π) = E
+
+" ∞X
+
+> k=0
+
+γkrt+k
+
+#
+
+,
+
+where γ ∈ [0 , 1) is the discount factor. The optimal policy is therefore given by π∗ = arg max π J(π).
+
+1) State Space: The state vector provided to the agent at each time step k is defined as: 
+
+S = [ˆ ok, e ψ , V k, A k] (1) where ˆok represent the translational error vector 
+
+[ex, e y , e z ] (relative position) of the docking point in the AUV body frame. To ensure a realistic state and facilitate sim-to-real transfer, Gaussian noise is injected into the ob-servations based on distance and target visibility. The noise scale σk is dynamically calculated relative to the Euclidean distance of the translational error: σk = 16 |ek, 1:3 | (2) The perturbed observation ˆok is then derived by adding two independent Gaussian components to the ground-truth observation ok:
+
+ˆok = ok + ηbase + ηocc (3) where ηbase ∼ N 
+
+
+
+0,   σk
+
+> 2
+
+2 I
+
+
+
+represents constant sen-sor jitter. The occlusion noise ηocc is conditioned on the visibility of the docking station Vds ∈ {0, 1}, such that 
+
+ηocc ∼ N (0 , σ 2
+
+> k
+
+I) if the target is not observed Vds = 0 ,and ηocc =0 otherwise. This approach prevents overfitting to perfect simulator coordinates by scaling uncertainty with distance and DS visibility. 
+
+eψ presents the yaw error in AUV frame. The variables 
+
+Vk presents the linear and angular velocities vx, v y , v z , ω ψ
+
+in the AUV frame. Ak presents the AUV accelerations 
+
+acc x, acc y , acc z measured by the Inertial Measurement Unit (IMU). 
+
+2) Action Space: The action space consists of a force and torque vector defined as 
+
+A = [ Fx, F y , F z , T r , T p, T ψ ]. (4) These forces and torques are expressed in the AUV body frame. The Girona AUV attempts to track the commanded wrench by distributing it among its five thrusters. Due to the vehicle’s thruster configuration, the roll degree of freedom cannot be directly actuated. Nevertheless, a six-degree-of-freedom action vector is retained to maintain a general formulation. 
+
+3) Reward Function: 
+
+R = rdist + rangle + rsmooth + rcollision + rmission (5) Equation (5) shows all the elements of the reward function. 
+
+rdist = −w ⊙ e = − wx wy wz
+
+ .
+
+
+
+|ex||ey ||ez |
+
+ (6) 
+
+rdist represents the Mahalanobis distance error between the AUV and DS in the AUV frame. The distance is multiplied by the weight vector [wx, w y , w z ], which allow the prioritization of certain axes as the docking requires. In this scenario, where a landing or vertical docking maneuver is considered, the X and Y axes are prioritized over the Z axis. 
+
+rangle = exp ( −2 · | Eψ |) − 1 (7) Equation (7) penalizes the agent based on the yaw error, which is computed in the AUV body frame. For further illus-tration, fig. 3 presents the behavior of this reward function. 
+
+rsmooth = − 0.1
+
+N exp 
+
+> N
+
+X
+
+> i=1
+
+|ak,i − ak−1,i |
+
+!
+
+(8) where N represents the length of the action vector and ak,i 
+
+denotes the i-th action component at time step k. This term 
+
+Fig. 3: Exponential plots for the angle and smooth rewards penalizes large variations between consecutive actions, en-couraging smoother transitions between control commands. Figure 3 illustrates the behavior of this reward function for variations between −6 and 6, corresponding to the maximum possible change. This reward term also facilitates sim-to-real transfer, as smooth actuation is desirable for real-world deployment. 
+
+rcollision =
+
+(
+
+−pc if ∥acc imu ,k − acc imu ,k −1∥ > Γk
+
+0 otherwise (9) Collisions cannot be completely avoided during the docking process. Therefore, the objective is for the agent to enter the DS softly while still using the guiding funnels. The parameter pc represents the collision penalty, as defined in eq. (9), and penalizes the agent based on impacts detected from acceleration variations. The parameter Γk is an adaptive threshold defined as 
+
+Γk+1 =
+
+
+
+2Γ k if a collision is detected 
+
+max(Γ set , Γk/2) no collision and Γk > Γset 
+
+Γk otherwise (10) where Γset represents the nominal threshold value. The adaptive threshold prevents sensor bouncing and avoids pe-nalizing the agent multiple times for the same collision event. The decay step, implemented by dividing the threshold by 2, gradually returns it to its nominal value. 
+
+rmission =
+
+
+
++ps if goal is achieved 
+
+−pf if task is truncated 
+
+0 otherwise (11) The mission reward, rmission , provides a high-magnitude terminal reward ps upon the AUV reaching the docking target within a defined proximity threshold, while applying a penalty pf for truncated episodes. This sparse reward is crit-ical for reinforcing the global task objective, preventing the agent from settling for a local optimum—such as hovering near the target to maximize dense tracking rewards without actually completing the docking maneuver. IV. RESULTS 
+
+A. Training 
+
+Fig. 4: PPO algorithm Fig. 5: mean reward value during the training process using PPO agent Figure 5 presents the training process for the PPO agent. The training took around 3 hours using Intel Core i7 process with RTX 4060 Nvidia graphic card. The trained agent achieved over 90% success docking rate with a mean reward between 300 to 400 depending on the spawn position while it was -800 at the start. 
+
+B. Simulation 
+
+The simulations are performed using the Stonefish sim-ulator integrated with ROS. Instead of interacting directly with the simulator, the learning agent communicates through the same ROS interfaces used by the real AUV. This design choice ensures that the software architecture in simulation closely matches that of the real system, minimizing the modifications required when transferring the policy to the physical vehicle. Although this ROS-based interaction intro-duces additional communication overhead and may slightly slow down the training process, it significantly facilitates sim-to-real transfer by preserving the same control and sensing interfaces used in real-world deployments. A downward-facing camera is used to estimate the position of the DS by detecting a 3DBM [19]. The estimated pose is then transformed from the camera frame to the vehicle frame in order to compute the position error included in the observation vector. fig. 6 presents multiple docking maneu-vers using the trained PPO agent. In these runs, the robot starting position is chosen randomly, causing the mission time to vary between 30 to 60 sec seconds. The DRL agent inference rate was set to 5 Hz to match the camera processing rate as closely as possible. Figure 7 shows the forces and torques requested by the DRL agent together with the docking error in each axis. Five runs with a similar time range were selected for comparison. For easier visualization and interpretation, the error is plotted in the North, East, and Down (NED) frame. The errors in X and Y show a direct convergence with small overshoot. For the Z axis, the AUV begins to heave once the errors in X, Y, and ψ have been significantly reduced. By inspecting the AUV behavior, we observed that two skills have been learned 
+
+Fig. 6: Simulated docking using RL Control by the DRL agent that would be challenging to achieve with conventional controllers. The first is the use of pitch motion to brake and slow down. This behavior is observed during turning and diving as the AUV approaches the DS. The second is the oscillation in yaw, observable in the torque plot in fig. 7. The authors conclude that this behavior helps the AUV slide inside the DS. These small oscillations did not trigger the collision penalty, while still assisting the AUV in docking and entering properly. 
+
+Fig. 7: RL Force requests VS error in simulation C. Test Tank Experiments 
+
+Figure 8 displays the AUV trajectories obtained when executing the DRL agent on the real Girona AUV inside a test tank of size 19 ×9×5 m. The experimental setup is sim-ilar to the simulated scenario. The DS position is estimated using a downward-facing camera, after which the relative position is computed to compose the observation vector. Six different docking maneuvers were performed, each starting from different positions and random orientations. In total 10 missions are performed, eight were successful. Figure 8 include six of these missions which took between 30 and 50 seconds. 
+
+Fig. 8: Test tank trajectories using RL control Figure 9 shows the forces and torques requested by the RL control agent together with the error in the NED frame. For safety reasons, during the test tank experiments the forces were limited to 25% or 50% of the AUV maximum capabilities by clipping the values. Figure 9 shows a behavior very similar to the simulated results, particularly the yaw oscillations observed during docking. This similarity suggests a successful sim-to-real adaptation. V. CONCLUSIONS This paper presented a comprehensive framework for tran-sitioning Deep Reinforcement Learning policies from a high-fidelity digital twin to a physical AUV for docking tasks. By leveraging the Stonefish simulator in a multiprocessing environment, we successfully reduced training latency while maintaining the complex hydrodynamic characteristics of the Girona AUV. Our results demonstrate that the DRL agent not only achieved a success rate exceeding 90% in simulation but also exhibited a high degree of adaptability during physical test tank trials with 8 out of 10 successful runs. Crucially, the agent developed emergent tactical behaviors—such as using pitch angles for deceleration and yaw oscillations for mechanical alignment—without explicit programming. These behaviors proved vital in bridging the sim-to-real gap, 
+
+Fig. 9: RL control force requests VS error in test tank allowing the AUV to navigate sensor noise and physical contact transitions that often destabilize traditional PID or MPC controllers. Future work will focus on expanding the environmental complexity by introducing dynamic currents and dynamic docking stations. Also, we could randomize the thruster positioning during training to adapt to slight differences in the thruster setup between simulation and reality. Ultimately, this research confirms that high-fidelity simulation, when coupled with robust reward shaping, provides a reliable pipeline for deploying autonomous RL-based controllers in sensitive underwater environments. APPENDIX IABBREVIATIONS 
+
+3DBMThree Dimensional Binary Marker ASV Autonomous Surface Vehicle AUV Autonomous Underwater Vehicle DRL Deep Reinforcement Learning DS Docking Station HRP Humanoid Robotics Platform IMU Inertial Measurement Unit MDP Markov Decision Process ML Machine Learning MPC Model Predictive Control NED North, East, and Down PID Proportional-Integral-Derivative Controller UAV Unmanned Aerial Vehicle USBL Ultra Short Baseline APPENDIX II NOMENCLATURE AND ACRONYMS 
+
+TABLE II: Definition of Symbols used in Table I 
+
+Symbol Description Algorithms and DRL Methods 
+
+PPO Proximal Policy Optimization SAC Soft Actor-Critic TD3 Twin Delayed Deep Deterministic Policy Gradient ABPPO Adaptive Buffer PPO ARDR Adaptive Rollback Demo Replay PPO ARSPPO Adaptive Reward Shape PPO DDPG Deep Deterministic Policy Gradient DQN Deep Q-Network DQNH/E DQN with Hindsight Experience Replay / Extended DroQ Dropout Q-Functions for Doubly Robust Soft Actor-Critic MPC Model Predictive Control SHAC Short-Horizon Actor-Critic YOLO You Only Look Once (Object Detection Frame-work) 
+
+State / Observation Variables 
+
+x, y, z Position coordinates in the global/local frame 
+
+xr , z r Relative position coordinates to the dock/target 
+
+u, v, w Surge, sway, and heave velocities (linear) 
+
+˙x, ˙z Time derivatives of position (linear velocities) 
+
+θ, ψ, ϕ Pitch, yaw (heading), and roll angles 
+
+˙θ, ˙ψ Angular velocities 
+
+r Yaw rate (angular velocity about the Z-axis) 
+
+χ Course angle (angle of velocity vector) 
+
+d, d t Euclidean distance to the target at time tc, k, c d Clearance, curvature, and drag/curvature coefficient 
+
+∆d, ∆ψ Error in distance (x,y,z) and orientation (roll,pitch,yaw) 
+
+ex, e y , e z Position errors in X, Y, and Z axes 
+
+ey,t Cross-track error (lateral deviation from path) 
+
+e1×6 6-DoF pose error vector 
+
+n Propeller rotational speed (RPM) or discrete step 
+
+Tu, T v Object pixel coordinates in camera 
+
+Wb, h b Object pixel width & height in camera 
+
+Action Variables 
+
+Qm Motor torque or propulsion command 
+
+δs, δ t Control surface/rudder deflection angle 
+
+n1, n 2, n 3 Individual thruster speeds/commands 
+
+f, f t Propulsive force (surge command) 
+
+mt Control moment (torque) command 
+
+Fx, F y , F z Commanded forces in X, Y, and Z axes 
+
+τϕ, τ θ , τ ψ Commanded moments (Roll, Pitch, Yaw) 
+
+Reward Components 
+
+rdist , r pos Reward/penalty based on distance to goal 
+
+ralign , r att Reward for orientation/attitude alignment 
+
+rthrust , r act Penalty for excessive control effort/energy 
+
+rsmooth Penalty for non-smooth/jerky actuator movements 
+
+eδH Penalty for depth/altitude error 
+
+ract −mavg Reward based on action moving average smooth-ness 
+
+rtime Penalty for elapsed time (encourages efficiency) 
+
+APPENDIX III HYPERPARAMETERS AND SIMULATION SETUP 
+
+TABLE III: Hyperparameters for PPO and SAC training, and Simulation Environment Settings. 
+
+Category Parameter Value 
+
+Simulation Physics calculation freq. 300 Hz RL inference freq. 5 Hz Camera refresh rate 5 Hz AUV starting range ±[6 , 3, 1.4] 
+
+AUV starting Yaw range ±π
+
+DS starting range ±[1 , 2, 0] 
+
+DS starting Yaw range ±π
+
+reward [wx, w y , w z ] [1,1,0.5] Collision penalty pc -10 Collision threshold Γk 1m/s 2
+
+Successful docking ps +500 
+
+Failed docking pf −10 
+
+General RL Policy Network MlpPolicy Max Episode Length 60 s Learning rate 5 × 10 −4
+
+Buffer size 500,000 Batch size 1024 Gamma ( γ) 0.99 
+
+PPO Specific Steps per Update ( n steps ) 512 Entropy Coeff ( ent coef ) 0.01 Clip range 0.2 
+
+SAC Specific Target smoothing ( τ ) 0.005 Train frequency 1Gradient steps 1Learning starts 1000 
+
+ACKNOWLEDGMENT Alaaeddine Chaarani was supported by the Joan Or´ o Grant no. 2024 FI-1 00936. TANDEM research project funded by the MCIN/AEI/10.13039/501100011033 and the Euro-pean Union. AI4AUV, Artificial Intelligence for AUV-based underwater habitat restoration research project (AIA2025-163346-C4) funded by the Spanish Ministry of Science and Innovation. REFERENCES [1] DeepMind, “Mujoco xla (mjx),” 2024, accessed:2026. [Online]. Available: https://mujoco.readthedocs.io/en/stable/mjx.html [2] M. Mittal et al. , “Isaac lab: A gpu-accelerated simulation framework for multi-modal robot learning,” arXiv preprint arXiv:2511.04831 ,2025. [3] D. Ribas, N. Palomeras, P. Ridao, M. Carreras, and A. Mallios, “Girona 500 auv: From survey to intervention,” IEEE/ASME Transac-tions on Mechatronics , vol. 17, no. 1, p. 46–53, 2012. [4] E. Anderlini, G. G. Parker, and G. Thomas, “Docking control of an autonomous underwater vehicle using reinforcement learning,” Applied Sciences (Switzerland) , vol. 9, 9 2019. [5] Q. Zhang, J. Lin, Q. Sha, B. He, and G. Li, “Deep interactive reinforcement learning for path following of autonomous underwater vehicle,” IEEE Access , vol. 8, 2020. [6] M. Patil, B. Wehbe, and M. Valdenegro-Toro, “Deep reinforcement learning for continuous docking control of autonomous underwater vehicles: A benchmarking study,” Oceans Conference Record (IEEE) , vol. 2021-September, 8 2021. [Online]. Available: https: //arxiv.org/abs/2108.02665v1 [7] T. Zhang, X. Miao, Y. Li, L. Jia, Z. Wei, Q. Gong, and T. Wen, “Auv 3d docking control using deep reinforcement learning,” Ocean Engineering , vol. 283, p. 115021, 9 2023. [8] V. Bharti, S. Tunc ¸ay, I. Carlucho, M. Koskinopoulou, and Y. R. Petillot, “From simulation to reality: Deep reinforcement learning for autonomous underwater vehicle docking,” Oceans Conference Record (IEEE) , 2025. [9] Z. Zheng, Z. Wang, and W. Xie, “A sim-to-real transfer framework for enhancing marine vehicle performance in ocean environments,” pp. 1558–1565, 11 2025. [10] C. M. Yu and Y. H. Lin, “The docking control system of an au-tonomous underwater vehicle combining intelligent object recognition and deep reinforcement learning,” Engineering Applications of Artifi-cial Intelligence , vol. 139, p. 109565, 1 2025. [11] S. Chu, M. Lin, D. Li, R. Lin, and S. Xiao, “Adaptive reward shaping based reinforcement learning for docking control of autonomous underwater vehicles,” Ocean Engineering , vol. 318, p. 120139, 2 2025. [12] S. Tunc ¸ay, A. Andres, and I. Carlucho, “Fast policy learning for 6-dof position control of underwater vehicles,” arxiv preprint , 1 2026. [Online]. Available: https://arxiv.org/abs/2512.13359v2 [13] N. Palomeras and P. Ridao, “Autonomous underwater vehicle docking under realistic assumptions using deep reinforcement learning,” Drones , vol. 8, no. 11, 2024. [Online]. Available: https://www.mdpi.com/2504-446X/8/11/673 [14] S. Tunc ¸ay, A. Andres, and I. Carlucho, “Comparative evaluation of reinforcement learning and model predictive control for 6dof position control of an autonomous underwater vehicle,” Lecture Notes in Computer Science , vol. 16045 LNAI, pp. 381–394, 2026. [15] P. Cie´ slak, “Stonefish: An Advanced Open-Source Simulation Tool Designed for Marine Robotics, With a ROS Interface,” in Proceedings of MTS/IEEE OCEANS 2019 , Jun. 2019. [16] M. Grimaldi, P. Cieslak, E. Ochoa, V. Bharti, H. Rajani, I. Carlucho, M. Koskinopoulou, Y. R. Petillot, and N. Gracias, “Stonefish: Supporting machine learning research in marine robotics,” in 
+
+Proceedings of the IEEE International Conference on Robotics and Automation . IEEE, May 2025. [Online]. Available: https: //arxiv.org/abs/2502.11887 [17] P. Font, “stonefish rl: Reinforcement learning for autonomous under-water vehicles in stonefish,” https://github.com/PauFont3/stonefish rl, Jul. 2023. [18] A. Chaarani, J. Esteba, P. Cieslak, and P. Ridao, “A docking station proposal for the girona i-auv,” in OCEANS 2025 Brest . IEEE, 2025, pp. 1–6. [19] A. Chaarani, P. Cieslak, J. Esteba, I. Eichhardt, and P. Ridao, “Three-dimensional binary marker: A novel underwater marker applicable for long-term deployment scenarios,” Journal of Marine Science and Engineering , vol. 13, no. 8, p. 1442, 2025.
