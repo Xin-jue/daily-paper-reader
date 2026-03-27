@@ -6,104 +6,99 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-26
-- 运行时间：2026-03-26 20:01:39 UTC
+- 最新运行日期：2026-03-27
+- 运行时间：2026-03-27 19:47:42 UTC
 - 运行状态：成功
-- 本次总论文数：28
-- 精读区：17
+- 本次总论文数：26
+- 精读区：15
 - 速读区：11
 
 ### 今日简报（AI）
-今日深度研读 28 篇前沿论文，重点攻克了零样本 Sim2Real 迁移与 3D 增强型
-- 详情：[/202603/26/README](/202603/26/README)
+今日精选 26 篇前沿成果，重点突破了 3D 厨房数字孪生构建与视觉-语言-动作（VLA）模型的效率瓶颈。
+满分论文 KitchenTwin 实现了高
+- 详情：[/202603/27/README](/202603/27/README)
 
 ### 精读区论文标签
-1. [Ontology-Guided Diffusion for Zero-Shot Visual Sim2Real Transfer](/202603/26/2603.18719v2-ontology-guided-diffusion-for-zero-shot-visual-sim2real-transfer)  
-   标签：评分：10.0/10、query:q8
-   evidence：使用本体引导扩散的零样本视觉仿真到现实迁移
-2. [3D-Mix for VLA: A Plug-and-Play Module for Integrating VGGT-based 3D Information into Vision-Language-Action Models](/202603/26/2603.24393v1-3d-mix-for-vla-a-plug-and-play-module-for-integrating-vggt-based-3d-information-into-vision-language-action-models)  
+1. [KitchenTwin: Semantically and Geometrically Grounded 3D Kitchen Digital Twins](/202603/27/2603.24684v1-kitchentwin-semantically-and-geometrically-grounded-3d-kitchen-digital-twins)  
+   标签：评分：10.0/10、query:q6
+   evidence：为具身智能构建度量一致的 3D 厨房数字孪生环境
+2. [Beyond Attention Magnitude: Leveraging Inter-layer Rank Consistency for Efficient Vision-Language-Action Models](/202603/27/2603.24941v1-beyond-attention-magnitude-leveraging-inter-layer-rank-consistency-for-efficient-vision-language-action-models)  
+   标签：评分：10.0/10、query:q12
+   evidence：用于机器人操作的高效VLA模型
+3. [$π$, But Make It Fly: Physics-Guided Transfer of VLA Models to Aerial Manipulation](/202603/27/2603.25038v1--but-make-it-fly-physics-guided-transfer-of-vla-models-to-aerial-manipulation)  
    标签：评分：10.0/10、query:q10
-   evidence：在操作任务的VLA模型中集成3D信息
-3. [TAG: Target-Agnostic Guidance for Stable Object-Centric Inference in Vision-Language-Action Models](/202603/26/2603.24584v1-tag-target-agnostic-guidance-for-stable-object-centric-inference-in-vision-language-action-models)  
+   evidence：将VLA模型迁移至空中操作任务
+4. [ThermoAct:Thermal-Aware Vision-Language-Action Models for Robotic Perception and Decision-Making](/202603/27/2603.25044v1-thermoactthermal-aware-vision-language-action-models-for-robotic-perception-and-decision-making)  
    标签：评分：10.0/10、query:q10
-   evidence：机器人操作中视觉-语言-动作模型的引导机制
-4. [Morphology-Consistent Humanoid Interaction through Robot-Centric Video Synthesis](/202603/26/2603.19709v1-morphology-consistent-humanoid-interaction-through-robot-centric-video-synthesis)  
-   标签：评分：9.0/10、query:profile-1
-   evidence：以机器人为中心的视频合成，用于零样本交互与操作
-5. [RoboECC: Multi-Factor-Aware Edge-Cloud Collaborative Deployment for VLA Models](/202603/26/2603.20711v1-roboecc-multi-factor-aware-edge-cloud-collaborative-deployment-for-vla-models)  
+   evidence：用于机器人任务执行的热感知VLA框架
+5. [LaMP: Learning Vision-Language-Action Policies with 3D Scene Flow as Latent Motion Prior](/202603/27/2603.25399v1-lamp-learning-vision-language-action-policies-with-3d-scene-flow-as-latent-motion-prior)  
+   标签：评分：10.0/10、query:q10
+   evidence：利用3D场景流的机器人操作视觉-语言-动作框架
+6. [MMaDA-VLA: Large Diffusion Vision-Language-Action Model with Unified Multi-Modal Instruction and Generation](/202603/27/2603.25406v1-mmada-vla-large-diffusion-vision-language-action-model-with-unified-multi-modal-instruction-and-generation)  
+   标签：评分：10.0/10、query:q12
+   evidence：原生预训练的大型扩散VLA模型架构
+7. [LILAC: Language-Conditioned Object-Centric Optical Flow for Open-Loop Trajectory Generation](/202603/27/2603.25481v1-lilac-language-conditioned-object-centric-optical-flow-for-open-loop-trajectory-generation)  
+   标签：评分：10.0/10、query:q10
+   evidence：基于流的VLA用于机械臂轨迹生成
+8. [Fast-dVLA: Accelerating Discrete Diffusion VLA to Real-Time Performance](/202603/27/2603.25661v1-fast-dvla-accelerating-discrete-diffusion-vla-to-real-time-performance)  
+   标签：评分：10.0/10、query:q12
+   evidence：将离散扩散VLA模型加速至实时性能
+9. [ManiDreams: An Open-Source Library for Robust Object Manipulation via Uncertainty-aware Task-specific Intuitive Physics](/202603/27/2603.18336v2-manidreams-an-open-source-library-for-robust-object-manipulation-via-uncertainty-aware-task-specific-intuitive-physics)  
+   标签：评分：9.0/10、query:q2
+   evidence：基于直觉物理模型的感知不确定性的操作规划
+10. [DiSCo: Diffusion Sequence Copilots for Shared Autonomy](/202603/27/2603.22787v1-disco-diffusion-sequence-copilots-for-shared-autonomy)  
+   标签：评分：9.0/10、query:q2
+   evidence：用于机械臂共享自主控制的扩散策略
+11. [ELITE: Experiential Learning and Intent-Aware Transfer for Self-improving Embodied Agents](/202603/27/2603.24018v1-elite-experiential-learning-and-intent-aware-transfer-for-self-improving-embodied-agents)  
+   标签：评分：9.0/10、query:q10
+   evidence：使用VLM的自我改进具身智能体的经验学习
+12. [SABER: A Stealthy Agentic Black-Box Attack Framework for Vision-Language-Action Models](/202603/27/2603.24935v1-saber-a-stealthy-agentic-black-box-attack-framework-for-vision-language-action-models)  
    标签：评分：9.0/10、query:q12
-   evidence：VLA模型的边云协同部署
-6. [BiPreManip: Learning Affordance-Based Bimanual Preparatory Manipulation through Anticipatory Collaboration](/202603/26/2603.21679v1-bipremanip-learning-affordance-based-bimanual-preparatory-manipulation-through-anticipatory-collaboration)  
-   标签：评分：9.0/10、query:q2
-   evidence：双臂准备性操作任务与协调动作规划
-7. [RAFL: Generalizable Sim-to-Real of Soft Robots with Residual Acceleration Field Learning](/202603/26/2603.22039v1-rafl-generalizable-sim-to-real-of-soft-robots-with-residual-acceleration-field-learning)  
-   标签：评分：9.0/10、query:q8
-   evidence：软体机器人的仿真到现实迁移
-8. [Trajectory Generation for Underactuated Soft Robot Manipulators using Discrete Elastic Rod Dynamics](/202603/26/2603.22604v1-trajectory-generation-for-underactuated-soft-robot-manipulators-using-discrete-elastic-rod-dynamics)  
-   标签：评分：9.0/10、query:q2
-   evidence：软体机器人操作臂的轨迹生成
-9. [VLGOR: Visual-Language Knowledge Guided Offline Reinforcement Learning for Generalizable Agents](/202603/26/2603.22892v1-vlgor-visual-language-knowledge-guided-offline-reinforcement-learning-for-generalizable-agents)  
-   标签：评分：9.0/10、query:q4
-   evidence：微调视觉语言模型以在强化学习中预测未来状态
-10. [WorldMesh: Generating Navigable Multi-Room 3D Scenes via Mesh-Conditioned Image Diffusion](/202603/26/2603.22972v1-worldmesh-generating-navigable-multi-room-3d-scenes-via-mesh-conditioned-image-diffusion)  
-   标签：评分：9.0/10、query:q9
-   evidence：通过网格条件扩散生成可导航的3D场景
-11. [WorldMesh: Generating Navigable Multi-Room 3D Scenes via Mesh-Conditioned Image Diffusion](/202603/26/2603.22972v2-worldmesh-generating-navigable-multi-room-3d-scenes-via-mesh-conditioned-image-diffusion)  
-   标签：评分：9.0/10、query:q3
-   evidence：通过网格条件扩散生成可导航的多房间3D场景
-12. [AeroScene: Progressive Scene Synthesis for Aerial Robotics](/202603/26/2603.23224v1-aeroscene-progressive-scene-synthesis-for-aerial-robotics)  
-   标签：评分：9.0/10、query:q3
-   evidence：用于渐进式3D场景合成的分层扩散模型
-13. [Efficient Hybrid SE(3)-Equivariant Visuomotor Flow Policy via Spherical Harmonics for Robot Manipulation](/202603/26/2603.23227v1-efficient-hybrid-se3-equivariant-visuomotor-flow-policy-via-spherical-harmonics-for-robot-manipulation)  
-   标签：评分：9.0/10、query:q2
-   evidence：用于机器人操作的等变视觉运动流策略
-14. [SOMA: Strategic Orchestration and Memory-Augmented System for Vision-Language-Action Model Robustness via In-Context Adaptation](/202603/26/2603.24060v1-soma-strategic-orchestration-and-memory-augmented-system-for-vision-language-action-model-robustness-via-in-context-adaptation)  
-   标签：评分：9.0/10、query:q12
-   evidence：升级冻结的VLA策略以实现鲁棒的上下文自适应
-15. [Knowledge-Guided Manipulation Using Multi-Task Reinforcement Learning](/202603/26/2603.24083v1-knowledge-guided-manipulation-using-multi-task-reinforcement-learning)  
-   标签：评分：9.0/10、query:q2
-   evidence：基于3D场景图和强化学习的多任务机器人操作
-16. [Toward Generalist Neural Motion Planners for Robotic Manipulators: Challenges and Opportunities](/202603/26/2603.24318v1-toward-generalist-neural-motion-planners-for-robotic-manipulators-challenges-and-opportunities)  
-   标签：评分：9.0/10、query:q2
-   evidence：机械臂通用神经运动规划器
-17. [Chameleon: Episodic Memory for Long-Horizon Robotic Manipulation](/202603/26/2603.24576v1-chameleon-episodic-memory-for-long-horizon-robotic-manipulation)  
-   标签：评分：9.0/10、query:q2
-   evidence：长程机器人操作的情节记忆
+   evidence：针对视觉-语言-动作 (VLA) 模型的对抗性攻击
+13. [VideoWeaver: Multimodal Multi-View Video-to-Video Transfer for Embodied Agents](/202603/27/2603.25420v1-videoweaver-multimodal-multi-view-video-to-video-transfer-for-embodied-agents)  
+   标签：评分：9.0/10、query:q5
+   evidence：用于机器人演示重仿真的多视角视频到视频迁移
+14. [Persistent Robot World Models: Stabilizing Multi-Step Rollouts via Reinforcement Learning](/202603/27/2603.25685v1-persistent-robot-world-models-stabilizing-multi-step-rollouts-via-reinforcement-learning)  
+   标签：评分：9.0/10、query:q13
+   evidence：用于模拟操作场景的动作条件机器人世界模型
+15. [SoftMimicGen: A Data Generation System for Scalable Robot Learning in Deformable Object Manipulation](/202603/27/2603.25725v1-softmimicgen-a-data-generation-system-for-scalable-robot-learning-in-deformable-object-manipulation)  
+   标签：评分：9.0/10、query:q5
+   evidence：用于变形物体操作的合成数据生成
 
 ### 速读区论文标签
-1. [NavGSim: High-Fidelity Gaussian Splatting Simulator for Large-Scale Navigation](/202603/26/2603.15186v1-navgsim-high-fidelity-gaussian-splatting-simulator-for-large-scale-navigation)  
-   标签：评分：8.0/10、query:q9
-   evidence：基于高斯泼溅的大规模导航环境模拟器
-2. [Zero-Shot Generalization from Motion Demonstrations to New Tasks](/202603/26/2603.15445v1-zero-shot-generalization-from-motion-demonstrations-to-new-tasks)  
+1. [ECHO: Edge-Cloud Humanoid Orchestration for Language-to-Motion Control](/202603/27/2603.16188v1-echo-edge-cloud-humanoid-orchestration-for-language-to-motion-control)  
+   标签：评分：8.0/10、query:q10
+   evidence：人形机器人的语言到动作控制
+2. [MG-Grasp: Metric-Scale Geometric 6-DoF Grasping Framework with Sparse RGB Observations](/202603/27/2603.16270v2-mg-grasp-metric-scale-geometric-6-dof-grasping-framework-with-sparse-rgb-observations)  
    标签：评分：8.0/10、query:q2
-   evidence：学习运动策略并结合演示以泛化到新任务
-3. [HSImul3R: Physics-in-the-Loop Reconstruction of Simulation-Ready Human-Scene Interactions](/202603/26/2603.15612v1-hsimul3r-physics-in-the-loop-reconstruction-of-simulation-ready-human-scene-interactions)  
-   标签：评分：8.0/10、query:q3
-   evidence：物理环路中的仿真就绪型人机交互场景重建
-4. [You've Got a Golden Ticket: Improving Generative Robot Policies With A Single Noise Vector](/202603/26/2603.15757v1-youve-got-a-golden-ticket-improving-generative-robot-policies-with-a-single-noise-vector)  
-   标签：评分：8.0/10、query:q12
-   evidence：通过使用恒定的初始噪声向量改进生成式机器人策略和VLA模型。
-5. [MosaicMem: Hybrid Spatial Memory for Controllable Video World Models](/202603/26/2603.17117v1-mosaicmem-hybrid-spatial-memory-for-controllable-video-world-models)  
+   evidence：基于稀疏RGB观测的六自由度机器人抓取框架
+3. [OGScene3D: Incremental Open-Vocabulary 3D Gaussian Scene Graph Mapping for Scene Understanding](/202603/27/2603.16301v2-ogscene3d-incremental-open-vocabulary-3d-gaussian-scene-graph-mapping-for-scene-understanding)  
+   标签：评分：8.0/10、query:q9
+   evidence：用于机器人导航和操作的开放词汇3D场景理解
+4. [DexGrasp-Zero: A Morphology-Aligned Policy for Zero-Shot Cross-Embodiment Dexterous Grasping](/202603/27/2603.16806v2-dexgrasp-zero-a-morphology-aligned-policy-for-zero-shot-cross-embodiment-dexterous-grasping)  
+   标签：评分：8.0/10、query:q8
+   evidence：利用形态对齐策略实现灵巧抓取的零样本跨机器人实体迁移。
+5. [SG-CoT: An Ambiguity-Aware Robotic Planning Framework using Scene Graph Representations](/202603/27/2603.18271v1-sg-cot-an-ambiguity-aware-robotic-planning-framework-using-scene-graph-representations)  
    标签：评分：7.0/10、query:q13
-   evidence：用于一致性环境仿真的可控视频世界模型
-6. [WINFlowNets: Warm-up Integrated Networks Training of Generative Flow Networks for Robotics and Machine Fault Adaptation](/202603/26/2603.17301v1-winflownets-warm-up-integrated-networks-training-of-generative-flow-networks-for-robotics-and-machine-fault-adaptation)  
-   标签：评分：7.0/10、query:q2
-   evidence：用于机器人控制任务的生成流网络
-7. [Recurrent Reasoning with Vision-Language Models for Estimating Long-Horizon Embodied Task Progress](/202603/26/2603.17312v1-recurrent-reasoning-with-vision-language-models-for-estimating-long-horizon-embodied-task-progress)  
+   evidence：用于机器人规划和任务落地的场景图表示
+6. [SG-CoT: An Ambiguity-Aware Robotic Planning Framework using Scene Graph Representations](/202603/27/2603.18271v2-sg-cot-an-ambiguity-aware-robotic-planning-framework-using-scene-graph-representations)  
+   标签：评分：7.0/10、query:q13
+   evidence：使用场景图表示和大语言模型的机器人规划
+7. [OnlinePG: Online Open-Vocabulary Panoptic Mapping with 3D Gaussian Splatting](/202603/27/2603.18510v1-onlinepg-online-open-vocabulary-panoptic-mapping-with-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q9
+   evidence：具身智能应用的在线开放词汇全景建图
+8. [Empathetic Motion Generation for Humanoid Educational Robots via Reasoning-Guided Vision--Language--Motion Diffusion Architecture](/202603/27/2603.18771v1-empathetic-motion-generation-for-humanoid-educational-robots-via-reasoning-guided-vision--language--motion-diffusion-architecture)  
    标签：评分：7.0/10、query:q4
-   evidence：用于具身任务的视觉语言模型
-8. [Efficient Soft Actor-Critic with LLM-Based Action-Level Guidance for Continuous Control](/202603/26/2603.17468v1-efficient-soft-actor-critic-with-llm-based-action-level-guidance-for-continuous-control)  
-   标签：评分：7.0/10、query:q2
-   evidence：基于LLM的动作级指导，用于MuJoCo中的连续控制
-9. [Shielded Reinforcement Learning Under Dynamic Temporal Logic Constraints](/202603/26/2603.17152v1-shielded-reinforcement-learning-under-dynamic-temporal-logic-constraints)  
-   标签：评分：6.0/10、query:q2
-   evidence：时空约束下的机器人强化学习
-10. [OmniVLN: Omnidirectional 3D Perception and Token-Efficient LLM Reasoning for Visual-Language Navigation across Air and Ground Platforms](/202603/26/2603.17351v1-omnivln-omnidirectional-3d-perception-and-token-efficient-llm-reasoning-for-visual-language-navigation-across-air-and-ground-platforms)  
+   evidence：用于人形机器人行为的视觉-语言-动作扩散模型
+9. [MERGE: Guided Vision-Language Models for Multi-Actor Event Reasoning and Grounding in Human-Robot Interaction](/202603/27/2603.18988v1-merge-guided-vision-language-models-for-multi-actor-event-reasoning-and-grounding-in-human-robot-interaction)  
    标签：评分：6.0/10、query:q4
-   evidence：具身智能体的视觉语言导航
-11. [Benchmarking Reinforcement Learning via Stochastic Converse Optimality: Generating Systems with Known Optimal Policies](/202603/26/2603.17631v1-benchmarking-reinforcement-learning-via-stochastic-converse-optimality-generating-systems-with-known-optimal-policies)  
-   标签：评分：6.0/10、query:q14
-   evidence：通过系统生成基准系列来评估强化学习
+   evidence：用于人机交互中事件落地的视觉语言模型
+10. [Introducing M: A Modular, Modifiable Social Robot](/202603/27/2603.19134v1-introducing-m-a-modular-modifiable-social-robot)  
+   标签：评分：6.0/10、query:q8
+   evidence：用于快速虚实迁移的仿真环境
+11. [DynFlowDrive: Flow-Based Dynamic World Modeling for Autonomous Driving](/202603/27/2603.19675v1-dynflowdrive-flow-based-dynamic-world-modeling-for-autonomous-driving)  
+   标签：评分：6.0/10、query:q13
+   evidence：基于流的动作规划动态世界建模
 
 
 <div class="dpr-home-promo-card">
