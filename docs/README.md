@@ -6,99 +6,79 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-27
-- 运行时间：2026-03-27 19:47:42 UTC
+- 最新运行日期：2026-03-28
+- 运行时间：2026-03-28 19:26:16 UTC
 - 运行状态：成功
-- 本次总论文数：26
-- 精读区：15
+- 本次总论文数：19
+- 精读区：8
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选 26 篇前沿成果，重点突破了 3D 厨房数字孪生构建与视觉-语言-动作（VLA）模型的效率瓶颈。
-满分论文 KitchenTwin 实现了高
-- 详情：[/202603/27/README](/202603/27/README)
+今日精选 19 篇前沿论文，重点突破了云端机器人操作的延迟瓶颈与 3D 世界模型的智能体构建。
+最值得关注 Speculative Policy 框架对云端控制实时性的提升，以及基础图像模型在 3D 环境建模中的跨界应用。
+建议深入探索低延迟云机器人架构与视觉语言模型对物理属性（如质量）的量化估算技术。
+- 详情：[/202603/28/README](/202603/28/README)
 
 ### 精读区论文标签
-1. [KitchenTwin: Semantically and Geometrically Grounded 3D Kitchen Digital Twins](/202603/27/2603.24684v1-kitchentwin-semantically-and-geometrically-grounded-3d-kitchen-digital-twins)  
-   标签：评分：10.0/10、query:q6
-   evidence：为具身智能构建度量一致的 3D 厨房数字孪生环境
-2. [Beyond Attention Magnitude: Leveraging Inter-layer Rank Consistency for Efficient Vision-Language-Action Models](/202603/27/2603.24941v1-beyond-attention-magnitude-leveraging-inter-layer-rank-consistency-for-efficient-vision-language-action-models)  
-   标签：评分：10.0/10、query:q12
-   evidence：用于机器人操作的高效VLA模型
-3. [$π$, But Make It Fly: Physics-Guided Transfer of VLA Models to Aerial Manipulation](/202603/27/2603.25038v1--but-make-it-fly-physics-guided-transfer-of-vla-models-to-aerial-manipulation)  
-   标签：评分：10.0/10、query:q10
-   evidence：将VLA模型迁移至空中操作任务
-4. [ThermoAct:Thermal-Aware Vision-Language-Action Models for Robotic Perception and Decision-Making](/202603/27/2603.25044v1-thermoactthermal-aware-vision-language-action-models-for-robotic-perception-and-decision-making)  
-   标签：评分：10.0/10、query:q10
-   evidence：用于机器人任务执行的热感知VLA框架
-5. [LaMP: Learning Vision-Language-Action Policies with 3D Scene Flow as Latent Motion Prior](/202603/27/2603.25399v1-lamp-learning-vision-language-action-policies-with-3d-scene-flow-as-latent-motion-prior)  
-   标签：评分：10.0/10、query:q10
-   evidence：利用3D场景流的机器人操作视觉-语言-动作框架
-6. [MMaDA-VLA: Large Diffusion Vision-Language-Action Model with Unified Multi-Modal Instruction and Generation](/202603/27/2603.25406v1-mmada-vla-large-diffusion-vision-language-action-model-with-unified-multi-modal-instruction-and-generation)  
-   标签：评分：10.0/10、query:q12
-   evidence：原生预训练的大型扩散VLA模型架构
-7. [LILAC: Language-Conditioned Object-Centric Optical Flow for Open-Loop Trajectory Generation](/202603/27/2603.25481v1-lilac-language-conditioned-object-centric-optical-flow-for-open-loop-trajectory-generation)  
-   标签：评分：10.0/10、query:q10
-   evidence：基于流的VLA用于机械臂轨迹生成
-8. [Fast-dVLA: Accelerating Discrete Diffusion VLA to Real-Time Performance](/202603/27/2603.25661v1-fast-dvla-accelerating-discrete-diffusion-vla-to-real-time-performance)  
-   标签：评分：10.0/10、query:q12
-   evidence：将离散扩散VLA模型加速至实时性能
-9. [ManiDreams: An Open-Source Library for Robust Object Manipulation via Uncertainty-aware Task-specific Intuitive Physics](/202603/27/2603.18336v2-manidreams-an-open-source-library-for-robust-object-manipulation-via-uncertainty-aware-task-specific-intuitive-physics)  
+1. [Speculative Policy Orchestration: A Latency-Resilient Framework for Cloud-Robotic Manipulation](/202603/28/2603.19418v1-speculative-policy-orchestration-a-latency-resilient-framework-for-cloud-robotic-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：基于直觉物理模型的感知不确定性的操作规划
-10. [DiSCo: Diffusion Sequence Copilots for Shared Autonomy](/202603/27/2603.22787v1-disco-diffusion-sequence-copilots-for-shared-autonomy)  
-   标签：评分：9.0/10、query:q2
-   evidence：用于机械臂共享自主控制的扩散策略
-11. [ELITE: Experiential Learning and Intent-Aware Transfer for Self-improving Embodied Agents](/202603/27/2603.24018v1-elite-experiential-learning-and-intent-aware-transfer-for-self-improving-embodied-agents)  
-   标签：评分：9.0/10、query:q10
-   evidence：使用VLM的自我改进具身智能体的经验学习
-12. [SABER: A Stealthy Agentic Black-Box Attack Framework for Vision-Language-Action Models](/202603/27/2603.24935v1-saber-a-stealthy-agentic-black-box-attack-framework-for-vision-language-action-models)  
-   标签：评分：9.0/10、query:q12
-   evidence：针对视觉-语言-动作 (VLA) 模型的对抗性攻击
-13. [VideoWeaver: Multimodal Multi-View Video-to-Video Transfer for Embodied Agents](/202603/27/2603.25420v1-videoweaver-multimodal-multi-view-video-to-video-transfer-for-embodied-agents)  
-   标签：评分：9.0/10、query:q5
-   evidence：用于机器人演示重仿真的多视角视频到视频迁移
-14. [Persistent Robot World Models: Stabilizing Multi-Step Rollouts via Reinforcement Learning](/202603/27/2603.25685v1-persistent-robot-world-models-stabilizing-multi-step-rollouts-via-reinforcement-learning)  
+   evidence：机械臂操作的延迟弹性框架
+2. [WorldAgents: Can Foundation Image Models be Agents for 3D World Models?](/202603/28/2603.19708v1-worldagents-can-foundation-image-models-be-agents-for-3d-world-models)  
+   标签：评分：9.0/10、query:q9
+   evidence：使用基础图像模型和 VLM 进行 3D 世界合成
+3. [Morphology-Consistent Humanoid Interaction through Robot-Centric Video Synthesis](/202603/28/2603.19709v2-morphology-consistent-humanoid-interaction-through-robot-centric-video-synthesis)  
    标签：评分：9.0/10、query:q13
-   evidence：用于模拟操作场景的动作条件机器人世界模型
-15. [SoftMimicGen: A Data Generation System for Scalable Robot Learning in Deformable Object Manipulation](/202603/27/2603.25725v1-softmimicgen-a-data-generation-system-for-scalable-robot-learning-in-deformable-object-manipulation)  
-   标签：评分：9.0/10、query:q5
-   evidence：用于变形物体操作的合成数据生成
+   evidence：用于机器人交互任务的生成式视频合成
+4. [Swim2Real: VLM-Guided System Identification for Sim-to-Real Transfer](/202603/28/2603.20827v1-swim2real-vlm-guided-system-identification-for-sim-to-real-transfer)  
+   标签：评分：9.0/10、query:q8
+   evidence：VLM引导的系统辨识用于从仿真到现实的迁移
+5. [ROBOGATE: Adaptive Failure Discovery for Safe Robot Policy Deployment via Two-Stage Boundary-Focused Sampling](/202603/28/2603.22126v1-robogate-adaptive-failure-discovery-for-safe-robot-policy-deployment-via-two-stage-boundary-focused-sampling)  
+   标签：评分：9.0/10、query:q14
+   evidence：在仿真环境中对机器人操作进行基准测试
+6. [Event-Driven Proactive Assistive Manipulation with Grounded Vision-Language Planning](/202603/28/2603.23950v1-event-driven-proactive-assistive-manipulation-with-grounded-vision-language-planning)  
+   标签：评分：9.0/10、query:q2
+   evidence：用于辅助操作的落地视觉语言规划
+7. [FODMP: Fast One-Step Diffusion of Movement Primitives Generation for Time-Dependent Robot Actions](/202603/28/2603.24806v1-fodmp-fast-one-step-diffusion-of-movement-primitives-generation-for-time-dependent-robot-actions)  
+   标签：评分：9.0/10、query:q2
+   evidence：机器人动作的运动基元扩散生成
+8. [A Minimum-Energy Control Approach for Redundant Mobile Manipulators in Physical Human-Robot Interaction Applications](/202603/28/2603.25259v1-a-minimum-energy-control-approach-for-redundant-mobile-manipulators-in-physical-human-robot-interaction-applications)  
+   标签：评分：9.0/10、query:q2
+   evidence：配备机械臂的移动底座控制方法
 
 ### 速读区论文标签
-1. [ECHO: Edge-Cloud Humanoid Orchestration for Language-to-Motion Control](/202603/27/2603.16188v1-echo-edge-cloud-humanoid-orchestration-for-language-to-motion-control)  
-   标签：评分：8.0/10、query:q10
-   evidence：人形机器人的语言到动作控制
-2. [MG-Grasp: Metric-Scale Geometric 6-DoF Grasping Framework with Sparse RGB Observations](/202603/27/2603.16270v2-mg-grasp-metric-scale-geometric-6-dof-grasping-framework-with-sparse-rgb-observations)  
+1. [CABTO: Context-Aware Behavior Tree Grounding for Robot Manipulation](/202603/28/2603.16809v1-cabto-context-aware-behavior-tree-grounding-for-robot-manipulation)  
    标签：评分：8.0/10、query:q2
-   evidence：基于稀疏RGB观测的六自由度机器人抓取框架
-3. [OGScene3D: Incremental Open-Vocabulary 3D Gaussian Scene Graph Mapping for Scene Understanding](/202603/27/2603.16301v2-ogscene3d-incremental-open-vocabulary-3d-gaussian-scene-graph-mapping-for-scene-understanding)  
-   标签：评分：8.0/10、query:q9
-   evidence：用于机器人导航和操作的开放词汇3D场景理解
-4. [DexGrasp-Zero: A Morphology-Aligned Policy for Zero-Shot Cross-Embodiment Dexterous Grasping](/202603/27/2603.16806v2-dexgrasp-zero-a-morphology-aligned-policy-for-zero-shot-cross-embodiment-dexterous-grasping)  
-   标签：评分：8.0/10、query:q8
-   evidence：利用形态对齐策略实现灵巧抓取的零样本跨机器人实体迁移。
-5. [SG-CoT: An Ambiguity-Aware Robotic Planning Framework using Scene Graph Representations](/202603/27/2603.18271v1-sg-cot-an-ambiguity-aware-robotic-planning-framework-using-scene-graph-representations)  
+   evidence：机器人操作行为树系统的自动构建
+2. [PhysQuantAgent: An Inference Pipeline of Mass Estimation for Vision-Language Models](/202603/28/2603.16958v1-physquantagent-an-inference-pipeline-of-mass-estimation-for-vision-language-models)  
+   标签：评分：8.0/10、query:q10
+   evidence：使用视觉语言模型进行操作任务质量估计的推理流水线
+3. [TeleDex: Accessible Dexterous Teleoperation](/202603/28/2603.17065v1-teledex-accessible-dexterous-teleoperation)  
+   标签：评分：8.0/10、query:q2
+   evidence：灵巧手和机器人操作器的遥操作
+4. [Influence of Gripper Design on Human Demonstration Quality for Robot Learning](/202603/28/2603.17189v1-influence-of-gripper-design-on-human-demonstration-quality-for-robot-learning)  
+   标签：评分：8.0/10、query:q2
+   evidence：机器人操作任务学习中的人类演示研究
+5. [X-World: Controllable Ego-Centric Multi-Camera World Models for Scalable End-to-End Driving](/202603/28/2603.19979v1-x-world-controllable-ego-centric-multi-camera-world-models-for-scalable-end-to-end-driving)  
    标签：评分：7.0/10、query:q13
-   evidence：用于机器人规划和任务落地的场景图表示
-6. [SG-CoT: An Ambiguity-Aware Robotic Planning Framework using Scene Graph Representations](/202603/27/2603.18271v2-sg-cot-an-ambiguity-aware-robotic-planning-framework-using-scene-graph-representations)  
+   evidence：用于VLA策略中模拟未来观测的生成式世界模型
+6. [The Robot's Inner Critic: Self-Refinement of Social Behaviors through VLM-based Replanning](/202603/28/2603.20164v1-the-robots-inner-critic-self-refinement-of-social-behaviors-through-vlm-based-replanning)  
    标签：评分：7.0/10、query:q13
-   evidence：使用场景图表示和大语言模型的机器人规划
-7. [OnlinePG: Online Open-Vocabulary Panoptic Mapping with 3D Gaussian Splatting](/202603/27/2603.18510v1-onlinepg-online-open-vocabulary-panoptic-mapping-with-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q9
-   evidence：具身智能应用的在线开放词汇全景建图
-8. [Empathetic Motion Generation for Humanoid Educational Robots via Reasoning-Guided Vision--Language--Motion Diffusion Architecture](/202603/27/2603.18771v1-empathetic-motion-generation-for-humanoid-educational-robots-via-reasoning-guided-vision--language--motion-diffusion-architecture)  
-   标签：评分：7.0/10、query:q4
-   evidence：用于人形机器人行为的视觉-语言-动作扩散模型
-9. [MERGE: Guided Vision-Language Models for Multi-Actor Event Reasoning and Grounding in Human-Robot Interaction](/202603/27/2603.18988v1-merge-guided-vision-language-models-for-multi-actor-event-reasoning-and-grounding-in-human-robot-interaction)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于人机交互中事件落地的视觉语言模型
-10. [Introducing M: A Modular, Modifiable Social Robot](/202603/27/2603.19134v1-introducing-m-a-modular-modifiable-social-robot)  
-   标签：评分：6.0/10、query:q8
-   evidence：用于快速虚实迁移的仿真环境
-11. [DynFlowDrive: Flow-Based Dynamic World Modeling for Autonomous Driving](/202603/27/2603.19675v1-dynflowdrive-flow-based-dynamic-world-modeling-for-autonomous-driving)  
+   evidence：基于VLM的重新规划和关节控制代码生成
+7. [IndoorR2X: Indoor Robot-to-Everything Coordination with LLM-Driven Planning](/202603/28/2603.20182v1-indoorr2x-indoor-robot-to-everything-coordination-with-llm-driven-planning)  
+   标签：评分：7.0/10、query:q13
+   evidence：LLM驱动的多机器人任务规划与仿真框架
+8. [Enhancing Vision-Based Policies with Omni-View and Cross-Modality Knowledge Distillation for Mobile Robots](/202603/28/2603.20679v1-enhancing-vision-based-policies-with-omni-view-and-cross-modality-knowledge-distillation-for-mobile-robots)  
+   标签：评分：7.0/10、query:q2
+   evidence：用于操作和移动的视觉策略
+9. [Cooperation and Exploitation in LLM Policy Synthesis for Sequential Social Dilemmas](/202603/28/2603.19453v1-cooperation-and-exploitation-in-llm-policy-synthesis-for-sequential-social-dilemmas)  
    标签：评分：6.0/10、query:q13
-   evidence：基于流的动作规划动态世界建模
+   evidence：多智能体环境下基于大语言模型的策略合成
+10. [Evolving Embodied Intelligence: Graph Neural Network--Driven Co-Design of Morphology and Control in Soft Robotics](/202603/28/2603.19582v1-evolving-embodied-intelligence-graph-neural-network--driven-co-design-of-morphology-and-control-in-soft-robotics)  
+   标签：评分：6.0/10、query:q2
+   evidence：软体机器人的形态与控制协同设计
+11. [Embodied Science: Closing the Discovery Loop with Agentic Embodied AI](/202603/28/2603.19782v1-embodied-science-closing-the-discovery-loop-with-agentic-embodied-ai)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：用于物理执行的感知-语言-动作-发现框架
 
 
 <div class="dpr-home-promo-card">
