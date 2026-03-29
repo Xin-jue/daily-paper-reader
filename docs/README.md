@@ -6,79 +6,73 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-28
-- 运行时间：2026-03-28 19:26:16 UTC
+- 最新运行日期：2026-03-29
+- 运行时间：2026-03-29 19:26:44 UTC
 - 运行状态：成功
-- 本次总论文数：19
-- 精读区：8
+- 本次总论文数：17
+- 精读区：6
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选 19 篇前沿论文，重点突破了云端机器人操作的延迟瓶颈与 3D 世界模型的智能体构建。
-最值得关注 Speculative Policy 框架对云端控制实时性的提升，以及基础图像模型在 3D 环境建模中的跨界应用。
-建议深入探索低延迟云机器人架构与视觉语言模型对物理属性（如质量）的量化估算技术。
-- 详情：[/202603/28/README](/202603/28/README)
+今日精选 17 篇前沿论文，深度聚焦灵巧手高频触觉操作与多智能体博弈追踪技术。
+重点关注评分高达 9.0 的 DexDrummer 灵巧打击乐框架，以及结合 VLA 模型实现竞争性追踪的 CoMaTrack。
+建议关注物理优化驱动的人形机器人全身运动，以及针对柔性物体的移动操纵新方案。
+- 详情：[/202603/29/README](/202603/29/README)
 
 ### 精读区论文标签
-1. [Speculative Policy Orchestration: A Latency-Resilient Framework for Cloud-Robotic Manipulation](/202603/28/2603.19418v1-speculative-policy-orchestration-a-latency-resilient-framework-for-cloud-robotic-manipulation)  
+1. [DexDrummer: In-Hand, Contact-Rich, and Long-Horizon Dexterous Robot Drumming](/202603/29/2603.22263v1-dexdrummer-in-hand-contact-rich-and-long-horizon-dexterous-robot-drumming)  
    标签：评分：9.0/10、query:q2
-   evidence：机械臂操作的延迟弹性框架
-2. [WorldAgents: Can Foundation Image Models be Agents for 3D World Models?](/202603/28/2603.19708v1-worldagents-can-foundation-image-models-be-agents-for-3d-world-models)  
-   标签：评分：9.0/10、query:q9
-   evidence：使用基础图像模型和 VLM 进行 3D 世界合成
-3. [Morphology-Consistent Humanoid Interaction through Robot-Centric Video Synthesis](/202603/28/2603.19709v2-morphology-consistent-humanoid-interaction-through-robot-centric-video-synthesis)  
-   标签：评分：9.0/10、query:q13
-   evidence：用于机器人交互任务的生成式视频合成
-4. [Swim2Real: VLM-Guided System Identification for Sim-to-Real Transfer](/202603/28/2603.20827v1-swim2real-vlm-guided-system-identification-for-sim-to-real-transfer)  
-   标签：评分：9.0/10、query:q8
-   evidence：VLM引导的系统辨识用于从仿真到现实的迁移
-5. [ROBOGATE: Adaptive Failure Discovery for Safe Robot Policy Deployment via Two-Stage Boundary-Focused Sampling](/202603/28/2603.22126v1-robogate-adaptive-failure-discovery-for-safe-robot-policy-deployment-via-two-stage-boundary-focused-sampling)  
-   标签：评分：9.0/10、query:q14
-   evidence：在仿真环境中对机器人操作进行基准测试
-6. [Event-Driven Proactive Assistive Manipulation with Grounded Vision-Language Planning](/202603/28/2603.23950v1-event-driven-proactive-assistive-manipulation-with-grounded-vision-language-planning)  
-   标签：评分：9.0/10、query:q2
-   evidence：用于辅助操作的落地视觉语言规划
-7. [FODMP: Fast One-Step Diffusion of Movement Primitives Generation for Time-Dependent Robot Actions](/202603/28/2603.24806v1-fodmp-fast-one-step-diffusion-of-movement-primitives-generation-for-time-dependent-robot-actions)  
-   标签：评分：9.0/10、query:q2
-   evidence：机器人动作的运动基元扩散生成
-8. [A Minimum-Energy Control Approach for Redundant Mobile Manipulators in Physical Human-Robot Interaction Applications](/202603/28/2603.25259v1-a-minimum-energy-control-approach-for-redundant-mobile-manipulators-in-physical-human-robot-interaction-applications)  
-   标签：评分：9.0/10、query:q2
-   evidence：配备机械臂的移动底座控制方法
+   evidence：灵巧机器人操作和双臂控制策略
+2. [CoMaTrack: Competitive Multi-Agent Game-Theoretic Tracking with Vision-Language-Action Models](/202603/29/2603.22846v1-comatrack-competitive-multi-agent-game-theoretic-tracking-with-vision-language-action-models)  
+   标签：评分：9.0/10、query:q4
+   evidence：用于动态环境下具身视觉追踪的视觉-语言-动作模型
+3. [Grounding Vision and Language to 3D Masks for Long-Horizon Box Rearrangement](/202603/29/2603.23676v1-grounding-vision-and-language-to-3d-masks-for-long-horizon-box-rearrangement)  
+   标签：评分：9.0/10、query:q10
+   evidence：将视觉和语言落地到长程重排任务中
+4. [SLAT-Phys: Fast Material Property Field Prediction from Structured 3D Latents](/202603/29/2603.23973v1-slat-phys-fast-material-property-field-prediction-from-structured-3d-latents)  
+   标签：评分：9.0/10、query:q6
+   evidence：用于数字孪生生成的材料属性预测
+5. [Towards Generalizable Robotic Data Flywheel: High-Dimensional Factorization and Composition](/202603/29/2603.25583v1-towards-generalizable-robotic-data-flywheel-high-dimensional-factorization-and-composition)  
+   标签：评分：9.0/10、query:q5
+   evidence：通用机器人模型的结构化数据分解与合成数据生成
+6. [Geometrically Plausible Object Pose Refinement using Differentiable Simulation](/202603/29/2603.20992v1-geometrically-plausible-object-pose-refinement-using-differentiable-simulation)  
+   标签：评分：8.0/10、query:profile-1
+   evidence：用于机器人操作位姿优化的可微仿真
 
 ### 速读区论文标签
-1. [CABTO: Context-Aware Behavior Tree Grounding for Robot Manipulation](/202603/28/2603.16809v1-cabto-context-aware-behavior-tree-grounding-for-robot-manipulation)  
+1. [ReSteer: Quantifying and Refining the Steerability of Multitask Robot Policies](/202603/29/2603.17300v1-resteer-quantifying-and-refining-the-steerability-of-multitask-robot-policies)  
    标签：评分：8.0/10、query:q2
-   evidence：机器人操作行为树系统的自动构建
-2. [PhysQuantAgent: An Inference Pipeline of Mass Estimation for Vision-Language Models](/202603/28/2603.16958v1-physquantagent-an-inference-pipeline-of-mass-estimation-for-vision-language-models)  
-   标签：评分：8.0/10、query:q10
-   evidence：使用视觉语言模型进行操作任务质量估计的推理流水线
-3. [TeleDex: Accessible Dexterous Teleoperation](/202603/28/2603.17065v1-teledex-accessible-dexterous-teleoperation)  
+   evidence：量化并改进多任务机器人策略的可操控性
+2. [RoboForge: Physically Optimized Text-guided Whole-Body Locomotion for Humanoids](/202603/29/2603.17927v2-roboforge-physically-optimized-text-guided-whole-body-locomotion-for-humanoids)  
+   标签：评分：8.0/10、query:profile-1
+   evidence：物理优化的类人机器人文本引导全身运动生成
+3. [Rapid Adaptation of Particle Dynamics for Generalized Deformable Object Mobile Manipulation](/202603/29/2603.18246v1-rapid-adaptation-of-particle-dynamics-for-generalized-deformable-object-mobile-manipulation)  
    标签：评分：8.0/10、query:q2
-   evidence：灵巧手和机器人操作器的遥操作
-4. [Influence of Gripper Design on Human Demonstration Quality for Robot Learning](/202603/28/2603.17189v1-influence-of-gripper-design-on-human-demonstration-quality-for-robot-learning)  
-   标签：评分：8.0/10、query:q2
-   evidence：机器人操作任务学习中的人类演示研究
-5. [X-World: Controllable Ego-Centric Multi-Camera World Models for Scalable End-to-End Driving](/202603/28/2603.19979v1-x-world-controllable-ego-centric-multi-camera-world-models-for-scalable-end-to-end-driving)  
-   标签：评分：7.0/10、query:q13
-   evidence：用于VLA策略中模拟未来观测的生成式世界模型
-6. [The Robot's Inner Critic: Self-Refinement of Social Behaviors through VLM-based Replanning](/202603/28/2603.20164v1-the-robots-inner-critic-self-refinement-of-social-behaviors-through-vlm-based-replanning)  
-   标签：评分：7.0/10、query:q13
-   evidence：基于VLM的重新规划和关节控制代码生成
-7. [IndoorR2X: Indoor Robot-to-Everything Coordination with LLM-Driven Planning](/202603/28/2603.20182v1-indoorr2x-indoor-robot-to-everything-coordination-with-llm-driven-planning)  
-   标签：评分：7.0/10、query:q13
-   evidence：LLM驱动的多机器人任务规划与仿真框架
-8. [Enhancing Vision-Based Policies with Omni-View and Cross-Modality Knowledge Distillation for Mobile Robots](/202603/28/2603.20679v1-enhancing-vision-based-policies-with-omni-view-and-cross-modality-knowledge-distillation-for-mobile-robots)  
+   evidence：学习操纵具有未知动力学的变形物体
+4. [Offload or Overload: A Platform Measurement Study of Mobile Robotic Manipulation Workloads](/202603/29/2603.18284v1-offload-or-overload-a-platform-measurement-study-of-mobile-robotic-manipulation-workloads)  
+   标签：评分：8.0/10、query:profile-1
+   evidence：移动机器人操作负载与基础模型的测量研究
+5. [An Open Source Computer Vision and Machine Learning Framework for Affordable Life Science Robotic Automation](/202603/29/2603.20465v1-an-open-source-computer-vision-and-machine-learning-framework-for-affordable-life-science-robotic-automation)  
    标签：评分：7.0/10、query:q2
-   evidence：用于操作和移动的视觉策略
-9. [Cooperation and Exploitation in LLM Policy Synthesis for Sequential Social Dilemmas](/202603/28/2603.19453v1-cooperation-and-exploitation-in-llm-policy-synthesis-for-sequential-social-dilemmas)  
-   标签：评分：6.0/10、query:q13
-   evidence：多智能体环境下基于大语言模型的策略合成
-10. [Evolving Embodied Intelligence: Graph Neural Network--Driven Co-Design of Morphology and Control in Soft Robotics](/202603/28/2603.19582v1-evolving-embodied-intelligence-graph-neural-network--driven-co-design-of-morphology-and-control-in-soft-robotics)  
-   标签：评分：6.0/10、query:q2
-   evidence：软体机器人的形态与控制协同设计
-11. [Embodied Science: Closing the Discovery Loop with Agentic Embodied AI](/202603/28/2603.19782v1-embodied-science-closing-the-discovery-loop-with-agentic-embodied-ai)  
+   evidence：用于实验室自动化任务的机械臂操作
+6. [CounterScene: Counterfactual Causal Reasoning in Generative World Models for Safety-Critical Closed-Loop Evaluation](/202603/29/2603.21104v1-counterscene-counterfactual-causal-reasoning-in-generative-world-models-for-safety-critical-closed-loop-evaluation)  
+   标签：评分：7.0/10、query:q9
+   evidence：安全关键场景下生成式世界模型的反事实因果推理
+7. [Dynamic Control Barrier Function Regulation with Vision-Language Models for Safe, Adaptive, and Realtime Visual Navigation](/202603/29/2603.21142v1-dynamic-control-barrier-function-regulation-with-vision-language-models-for-safe-adaptive-and-realtime-visual-navigation)  
+   标签：评分：7.0/10、query:q4
+   evidence：用于安全视觉导航控制的视觉语言模型
+8. [DyGeoVLN: Infusing Dynamic Geometry Foundation Model into Vision-Language Navigation](/202603/29/2603.21269v1-dygeovln-infusing-dynamic-geometry-foundation-model-into-vision-language-navigation)  
+   标签：评分：7.0/10、query:q4
+   evidence：使用动态几何基础模型的视觉-语言导航框架
+9. [Memory Over Maps: 3D Object Localization Without Reconstruction](/202603/29/2603.20530v1-memory-over-maps-3d-object-localization-without-reconstruction)  
    标签：评分：6.0/10、query:profile-1
-   evidence：用于物理执行的感知-语言-动作-发现框架
+   evidence：用于操作等具身任务的3D物体定位
+10. [LLM-Driven Heuristic Synthesis for Industrial Process Control: Lessons from Hot Steel Rolling](/202603/29/2603.20537v1-llm-driven-heuristic-synthesis-for-industrial-process-control-lessons-from-hot-steel-rolling)  
+   标签：评分：6.0/10、query:q13
+   evidence：利用基于物理的仿真器反馈进行LLM驱动的启发式合成
+11. [What Do World Models Learn in RL? Probing Latent Representations in Learned Environment Simulators](/202603/29/2603.21546v1-what-do-world-models-learn-in-rl-probing-latent-representations-in-learned-environment-simulators)  
+   标签：评分：6.0/10、query:q13
+   evidence：探究学习环境模拟器中的潜表征
 
 
 <div class="dpr-home-promo-card">
