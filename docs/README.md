@@ -6,73 +6,82 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-29
-- 运行时间：2026-03-29 19:26:44 UTC
+- 最新运行日期：2026-03-30
+- 运行时间：2026-03-30 19:54:17 UTC
 - 运行状态：成功
-- 本次总论文数：17
-- 精读区：6
+- 本次总论文数：20
+- 精读区：9
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选 17 篇前沿论文，深度聚焦灵巧手高频触觉操作与多智能体博弈追踪技术。
-重点关注评分高达 9.0 的 DexDrummer 灵巧打击乐框架，以及结合 VLA 模型实现竞争性追踪的 CoMaTrack。
-建议关注物理优化驱动的人形机器人全身运动，以及针对柔性物体的移动操纵新方案。
-- 详情：[/202603/29/README](/202603/29/README)
+今日聚焦具身智能前沿，深度解析了 20 篇关于 VLA 模型鲁棒性与多模态生成的重磅研究。
+重点推荐 SOMA 的上下文适配方案与 MMaDA-VLA 的扩散生成框架，两者均在复杂任务执行中展现出满分潜力。
+建议读者优先研读 VLA 模型的长效记忆与多模态对齐技术，这是迈向通用机器人的关键路径。
+- 详情：[/202603/30/README](/202603/30/README)
 
 ### 精读区论文标签
-1. [DexDrummer: In-Hand, Contact-Rich, and Long-Horizon Dexterous Robot Drumming](/202603/29/2603.22263v1-dexdrummer-in-hand-contact-rich-and-long-horizon-dexterous-robot-drumming)  
-   标签：评分：9.0/10、query:q2
-   evidence：灵巧机器人操作和双臂控制策略
-2. [CoMaTrack: Competitive Multi-Agent Game-Theoretic Tracking with Vision-Language-Action Models](/202603/29/2603.22846v1-comatrack-competitive-multi-agent-game-theoretic-tracking-with-vision-language-action-models)  
-   标签：评分：9.0/10、query:q4
-   evidence：用于动态环境下具身视觉追踪的视觉-语言-动作模型
-3. [Grounding Vision and Language to 3D Masks for Long-Horizon Box Rearrangement](/202603/29/2603.23676v1-grounding-vision-and-language-to-3d-masks-for-long-horizon-box-rearrangement)  
+1. [SOMA: Strategic Orchestration and Memory-Augmented System for Vision-Language-Action Model Robustness via In-Context Adaptation](/202603/30/2603.24060v2-soma-strategic-orchestration-and-memory-augmented-system-for-vision-language-action-model-robustness-via-in-context-adaptation)  
+   标签：评分：10.0/10、query:q12
+   evidence：升级冻结的VLA策略以实现鲁棒的上下文自适应
+2. [MMaDA-VLA: Large Diffusion Vision-Language-Action Model with Unified Multi-Modal Instruction and Generation](/202603/30/2603.25406v2-mmada-vla-large-diffusion-vision-language-action-model-with-unified-multi-modal-instruction-and-generation)  
+   标签：评分：10.0/10、query:q12
+   evidence：用于操作的原生预训练大规模扩散VLA模型
+3. [Fast-dVLA: Accelerating Discrete Diffusion VLA to Real-Time Performance](/202603/30/2603.25661v2-fast-dvla-accelerating-discrete-diffusion-vla-to-real-time-performance)  
+   标签：评分：10.0/10、query:q12
+   evidence：将离散扩散 VLA 加速至实时性能
+4. [DFM-VLA: Iterative Action Refinement for Robot Manipulation via Discrete Flow Matching](/202603/30/2603.26320v1-dfm-vla-iterative-action-refinement-for-robot-manipulation-via-discrete-flow-matching)  
+   标签：评分：10.0/10、query:q12
+   evidence：用于迭代动作细化的离散流匹配 VLA 架构
+5. [Realtime-VLA V2: Learning to Run VLAs Fast, Smooth, and Accurate](/202603/30/2603.26360v1-realtime-vla-v2-learning-to-run-vlas-fast-smooth-and-accurate)  
+   标签：评分：10.0/10、query:q10
+   evidence：在真实机器人操作任务中部署 VLA 系统
+6. [VLA-OPD: Bridging Offline SFT and Online RL for Vision-Language-Action Models via On-Policy Distillation](/202603/30/2603.26666v1-vla-opd-bridging-offline-sft-and-online-rl-for-vision-language-action-models-via-on-policy-distillation)  
+   标签：评分：10.0/10、query:q10
+   evidence：针对操作任务的VLA模型在线策略蒸馏
+7. [ABot-PhysWorld: Interactive World Foundation Model for Robotic Manipulation with Physics Alignment](/202603/30/2603.23376v2-abot-physworld-interactive-world-foundation-model-for-robotic-manipulation-with-physics-alignment)  
+   标签：评分：9.0/10、query:q13
+   evidence：具有物理对齐功能的机器人操作交互式世界基础模型
+8. [DiffusionAnything: End-to-End In-context Diffusion Learning for Unified Navigation and Pre-Grasp Motion](/202603/30/2603.26322v1-diffusionanything-end-to-end-in-context-diffusion-learning-for-unified-navigation-and-pre-grasp-motion)  
    标签：评分：9.0/10、query:q10
-   evidence：将视觉和语言落地到长程重排任务中
-4. [SLAT-Phys: Fast Material Property Field Prediction from Structured 3D Latents](/202603/29/2603.23973v1-slat-phys-fast-material-property-field-prediction-from-structured-3d-latents)  
-   标签：评分：9.0/10、query:q6
-   evidence：用于数字孪生生成的材料属性预测
-5. [Towards Generalizable Robotic Data Flywheel: High-Dimensional Factorization and Composition](/202603/29/2603.25583v1-towards-generalizable-robotic-data-flywheel-high-dimensional-factorization-and-composition)  
-   标签：评分：9.0/10、query:q5
-   evidence：通用机器人模型的结构化数据分解与合成数据生成
-6. [Geometrically Plausible Object Pose Refinement using Differentiable Simulation](/202603/29/2603.20992v1-geometrically-plausible-object-pose-refinement-using-differentiable-simulation)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：用于机器人操作位姿优化的可微仿真
+   evidence：用于导航和抓取前操作的扩散策略
+9. [Generalizable task-oriented object grasping through LLM-guided ontology and similarity-based planning](/202603/30/2603.26412v1-generalizable-task-oriented-object-grasping-through-llm-guided-ontology-and-similarity-based-planning)  
+   标签：评分：9.0/10、query:q2
+   evidence：面向任务的物体抓取与操作
 
 ### 速读区论文标签
-1. [ReSteer: Quantifying and Refining the Steerability of Multitask Robot Policies](/202603/29/2603.17300v1-resteer-quantifying-and-refining-the-steerability-of-multitask-robot-policies)  
+1. [Contact Status Recognition and Slip Detection with a Bio-inspired Tactile Hand](/202603/30/2603.18370v1-contact-status-recognition-and-slip-detection-with-a-bio-inspired-tactile-hand)  
    标签：评分：8.0/10、query:q2
-   evidence：量化并改进多任务机器人策略的可操控性
-2. [RoboForge: Physically Optimized Text-guided Whole-Body Locomotion for Humanoids](/202603/29/2603.17927v2-roboforge-physically-optimized-text-guided-whole-body-locomotion-for-humanoids)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：物理优化的类人机器人文本引导全身运动生成
-3. [Rapid Adaptation of Particle Dynamics for Generalized Deformable Object Mobile Manipulation](/202603/29/2603.18246v1-rapid-adaptation-of-particle-dynamics-for-generalized-deformable-object-mobile-manipulation)  
+   evidence：机器人操作中的触觉反馈
+2. [Graph-of-Constraints Model Predictive Control for Reactive Multi-agent Task and Motion Planning](/202603/30/2603.18400v1-graph-of-constraints-model-predictive-control-for-reactive-multi-agent-task-and-motion-planning)  
    标签：评分：8.0/10、query:q2
-   evidence：学习操纵具有未知动力学的变形物体
-4. [Offload or Overload: A Platform Measurement Study of Mobile Robotic Manipulation Workloads](/202603/29/2603.18284v1-offload-or-overload-a-platform-measurement-study-of-mobile-robotic-manipulation-workloads)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：移动机器人操作负载与基础模型的测量研究
-5. [An Open Source Computer Vision and Machine Learning Framework for Affordable Life Science Robotic Automation](/202603/29/2603.20465v1-an-open-source-computer-vision-and-machine-learning-framework-for-affordable-life-science-robotic-automation)  
-   标签：评分：7.0/10、query:q2
-   evidence：用于实验室自动化任务的机械臂操作
-6. [CounterScene: Counterfactual Causal Reasoning in Generative World Models for Safety-Critical Closed-Loop Evaluation](/202603/29/2603.21104v1-counterscene-counterfactual-causal-reasoning-in-generative-world-models-for-safety-critical-closed-loop-evaluation)  
+   evidence：用于操作任务的多智能体任务与运动规划
+3. [Graph-of-Constraints Model Predictive Control for Reactive Multi-agent Task and Motion Planning](/202603/30/2603.18400v2-graph-of-constraints-model-predictive-control-for-reactive-multi-agent-task-and-motion-planning)  
+   标签：评分：8.0/10、query:q2
+   evidence：多智能体操作任务与运动规划
+4. [CSSDF-Net: Safe Motion Planning Based on Neural Implicit Representations of Configuration Space Distance Field](/202603/30/2603.18669v1-cssdf-net-safe-motion-planning-based-on-neural-implicit-representations-of-configuration-space-distance-field)  
+   标签：评分：8.0/10、query:q2
+   evidence：使用神经距离场进行高维机械臂的安全运动规划
+5. [Active Inference for Physical AI Agents -- An Engineering Perspective](/202603/30/2603.20927v1-active-inference-for-physical-ai-agents----an-engineering-perspective)  
+   标签：评分：7.0/10、query:profile-1
+   evidence：物理AI智能体与具身系统的理论基础
+6. [Mind over Space: Can Multimodal Large Language Models Mentally Navigate?](/202603/30/2603.21577v1-mind-over-space-can-multimodal-large-language-models-mentally-navigate)  
    标签：评分：7.0/10、query:q9
-   evidence：安全关键场景下生成式世界模型的反事实因果推理
-7. [Dynamic Control Barrier Function Regulation with Vision-Language Models for Safe, Adaptive, and Realtime Visual Navigation](/202603/29/2603.21142v1-dynamic-control-barrier-function-regulation-with-vision-language-models-for-safe-adaptive-and-realtime-visual-navigation)  
-   标签：评分：7.0/10、query:q4
-   evidence：用于安全视觉导航控制的视觉语言模型
-8. [DyGeoVLN: Infusing Dynamic Geometry Foundation Model into Vision-Language Navigation](/202603/29/2603.21269v1-dygeovln-infusing-dynamic-geometry-foundation-model-into-vision-language-navigation)  
-   标签：评分：7.0/10、query:q4
-   evidence：使用动态几何基础模型的视觉-语言导航框架
-9. [Memory Over Maps: 3D Object Localization Without Reconstruction](/202603/29/2603.20530v1-memory-over-maps-3d-object-localization-without-reconstruction)  
+   evidence：具身智能体的心理导航与空间推理
+7. [PRM-as-a-Judge: A Dense Evaluation Paradigm for Fine-Grained Robotic Auditing](/202603/30/2603.21669v1-prm-as-a-judge-a-dense-evaluation-paradigm-for-fine-grained-robotic-auditing)  
+   标签：评分：7.0/10、query:q14
+   evidence：用于审计机器人策略执行的稠密评估范式
+8. [Sim-to-Real of Humanoid Locomotion Policies via Joint Torque Space Perturbation Injection](/202603/30/2603.21853v2-sim-to-real-of-humanoid-locomotion-policies-via-joint-torque-space-perturbation-injection)  
+   标签：评分：7.0/10、query:q8
+   evidence：通过关节扭矩空间扰动的仿真到现实转换方法
+9. [SafePilot: A Framework for Assuring LLM-enabled Cyber-Physical Systems](/202603/30/2603.21523v1-safepilot-a-framework-for-assuring-llm-enabled-cyber-physical-systems)  
    标签：评分：6.0/10、query:profile-1
-   evidence：用于操作等具身任务的3D物体定位
-10. [LLM-Driven Heuristic Synthesis for Industrial Process Control: Lessons from Hot Steel Rolling](/202603/29/2603.20537v1-llm-driven-heuristic-synthesis-for-industrial-process-control-lessons-from-hot-steel-rolling)  
-   标签：评分：6.0/10、query:q13
-   evidence：利用基于物理的仿真器反馈进行LLM驱动的启发式合成
-11. [What Do World Models Learn in RL? Probing Latent Representations in Learned Environment Simulators](/202603/29/2603.21546v1-what-do-world-models-learn-in-rl-probing-latent-representations-in-learned-environment-simulators)  
-   标签：评分：6.0/10、query:q13
-   evidence：探究学习环境模拟器中的潜表征
+   evidence：支持LLM的信息物理系统和机器人规划
+10. [From Part to Whole: 3D Generative World Model with an Adaptive Structural Hierarchy](/202603/30/2603.21557v1-from-part-to-whole-3d-generative-world-model-with-an-adaptive-structural-hierarchy)  
+   标签：评分：6.0/10、query:q9
+   evidence：针对多样语义类别和物体布局的3D生成世界模型
+11. [Can a Robot Walk the Robotic Dog: Triple-Zero Collaborative Navigation for Heterogeneous Multi-Agent Systems](/202603/30/2603.21723v2-can-a-robot-walk-the-robotic-dog-triple-zero-collaborative-navigation-for-heterogeneous-multi-agent-systems)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：多模态大语言模型用于机器人导航与协作
 
 
 <div class="dpr-home-promo-card">

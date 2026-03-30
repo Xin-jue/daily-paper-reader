@@ -1,0 +1,298 @@
+Title: Contact Status Recognition and Slip Detection with a Bio-inspired Tactile Hand
+
+URL Source: https://arxiv.org/pdf/2603.18370v1
+
+Published Time: Fri, 20 Mar 2026 00:27:41 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Contact Status Recognition and Slip Detection with a Bio-inspired Tactile Hand 
+
+Chengxiao He 
+
+School of Mechanical Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Wenhui Yang 
+
+School of Mechanical Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Hongliang Zhao 
+
+School of Mechanical Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Jiacheng Lv 
+
+School of Electronic Science & Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Yuzhe Shao 
+
+School of Mechanical Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Longhui Qin ∗
+
+School of Mechanical Engineering, Southeast University 
+
+Nanjing 211189, China 
+
+Abstract —Stable and reliable grasp is critical to robotic ma-nipulations especially for fragile and glazed objects, where the grasp force requires precise control as too large force possibly damages the objects while small force leads to slip and fall-off. Although it is assumed the objects to manipulate is grasped firmly in advance, slip detection and timely prevention are necessary for a robot in unstructured and universal environments. In this work, we addressed this issue by utilizing multimodal tactile feedback from a five-fingered bio-inspired hand. Motivated by human hands, the tactile sensing elements were distributed and embedded into the soft skin of robotic hand, forming 24 tactile channels in total. Different from the threshold method that was widely employed in most existing works, we converted the slip detection problem to contact status recognition in combination with binning technique first and then detected the slip onset time according to the recognition results. After the 24-channel tactile signals passed through discrete wavelet transform, 17 features were extracted from different time and frequency bands. With the optimal 120 features employed for status recognition, the test accuracy reached 96.39% across three different sliding speeds and six kinds of materials. When applied to four new unseen materials, a high accuracy of 91.95% was still achieved, which further validated the generalization of our proposed method. Finally, the performance of slip detection is verified based on the trained model of contact status recognition. 
+
+Index Terms —slip detection, contact status recognition, robotic hand, tactile sensing, dexterous manipulation. 
+
+I. I NTRODUCTION 
+
+Relying on tactile feedback from the fast-adapting (FA) and slow-adapting (SA) types of mechanoreceptors within human skin, we are able to perceive kinds of stimuli from external environments and manipulate various objects dexterously. As for robotic manipulations, tactile perception is also required in complex tasks to regulate grip forces, maintain stable contacts and react to incipient slip [1]–[3]. To ensure firm grasp, the 
+
+This work was supported by the State Key Laboratory of Autonomous Intelligent Unmanned Systems (ZZKF2025-2-5) and the State Key Laboratory of Robotics and Systems (HIT) (SKLRS-2025-KF-11). (Corresponding author: Longhui Qin, lhqin@seu.edu.cn). …
+
+> 14 static
+> tactile channels
+> …
+> 10 dynamic
+> tactile channels
+
+Feature pool from different 
+
+time and frequency  subbands 
+
+> Optimal Features
+> Kernel ELM
+> Slip Non -Slip
+> Slip onset time
+
+Bio -inspired five -
+
+fingered tactile hand 
+
+> Different
+> materials
+> Different
+> velocities
+> 20 mm/s
+> 40 mm/s
+> 60 mm/s
+
+17 features 
+
+Binning 
+
+technique 
+
+Fig. 1. Illustration of the core idea of our work. The 24-channel tactile signals generated in the bio-inspired hand are processed via our proposed signal framework to maximally dig out the contained valid information. Slip onset time can be determined according to the contact status recognition result. Two key factors, i.e., materials and sliding velocities are also considered. 
+
+contact force should be precisely controlled within a reasonable range, especially for delicate manipulations of fragile or glazed objects, in which slip detection becomes significant to avoid falling off of in-hand objects. In the majority of existing works on slip detection, a two-finger gripper is employed [4], [5] and the threshold com-parison method is widely adopted [6], [7], which defines an empirical threshold in advance and slippage is detected once the measured value exceeds this threshold. Although it is advan-tageous in simple implementation and fast calculation speed, it poses strict requirements for the sensitivity of perception signals and the level of signal-to-noise ratio. More importantly, 
+
+> arXiv:2603.18370v1 [cs.RO] 19 Mar 2026
+
+it is hard to provide generalized performance, i.e., it most likely fails when the materials of grasped objects change. Another prevailing approach for slip detection in recent years is learning-based method, which learns the characteristics of slip-page onset time via the training of a neural network (NN) [8], [9]. It outperforms the conventional comparison-via-threshold method due to more generalized applicability. Before feeding into a classification model, the features are usually extracted via hand-crafted features or off-the-shelf convolutional neural network (CNN) models. However, it stays challenging how to dig out the optimal features for the targeted problem and transfer a trained model across different materials. In this paper, we tried to address this issue by developing a bio-inspired tactile hand with 14 piezoresistive sensing ele-ments (SEs) and 10 piezoelectric SEs embedded into the soft skins (Fig. 1). The two types of tactile channels correspond to the SA and FA types of mechanoreceptors in human hand, as they are respectively responsible for the measurement of static and dynamic forces. A signal processing framework was proposed to recognize the non-slip and slip contact status and then detect the slip onset time. It mainly consists of signal preprocessing, decomposition and transformation, rapid extraction of the optimal features and binary classification. To improve the adaptability in general cases, three different sliding speeds and six materials were employed to train the recognition model. An accuracy as high as 96.39% was achieved. It was further verified in four unseen materials and the accuracy reached 91.95%. The performance of our proposed design and method was finally demonstrated with the potential it had shown in determining the exact slip onset time. The contribution of our work can be summarized as: 1) We developed a bio-inspired five-fingered tactile hand comprising 14 static and 10 dynamic tactile channels in the soft skin. 2) A signal processing framework tailored for slip detection was proposed to maximally leverage the multi-channel tactile information. 3) The effectiveness of our method was validated through robotic experiment and its generalization was success-fully demonstrated on unseen materials. II. R ELATED WORKS 
+
+A. Tactile Hand/Finger Designs for Slip Perception 
+
+Slip perception in robotic manipulation requires capturing both quasi-static contact and high-frequency micro-vibration signatures. According to the working principle, there have been a variety of tactile sensors for robotics, including resistive/capacitive, piezoelectric/triboelectric, magnetic, and vision-based sensors [1], [2]. A widely adopted end-effector is two-finger parallel grippers where the tactile sensors were usually attached to the surface of a fingertip for perception [4], [5], [10]. Vision-based tactile sensors (VBTS) offer dense de-formation or marker-flow fields, providing rich slip-related in-formation, particularly beneficial for detecting incipient micro-slips [4], [11]. It could be integrated into different designs for slip detection [3], [5]. By contrast, multi-fingered robotic hands exhibited more advantages due to increased flexibility, enlarged contact region and enhanced perception sensitivity [12]. The most usual manner to empower a robotic hand with tactile perception is to attach electronic skin to its surface. The development of energy-efficient and self-powered electronic skins (e-skins) addressed challenges associated with power consumption and wiring complexity in large-area tactile sensing systems [12], [13]. Although advancements in soft and stretchable sensor materials have enabled higher conformity to curved surfaces [14], [15], there are still other issues to consider in this manner, such as the reliability, cost and durability. Multimodal tactile sensors that combined strain gauge (SG) with PVDF (Polyvinylidene fluoride) could also be applied to realize slip recognition [16]. In capturing vibration-based slip cues, piezoelectric materials, such as PVDF, were particularly advantageous due to their high bandwidth, sensitivity, and straightforward readout mechanisms [17]–[19]. However, the majority of existing designs were only equipped with the tactile perception capability on the fingertip, which was limited in practical applications. In our design, multiple tactile SEs were embedded into the soft skin layer of different segments of a finger and all five fingers possessed the perception capability. 
+
+B. Slip Detection Algorithms 
+
+The conventional algorithm for slip detection is threshold comparison, in which the signals are analyzed in advance and the signal magnitude corresponding to slip onset time is deter-mined as the threshold. Once the filtered vibration amplitudes or force derivatives reach or exceed the preset threshold, the time instant is thought as the slip onset [6], [7]. In [20], slip was detected once the maximal discrete wavelet transform (DWT) detail coefficient exceeded the slipping threshold. It is straightforward and convenient to implement in practical scenarios. However, it suffers from extremely high requirement for the sensitivity of tactile sensors and close relationship to the physical properties of object surfaces. Recent advancements have explored richer temporal and spatial modeling approaches, including graph-based methods that fused tactile readings distributed across multiple fin-ger locations [21] and cross-modal techniques that integrated complementary sensing streams to improve robustness and generalizability [22]. Additionally, some approaches leveraged deformation-field analysis while some others realized physics-informed modeling, combining contact mechanics and slip-consistency constraints explicitly [23], [24]. Although auto-matic feature extraction by CNN eases signal processing and reduces human intervention, hand-crafted features that cus-tomized for specific problem still showed advantages in the prediction accuracy [19]. In this paper, we converted the slip detection problem into contact status recognition first and then proposed the binned 24-channel tactile signals with selected optimal features and extreme learning machine (ELM), which was different from existing methods and had been demonstrated with robotic explorations. III. T ACTILE HAND AND EXPERIMENTAL SETUP 
+
+A. Bio-inspired Tactile Hand 
+
+Bio-inspired by human hand, we designed a five-fingered tactile hand comprising five fingers, a palm and a forearm, as shown in Fig. 2. The thumb finger consisted of two segments and the other four fingers three segments. All the fingers were cable-driven and connected to corresponding pneumatic artificial muscle (PAM). To ensure both enough grasp force and flexibility, each finger adopted a soft-rigid-hybrid structure, i.e., rigid phalanx in the center and soft skin in its surrounding, which resembled human finger structure. All tactile SEs were embedded into the soft skin layer. Palm   
+
+> Signal
+> processing and
+> communication
+> circuit board
+> Air tube
+> PAM
+> Signal wires
+> Dr iving
+> cables PVDF SE SG SE
+> PVDF SE SG SE
+> Thumb finger
+> Three -segment finger
+> Fig. 2. The developed tactile hand and its tactile perception module.
+
+To simulate the SA and FA mechanoreceptors within human skin, we embedded both piezoresistive and piezoelectric SEs in each finger, which was responsible for the perception of static and dynamic forces respectively [18]. Specifically, strain gauge (SG) and PVDF (Polyvinylidene fluoride) were utilized to fabricate the SEs and the detailed manufacturing process could be found in our previous work [25]. Different from most existing robotic hands that were equipped with tactile perception only in the fingertip, all the fingers, in our design, were empowered with the capability of multimodal tactile perception by containing both SEs in each finger, as shown in Fig. 2. In the two-joint thumb finger, a pair of SG and PVDF was embedded into one finger segment while two pairs of SG and PVDF located in the distal and middle dactylus. Considering the proximal dactylus more possibly touch the palm structure, only one static SE was arranged. 
+
+B. Experimental Design 1) Experimental Setup: To collect tactile signals for slip exploration, we set up a robotic manipulation platform as shown in Fig. 3(a). The tactile hand was installed onto the tip of a robotic arm (Universal Robot Inc., UR5e) which was controlled via ROS (Robot Operating System). The abduction and adduction motion of each finger was driven by an air pump through the PAMs and cables, whose action was controlled by a pneumatic control module and the instruction was sent from a laptop.The tactile signals of each SE channel passed through a preprocessing circuit, where SG-channel signals needed ad-ditional conversion from resistor to voltage, and then a multi-channel data acquisition board at 2 KHz sampling rate. The acquired digital signal was transmitted to the laptop. To collect the signals across different materials, six types of materials in total were employed, as shown in Fig. 3(b), comprising ABS (Acrylonitrile Butadiene Styrene) plastic, aluminum foil, fiberglass aluminum foil, oil paper, acrylic, and PVC (Polyvinyl chloride). They are indexed as M1 to M6. 
+
+2) Experimental Process: To generate the tactile signals respectively in static grasping (non-slip) and sliding (slip) period, the cylindrical object was fixed onto a fixture and the tactile hand was controlled to slide vertically along top-down approach. Three sliding velocities were considered. Each experimental cycle was illustrated in Fig. 3(c). After 2 s pause, the tactile hand moved downward for 100 mm at 20 mm/s first, and then the velocity changed to 40 mm/s after additional 2 s pause. Finally, the velocity was increased to 60 mm/s. To save time, all these three sub-processes were implemented subsequently and traversed the entire cylinder. The sliding time at each velocity was 5 s, 2.5 s and 1.67 s respectively. As for every material, the experimental cycle was repeated for 28 times. Thus, the experimental dataset was made of six materials and three velocities, each case of which contained 28 trials, producing a total of 504 trials. (a)    
+
+> (c)
+> Fixture
+> Cylinder
+> to grasp
+> Tactile
+> hand
+> Robotic
+> arm
+> (b)
+> Pause for 2 s Slide for 100 mm Pause for 2 s
+> Slide for 100 mm Pause for 2 s Slide for 100 mm
+> v=20 mm/s
+> v=40 mm/s
+> v=60 mm/s
+> Fig. 3. Experimental design for the design and signal processing method. (a) Robotic platform. (b) Six materials to explore. (c) Experimental process.
+
+C. Dataset Preparation 
+
+Before feeding to the recognition model, the dataset needed to be segmented and labeled. It was finished manually accord-ing to the experimental process. The true slip onset time in each trial was also extracted for each trial. Considering the sliding motion underwent an acceleration, uniform speed and deceleration period, the tactile signals that are 0.5 s ahead of the onset time were labeled as non-slip period while the sliding period that was labeled as slip status started from the true slip onset time and lasted for 0.5 s. Signal Preprocessing  Recognition and Detection Feature Extraction & Selection    
+
+> SG 1~14 PVDF 1~10
+> Savitzky -Golay
+> Filtering
+> Data
+> preparation
+> PVDF
+> Slip No -slip
+> Input Layer
+> 80% 20%
+> Contact status
+> Slip Detection
+> Slip onset time
+> SG
+> Kurtosis
+> DWT
+> Entropy
+> A1~A4
+> D1~D4
+
+## …… 
+
+> Skewness
+> Time
+> domain
+> Time
+> domain
+> Frequency
+> domain
+> FFT
+> Spectral
+> centroid
+> Spectral
+> spread
+
+# + 
+
+> Feature pool
+> K optimal features
+> N bins of time -series of signals
+> spectrum
+> Kernel -based
+> hidden layer
+> Output Layer
+> Model
+> training Model
+> test
+> Binning
+> technique
+> pooled variance estimate
+> Prepared Dataset
+> Kurtosis
+> Entropy
+
+## ……  
+
+> Skewness Fig. 4. Overall framework of the tactile signal processing approach
+
+IV. M ETHODOLOGY 
+
+A. Signal Processing Framework 
+
+The whole signal processing framework was described in Fig. 4, which showed it mainly consisted of three procedures: signal preprocessing, feature extraction & selection, and recog-nition and detection. 
+
+B. Signal Preprocessing 
+
+It was observed that manifest noises existed through the whole experimental process, which might include the interfer-ence from surrounding environment, vibrations of the robotic arm and electronic noises from the circuit board etc. Therefore, filtering was necessary as the first step. Here, we applied Savitzky-Golay filter to smooth the tactile signals with the frame length set as 11 and 51 for PVDF and SG respectively. The order was set as 1 for both SEs. Then, the binning technique was utilized to split the signal period into multiple tiny signal parts. On the one hand, it is aimed at increasing the localization precision for slip onset time. In perfect situations, the first transition from non-slip status to slip can be thought as the exact onset time. On the other hand, it is effective to enlarge the total size of training dataset either for non-slip period or for slip period. Here, we set the bin width to 50 ms after trial-and-error. 
+
+C. Feature Extraction and Selection 
+
+In this work, we chose the 17 features following our pre-vious work [19], which had shown excellent performance in processing the static and dynamic signals for shape recognition. As for each bin of tactile signals, as shown in Fig. 4, both time and frequency domain components were extracted for PVDF-channel signals. Discrete wavelet transform (DWT) was employed to decompose the original signal into four levels of different scales, which were then transformed into frequency domain via Fast Fourier Transform (FFT). Not all channels would be extracted the 17 features. PVDF channels are suitable for 14 and 16 features in time and frequency domain while SG channels are suitable for 13 features in time domain. There were a total of 2582 features in the feature pool for each bin of tactile signals. Such high dimensionality is prone to cause the overfitting of a NN and also severely slow down the training speed as a lot of redundancy information is con-tained. Although neighborhood component analysis had shown outstanding performance in Ref. [19], it was not applicable to our case as the capacity of whole feature pool was too large and required significantly increased time cost. Therefore, we employed pooled variance estimate to calculate the importance of each feature. Specifically, the t-test value was computed with pooled variance estimate between every two samples. Once the importance of all features was obtained, we ranked them following the descending order and selected the first K features. 
+
+K = 120 was adopted in this work. 
+
+D. Recognition and Detection 
+
+Among a variety of NN models, kernel-based extreme learn-ing machine (kernel-ELM) was applied to construct the contact status recognition model due to its rapid computation speed and excellent classification capability. With the conventional back-propagation method and the parameter bias abandoned, ELM calculates the weight matrix quickly via the Moore–Penrose generalized inverse [26]. In this work, the polynomial kernel κ(zi, zj ) = ( z⊤ 
+
+> i
+
+zj + c)d
+
+was employed, and c = 0 .5, d = 2 . 80% of the dataset was used for model training and the rest for testing. The trained model could quickly predict the contact status as non-slip or slip category, according to which, the slip onset time could be determined. V. R ESULTS 
+
+A. Tactile Signals from Robotic Exploration 
+
+The acquired tactile signals were shown in Fig. 5, where a part of signals near the true slip onset time was displayed lasting for 5 seconds. From the SG-channel signals, it was PVDF SG        
+
+> M1
+> M2
+> M3
+> Voltage, [V] Voltage, [V]
+> Time, [s] Time, [s]
+> M4
+> M5
+> M6
+> Little finger Ring finger Middle finger
+> Index finger Thumb
+> Slip end
+> Slip onset Slip onset
+> Slip end Fig. 5. The multi-channel tactile signals generated from the interaction of the tactile hand and grasped objects with the sliding velocity set as 40 mm/s. Different line color represents different SE channel. The left column displays the tactile signals from all 14 SG channels while the right shows the 10 PVDF channels. Each row corresponds to a type of materials (M1 ∼M6) and different finger is indicated by different line types. The vertical dot dash line in every subplot shows the ground truth of slip onset time.
+
+shown that different magnitude of voltages existed even before the slippage occurred, which might result from two reasons. Firstly, the hand had grasped the object before its slippage and therefore, the voltage during non-slip period didn’t stay as zero. Secondly, a variation could be observed since it was a transition period between slip end time and slip onset time. They also indicated that SG channels responded relatively slow and mainly perceive static stimuli. By contrast, no significant variation could be found on PVDF channels during the transi-tion period. A comparison across different materials indicated that this phenomenon behaved distinctively between different materials. Although the signal magnitude didn’t stay the same across different materials, they showed rather similar variation trend in general. While most tactile channels responded to the slippage, a small portion of channels showed inconspicuous response, which accorded with our expectation since only a part of the five fingers contact with the object. After slip onset time, the hand stayed in the sliding period. It was found from the sliding period that most SG channels generated significant variations for all materials with a relative-magnitude-increasing trend. Meanwhile, the PVDF channels mostly underwent abrupt changes instantly after the slip onset time and then recovered to the normal level rapidly for M2 ∼M5. However, continuous signal variation could be observed for M1 (ABS) and M6 (PVC). It was inferred due to the roughness of these materials, and the roughness of M1 and M6 was higher than the other four materials. 
+
+B. Contact Status Recognition 
+
+When the selected optimal features were fed into the polynomial-kernel ELM model, it finally achieved a high recognition accuracy of 96.59% and 96.39% for training and test dataset. The confusion matrix for test data was given in Fig. 6. It could be found 93.8% and 97.3% of binned tactile signals were correctly recognized as non-slip and slip status respectively. At the same time, non-slip status was more likely to be misrecognized than slip in general.  
+
+> Fig. 6. Confusion matrix for the contact status recognition on test dataset of six materials across three sliding velocities.
+
+Meanwhile, the characteristics of 120 selected features were summarized in Fig. 7 in order to reveal the significance of different factors in the recognition of contact status. It revealed from Fig. 7(a) that PVDF SE played a more evident role than SG, and frequency domain generated more selected features than time domain. Among the different signal components, approximation levels (A1 ∼A4) seemed more crucial than detail levels (D1 ∼D4) and no feature from D1 components was employed. It is interesting in Fig. 7(c) that not all SGs on the five fingers were employed. A small amount of SG channels was chosen only on the ring and middle finger.The majority of features selected by the pooled variance estimate were generated on the index finger.Fewer features were utilized on the little and thumb finger. Among the 17 types of feature definitions, only 15 features were employed and the top three features were peak factor, kurtosis and skewness, whose counts were much larger than the others. 
+
+C. Generalization to Unseen Materials 
+
+Although it has shown excellent performance in contact sta-tus recognition across six materials and three sliding velocities. (a)  (b)   
+
+> (c) (d) Fig. 7. Statistical characteristics of the 120 optimal features selected by the pooled variance estimate algorithm. (a) ∼(d) respectively show the feature count versus SE type, DWT component, Finger type, and feature definitions.
+
+It still remains unknown whether the trained recognition model stays valid in contact status recognition when objects of novel unseen materials are manipulated. The property of material is closely related with the viscosity, roughness and friction force of the object surface, and thus, it directly influences the slippage phenomenon between robotic hand and manipulated object. The applicability would be severely restricted if re-training is required for new materials. Therefore, it is essential that the trained recognition model remains effective for unseen novel materials. (a)  (b) 
+
+> Fig. 8. Four unseen materials to verify the generalization ability of the contact status recognition (a) and the confusion matrix of the recognition result (b). The overall recognition accuracy was 91.95%.
+
+In this work, we verified our trained model in the preceding subsection on four novel unseen materials as shown in Fig. 8(a), without retraining or any fine-tuning. The four materials were Wood, Iron, Copper, Cloth. The recognition result was given in Fig. 8(b). The overall recognition accuracy was decreased to 91.95%, whose performance was degraded compared with the recognition on trained materials. But it still maintained within a relatively high level. As shown in Fig. 8(b), it could be found that 74.4% and 97.7% of non-slip and slip status were identified correctly. It revealed that the recognition of non-slip status was more challenging since some involved noises or transition phases interfered the recognition. 
+
+D. Slip Detection based on the Recognition Result 
+
+Further, we tested the slip detection effect of our method based on the contact status recognition result. The original tac-tile signal was utilized as test data, which comprised different sliding velocities and no signal partition was applied. One trial of the PVDF-channel tactile signals on Fiberglass aluminum foil was shown in Fig. 9, considering PVDF channels played a more significant role in the status recognition. PVDF  SG  PVDF  SG  PVDF  SG        
+
+> True slidin g
+> period
+> True slidin g
+> period
+> True sliding
+> period
+> 1st slip
+> onset
+> 2nd slip
+> onset
+> 3rd slip
+> onset
+> Fig. 9. Recognition result of the contact status on the material M3, Fiberglass aluminum foil. It comes from one original trial of PVDF-channel signals which was generated from three sliding velocities: 20 mm/s, 40 mm/s, and 60 mm/s. The blue and yellow color indicated non-slip and slip status.
+
+Due to the difference of three sliding velocities, the signal period decreases over time and the amplitude also differed. Higher sliding speed tended to produce larger amplitude. In general, the tactile signal during slip period exhibited a com-pletely different variation trend, showing apparent fluctuations. The recognized status was also shown in the form of bins in Fig. 9 with blue and yellow color indicating the non-slip and slip contact status. It was observed that most contact status was recognized correctly with a small portion of binned signals was misrecognized. The slip onset time could be detected according to the transition from non-slip to slip status. However, some in-correct detection events would also occur since the recognition accuracy of contact status was less than 100%. To increase the detection accuracy, more endeavors could be devoted to the improvement of recognition accuracy. VI. C ONCLUSION 
+
+In this work, we presented how to realize the contact status recognition and slip detection with our developed five-fingered tactile hand. From the perspective of feature engineering, all 24 channels of tactile signals were proposed with binning tech-nique applied. In the case of our trained material, an accuracy as high as 96.39% was achieved. The selected 120 optimal features were also analyzed further in view of the SE type, signal component, finger type and feature definitions. When applied to four unseen material, the accuracy also reached 91.95%. Finally, we found it had shown valuable potential in slip detection. Currently, perfect detection cannot be realized based on mere recognition of contact status, which limitation could be addressed in future by improving the recognition accuracy and introducing a possibility model for slip detection. REFERENCES [1] P. Roberts, M. Zadan, and C. Majidi, “Soft tactile sensing skins for robotics,” Current Robotics Reports , vol. 2, no. 3, pp. 343–354, 2021. [2] Z. Zhan, Y. Yang, W. Zuo, M. Xie, and M. Ning, “Recent advances and challenges of tactile sensing for robotics: from fundamentals to applications,” Materials Today Physics , vol. 54, p. 101740, 2025. [3] Y. H. Xin, K. M. Hu, R. J. Xiang, Y. L. Gao, J. F. Zhou, G. Meng, and W.-M. Zhang, “Vision-based tactile sensing: From performance parameters to device design,” Applied Physics Reviews , vol. 12, no. 2, 2025. [4] S. Wang, Y. She, B. Romero, and E. Adelson, “Gelsight wedge: Measur-ing high-resolution 3d contact geometry with a compact robot finger,” in 
+
+2021 IEEE international conference on robotics and automation (ICRA) .IEEE, 2021, pp. 6468–6475. [5] R. Sui, L. Zhang, T. Li, and Y. Jiang, “Incipient slip detection method for soft objects with vision-based tactile sensor,” Measurement , vol. 203, p. 111906, 2022. [6] R. A. Romeo and L. Zollo, “Methods and sensors for slip detection in robotics: A survey,” Ieee Access , vol. 8, pp. 73 027–73 050, 2020. [7] R. A. Romeo, C. Lauretti, C. Gentile, E. Guglielmelli, and L. Zollo, “Method for automatic slippage detection with tactile sensors embedded in prosthetic hands,” IEEE Transactions on Medical Robotics and Bionics ,vol. 3, no. 2, pp. 485–497, 2021. [8] I. Agriomallos, S. Doltsinis, I. Mitsioni, and Z. Doulgeri, “Slippage detection generalizing to grasping of unknown objects using machine learning with novel features,” IEEE Robotics and Automation Letters ,vol. 3, no. 2, pp. 942–948, 2018. [9] Z. Chen, L. Wang, Y. Luo, X. Li, and S. Li, “Learning-based slip detection and fine control using the tactile sensor for robot stable grasping,” IEEE Robotics and Automation Letters , 2025. [10] L. Qin, “Recent progress and challenges of key technologies in robotic assembly,” Chinese Journal of Mechanical Engineering , p. 100032, 2025. [11] M. Lambeta, P.-W. Chou, S. Tian, B. Yang, B. Maloon, V. R. Most, D. Stroud, R. Santos, A. Byagowi, G. Kammerer et al. , “Digit: A novel design for a low-cost compact high-resolution tactile sensor with application to in-hand manipulation,” IEEE Robotics and Automation Letters , vol. 5, no. 3, pp. 3838–3845, 2020. [12] J. Egli, B. Forrai, T. Buchner, J. Su, X. Chen, and R. K. Katzschmann, “Sensorized soft skin for dexterous robotic hands,” in 2024 IEEE Inter-national Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 18 127–18 133. [13] J. Liu, W. Zhao, Z. Ma, H. Zhao, and L. Ren, “Self-powered flexible electronic skin tactile sensor with 3d force detection,” Materials Today ,vol. 81, pp. 84–94, 2024. [14] G. Li, S. Liu, L. Wang, and R. Zhu, “Skin-inspired quadruple tactile sensors integrated on a robot hand enable object recognition,” Science Robotics , vol. 5, no. 49, p. eabc8134, 2020. [15] S. Min, H. Geng, Y. He, W. Liang, S. Chen, Z. Wang, Q. Liu, and T. Xu, “A stretchable tactile sensor with deep learning-enabled 3d force decoding for human and robotic interfaces,” Chemical Engineering Journal , p. 167189, 2025. [16] Z. Gao, Z. Gong, G. Zhu, and T. Zhang, “A solid-liquid composite flexible bionic tactile sensor for dexterous hands,” in 2024 IEEE International Conference on Advanced Intelligent Mechatronics (AIM) . IEEE, 2024, pp. 1560–1566. [17] H. Park, G. S. Gbadam, S. Niu, H. Ryu, and J.-H. Lee, “Manufacturing strategies for highly sensitive and self-powered piezoelectric and tribo-electric tactile sensors,” International Journal of Extreme Manufacturing ,vol. 7, no. 1, p. 012006, 2025. [18] L. Qin, X. Shi, Y. Wang, and Z. Zhou, “Perception of static and dynamic forces with a bio-inspired tactile fingertip,” Journal of Bionic Engineering , vol. 20, no. 4, pp. 1544–1554, 2023. [19] H. Zhao, X. Shi, W. Yang, H. Chen, and L. Qin, “Tactile exploration enabled shape recognition with multi-perspective feature representation,” 
+
+IEEE Sensors Journal , 2025. [20] Y. Liu, J. Tao, Y. Mo, R. Bao, and C. Pan, “Ultrasensitive touch sensor for simultaneous tactile and slip sensing,” Advanced Materials , vol. 36, no. 21, p. 2313857, 2024. [21] S. Funabashi, T. Isobe, F. Hongyi, A. Hiramoto, A. Schmitz, S. Sugano, and T. Ogata, “Multi-fingered in-hand manipulation with various object properties using graph convolutional networks and distributed tactile sensors,” IEEE Robotics and Automation Letters , vol. 7, no. 2, pp. 2102– 2109, 2022. [22] K. Chen, G. Chen, J. Lin, X. Gao, and X. Zhao, “Temporal cross-modal fusion method of tactile, 2d visual, and point cloud data for slip detection in robotic grasping,” Measurement Science and Technology ,vol. 36, no. 10, p. 106220, 2025. [23] N. Jawale, N. Kaur, A. Santoso, X. Hu, and X. Chen, “Learned slip-detection-severity framework using tactile deformation field feedback for robotic manipulation,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2024, pp. 13 569–13 576. [24] X. Hu, A. Venkatesh, Y. Wan, G. Zheng, N. Jawale, N. Kaur, X. Chen, and P. Birkmeyer, “Learning to detect slip through tactile estimation of the contact force field and its entropy properties,” Mechatronics , vol. 104, p. 103258, 2024. [25] X. Shi, Y. Wang, and L. Qin, “Surface recognition with a bioinspired tactile fingertip,” IEEE Sensors Journal , vol. 23, no. 16, pp. 18 842– 18 855, 2023. [26] J. Wang, S. Lu, S.-H. Wang, and Y.-D. Zhang, “A review on extreme learning machine,” Multimedia Tools and Applications , vol. 81, no. 29, pp. 41 611–41 660, 2022.
