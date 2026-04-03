@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-02T19:50:26.708318+00:00",
-  "updated_date": "20260402",
+  "generated_at": "2026-04-03T19:24:36.411382+00:00",
+  "updated_date": "20260403",
   "carryover_days": 9,
   "items": [
     {
@@ -22,13 +22,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "pixel-space agent learning through action traces",
-      "llm_evidence_cn": "通过动作追踪学习的像素空间智能体",
-      "llm_evidence": "通过动作追踪学习的像素空间智能体",
-      "canonical_evidence": "通过动作追踪学习的像素空间智能体",
-      "llm_tldr_en": "Pixelis is a pixel-space agent that learns to act directly on visual inputs using a tool-based grammar.",
-      "llm_tldr_cn": "Pixelis是一个像素空间智能体，通过工具语法学习直接在视觉输入上执行动作。",
-      "llm_tldr": "Pixelis是一个像素空间智能体，通过工具语法学习直接在视觉输入上执行动作。",
+      "llm_evidence_en": "pixel-space agent for vision-language-action reasoning",
+      "llm_evidence_cn": "用于视觉-语言-动作推理的像素空间智能体",
+      "llm_evidence": "用于视觉-语言-动作推理的像素空间智能体",
+      "canonical_evidence": "用于视觉-语言-动作推理的像素空间智能体",
+      "llm_tldr_en": "Develops Pixelis, an agent that learns to act directly in pixel space through executable operations.",
+      "llm_tldr_cn": "开发了Pixelis，一个通过可执行操作直接在像素空间学习行动的智能体。",
+      "llm_tldr": "开发了Pixelis，一个通过可执行操作直接在像素空间学习行动的智能体。",
       "llm_tags": [
         "query:q4"
       ],
@@ -63,13 +63,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "dexterous hand teleoperation and shared autonomy for dynamic manipulation",
-      "llm_evidence_cn": "用于动态操作任务的灵巧手遥操作和共享自主控制",
-      "llm_evidence": "用于动态操作任务的灵巧手遥操作和共享自主控制",
-      "canonical_evidence": "用于动态操作任务的灵巧手遥操作和共享自主控制",
-      "llm_tldr_en": "Tele-Catch enables shared autonomy for dexterous catching by fusing human input with diffusion policies.",
-      "llm_tldr_cn": "Tele-Catch通过将人类输入与扩散策略融合，实现了灵巧抓取的共享自主控制。",
-      "llm_tldr": "Tele-Catch通过将人类输入与扩散策略融合，实现了灵巧抓取的共享自主控制。",
+      "llm_evidence_en": "teleoperation for dexterous dynamic object catching",
+      "llm_evidence_cn": "动态物体抓取的灵巧手遥操作",
+      "llm_evidence": "动态物体抓取的灵巧手遥操作",
+      "canonical_evidence": "动态物体抓取的灵巧手遥操作",
+      "llm_tldr_en": "Presents Tele-Catch, a shared autonomy framework for dexterous teleoperation in dynamic catching.",
+      "llm_tldr_cn": "提出Tele-Catch，一个用于动态抓取任务中灵巧手遥操作的共享自主框架。",
+      "llm_tldr": "提出Tele-Catch，一个用于动态抓取任务中灵巧手遥操作的共享自主框架。",
       "llm_tags": [
         "query:q2"
       ],
@@ -102,13 +102,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "3D scene completion and generation using flow matching",
-      "llm_evidence_cn": "使用流匹配进行3D场景补全与生成",
-      "llm_evidence": "使用流匹配进行3D场景补全与生成",
-      "canonical_evidence": "使用流匹配进行3D场景补全与生成",
-      "llm_tldr_en": "Seen2Scene uses flow matching to complete and generate realistic 3D scenes from partial real-world scans.",
-      "llm_tldr_cn": "Seen2Scene利用流匹配技术，通过不完整的真实扫描数据实现逼真的3D场景补全与生成。",
-      "llm_tldr": "Seen2Scene利用流匹配技术，通过不完整的真实扫描数据实现逼真的3D场景补全与生成。",
+      "llm_evidence_en": "3D scene completion and generation for realistic environments",
+      "llm_evidence_cn": "真实环境的3D场景补全与生成",
+      "llm_evidence": "真实环境的3D场景补全与生成",
+      "canonical_evidence": "真实环境的3D场景补全与生成",
+      "llm_tldr_en": "Presents a flow-matching approach for 3D scene completion and generation from real-world scans.",
+      "llm_tldr_cn": "提出一种基于流匹配的方法，用于从真实扫描中进行3D场景补全与生成。",
+      "llm_tldr": "提出一种基于流匹配的方法，用于从真实扫描中进行3D场景补全与生成。",
       "llm_tags": [
         "query:q9"
       ],
@@ -141,60 +141,21 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "tokenization-free autoregressive policy for visuomotor learning",
-      "llm_evidence_cn": "用于视觉运动学习的无标记化自回归策略",
-      "llm_evidence": "用于视觉运动学习的无标记化自回归策略",
-      "canonical_evidence": "用于视觉运动学习的无标记化自回归策略",
-      "llm_tldr_en": "HiFlow proposes a tokenization-free flow matching policy for efficient and coherent robotic action learning.",
-      "llm_tldr_cn": "HiFlow提出一种无标记化的流匹配策略，用于高效且连贯的机器人动作学习。",
-      "llm_tldr": "HiFlow提出一种无标记化的流匹配策略，用于高效且连贯的机器人动作学习。",
+      "llm_evidence_en": "Visuomotor policy learning for robot actions",
+      "llm_evidence_cn": "机器人动作的视觉运动策略学习",
+      "llm_evidence": "机器人动作的视觉运动策略学习",
+      "canonical_evidence": "机器人动作的视觉运动策略学习",
+      "llm_tldr_en": "Proposes HiFlow, a tokenization-free policy for efficient and continuous robotic action modeling.",
+      "llm_tldr_cn": "提出HiFlow，一种无需标记化的策略，用于高效且连续的机器人动作建模。",
+      "llm_tldr": "提出HiFlow，一种无需标记化的策略，用于高效且连续的机器人动作建模。",
       "llm_tags": [
-        "query:q7"
+        "query:q2"
       ],
-      "matched_query_tag": "query:q7",
-      "matched_query_text": "robotic foundation models for manipulation",
-      "matched_requirement_id": "req-7",
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
       "selection_source": "carryover_cache",
       "paper_id": "2603.27281v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.28732v1",
-      "title": "Pandora: Articulated 3D Scene Graphs from Egocentric Vision",
-      "abstract": "Robotic mapping systems typically approach building metric-semantic scene representations from the robot's own sensors and cameras. However, these \"first person\" maps inherit the robot's own limitations due to its embodiment or skillset, which may leave many aspects of the environment unexplored. For example, the robot might not be able to open drawers or access wall cabinets. In this sense, the map representation is not as complete, and requires a more capable robot to fill in the gaps. We narrow these blind spots in current methods by leveraging egocentric data captured as a human naturally explores a scene wearing Project Aria glasses, giving a way to directly transfer knowledge about articulation from the human to any deployable robot. We demonstrate that, by using simple heuristics, we can leverage egocentric data to recover models of articulate object parts, with quality comparable to those of state-of-the-art methods based on other input modalities. We also show how to integrate these models into 3D scene graph representations, leading to a better understanding of object dynamics and object-container relationships. We finally demonstrate that these articulated 3D scene graphs enhance a robot's ability to perform mobile manipulation tasks, showcasing an application where a Boston Dynamics Spot is tasked with retrieving concealed target items, given only the 3D scene graph as input.",
-      "authors": [
-        "Alan Yu",
-        "Yun Chang",
-        "Christopher Xie",
-        "Luca Carlone"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO",
-        "cs.CV"
-      ],
-      "published": "2026-03-30T17:47:07+00:00",
-      "link": "https://arxiv.org/pdf/2603.28732v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "articulated 3D scene graphs for robotic mapping and environment understanding",
-      "llm_evidence_cn": "用于机器人建图和环境理解的有关节3D场景图",
-      "llm_evidence": "用于机器人建图和环境理解的有关节3D场景图",
-      "canonical_evidence": "用于机器人建图和环境理解的有关节3D场景图",
-      "llm_tldr_en": "Pandora creates articulated scene graphs from human egocentric data to help robots understand environment dynamics.",
-      "llm_tldr_cn": "Pandora从人类第一视角数据创建有关节场景图，帮助机器人理解环境动态。",
-      "llm_tldr": "Pandora从人类第一视角数据创建有关节场景图，帮助机器人理解环境动态。",
-      "llm_tags": [
-        "query:q3"
-      ],
-      "matched_query_tag": "query:q3",
-      "matched_query_text": "automated scene generation for robotic simulation",
-      "matched_requirement_id": "req-3",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.28732v1",
       "carry_days": 1
     },
     {
@@ -222,13 +183,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "tactile feedback glove for dexterous robotic manipulation",
-      "llm_evidence_cn": "用于灵巧机器人操作的触觉反馈手套",
-      "llm_evidence": "用于灵巧机器人操作的触觉反馈手套",
-      "canonical_evidence": "用于灵巧机器人操作的触觉反馈手套",
-      "llm_tldr_en": "TAG is a tactile feedback glove system designed to improve teleoperation and data collection for dexterous manipulation.",
-      "llm_tldr_cn": "TAG是一种触觉反馈手套系统，旨在改进灵巧操作的远程控制和数据采集。",
-      "llm_tldr": "TAG是一种触觉反馈手套系统，旨在改进灵巧操作的远程控制和数据采集。",
+      "llm_evidence_en": "tactile feedback glove for dexterous manipulation teleoperation",
+      "llm_evidence_cn": "用于灵巧操作遥操作的触觉反馈手套",
+      "llm_evidence": "用于灵巧操作遥操作的触觉反馈手套",
+      "canonical_evidence": "用于灵巧操作遥操作的触觉反馈手套",
+      "llm_tldr_en": "Presents a tactile feedback glove to improve data collection for dexterous robotic manipulation.",
+      "llm_tldr_cn": "介绍了一种触觉反馈手套，旨在改进灵巧机器人操作的高质量数据采集。",
+      "llm_tldr": "介绍了一种触觉反馈手套，旨在改进灵巧机器人操作的高质量数据采集。",
       "llm_tags": [
         "query:q2"
       ],
@@ -237,51 +198,6 @@
       "matched_requirement_id": "req-2",
       "selection_source": "carryover_cache",
       "paper_id": "2603.28542v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.29281v1",
-      "title": "PRISM: A Multi-View Multi-Capability Retail Video Dataset for Embodied Vision-Language Models",
-      "abstract": "A critical gap exists between the general-purpose visual understanding of state-of-the-art physical AI models and the specialized perceptual demands of structured real-world deployment environments. We present PRISM, a 270K-sample multi-view video supervised fine-tuning (SFT) corpus for embodied vision-language-models (VLMs) in real-world retail environments. PRISM is motivated by a simple observation - physical AI systems fail not because of poor visual recognition, but because they do not understand space, physical dynamics and embodied action well enough to operate reliably in the world. To this end, PRISM is grounded in a novel three-dimensional knowledge ontology that spans spatial knowledge, temporal and physical knowledge, and embodied action knowledge. It covers 20+ capability probes across four evaluation dimensions - Embodied Reasoning (ER), Common Sense (CS), Spatial Perception (SP), and Intuitive Physics (IP), and to our knowledge, PRISM is the first dataset to instantiate all three knowledge dimensions within a single real-world deployment domain. The corpus captures data from egocentric, exocentric and 360° viewpoints across five supermarket locations and includes open-ended, chain-of-thought, and multiple-choice supervision. At 4 fps, PRISM spans approximately 11.8M video frames and approximately 730M tokens, placing it among the largest domain-specific video SFT corpora. Fine-tuning on PRISM reduces the error rate across all 20+ probes by 66.6% over the pre-trained baseline, with significant gains in embodied action understanding where the accuracy improves by 36.4%. Our results suggest that ontology-structured, domain specific SFT can meaningfully strengthen embodied VLMs for real-world settings. The PRISM dataset and more details are available at https://dreamvu.ai/prism",
-      "authors": [
-        "Amirreza Rouhi",
-        "Parikshit Sakurikar",
-        "Satya Sai Reddy",
-        "Narsimha Menga",
-        "Anirudh Govil",
-        "Sri Harsha Chittajallu",
-        "Rajat Aggarwal",
-        "Anoop Namboodiri",
-        "Sashi Reddi"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV",
-        "cs.AI",
-        "cs.RO"
-      ],
-      "published": "2026-03-31T05:29:22+00:00",
-      "link": "https://arxiv.org/pdf/2603.29281v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "dataset for embodied vision-language models in real-world environments",
-      "llm_evidence_cn": "真实零售环境下的具身视觉语言模型数据集",
-      "llm_evidence": "真实零售环境下的具身视觉语言模型数据集",
-      "canonical_evidence": "真实零售环境下的具身视觉语言模型数据集",
-      "llm_tldr_en": "Introduces PRISM, a large-scale multi-view video dataset to improve spatial and physical understanding in embodied VLMs.",
-      "llm_tldr_cn": "引入PRISM数据集，通过大规模多视角视频提升具身视觉语言模型对空间和物理动力学的理解。",
-      "llm_tldr": "引入PRISM数据集，通过大规模多视角视频提升具身视觉语言模型对空间和物理动力学的理解。",
-      "llm_tags": [
-        "query:q4"
-      ],
-      "matched_query_tag": "query:q4",
-      "matched_query_text": "Vision-Language-Action models for robotics",
-      "matched_requirement_id": "req-4",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.29281v1",
       "carry_days": 1
     },
     {
@@ -305,13 +221,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "joint auto-tuning of feedback controllers and disturbance observers",
-      "llm_evidence_cn": "反馈控制器与扰动观测器的联合自动调优",
-      "llm_evidence": "反馈控制器与扰动观测器的联合自动调优",
-      "canonical_evidence": "反馈控制器与扰动观测器的联合自动调优",
-      "llm_tldr_en": "MetaTune uses differentiable dynamics for meta-learning adaptive gains in robotic control.",
-      "llm_tldr_cn": "MetaTune利用可微动力学通过元学习自动调优机器人控制器的增益。",
-      "llm_tldr": "MetaTune利用可微动力学通过元学习自动调优机器人控制器的增益。",
+      "llm_evidence_en": "auto-tuning of feedback controllers for robotic systems",
+      "llm_evidence_cn": "机器人系统反馈控制器的自动调优",
+      "llm_evidence": "机器人系统反馈控制器的自动调优",
+      "canonical_evidence": "机器人系统反馈控制器的自动调优",
+      "llm_tldr_en": "Presents a meta-learning framework for joint auto-tuning of robotic controllers and observers.",
+      "llm_tldr_cn": "提出一种元学习框架，用于机器人控制器和观测器的联合自动调优。",
+      "llm_tldr": "提出一种元学习框架，用于机器人控制器和观测器的联合自动调优。",
       "llm_tags": [
         "query:q2"
       ],
@@ -320,45 +236,6 @@
       "matched_requirement_id": "req-2",
       "selection_source": "carryover_cache",
       "paper_id": "2603.27313v1",
-      "carry_days": 2
-    },
-    {
-      "id": "2603.24357v1",
-      "title": "A Sensorless, Inherently Compliant Anthropomorphic Musculoskeletal Hand Driven by Electrohydraulic Actuators",
-      "abstract": "Robotic manipulation in unstructured environments requires end-effectors that combine high kinematic dexterity with physical compliance. While traditional rigid hands rely on complex external sensors for safe interaction, electrohydraulic actuators offer a promising alternative. This paper presents the design, control, and evaluation of a novel musculoskeletal robotic hand architecture powered entirely by remote Peano-HASEL actuators, specifically optimized for safe manipulation. By relocating the actuators to the forearm, we functionally isolate the grasping interface from electrical hazards while maintaining a slim, human-like profile. To address the inherently limited linear contraction of these soft actuators, we integrate a 1:2 pulley routing mechanism that mechanically amplifies tendon displacement. The resulting system prioritizes compliant interaction over high payload capacity, leveraging the intrinsic force-limiting characteristics of the actuators to provide a high level of inherent safety. Furthermore, this physical safety is augmented by the self-sensing nature of the HASEL actuators. By simply monitoring the operating current, we achieve real-time grasp detection and closed-loop contact-aware control without relying on external force transducers or encoders. Experimental results validate the system's dexterity and inherent safety, demonstrating the successful execution of various grasp taxonomies and the non-destructive grasping of highly fragile objects, such as a paper balloon. These findings highlight a significant step toward simplified, inherently compliant soft robotic manipulation.",
-      "authors": [
-        "Misato Sonoda",
-        "Ronan Hinchet",
-        "Amirhossein Kazemipour",
-        "Yasunori Toshimitsu",
-        "Robert K. Katzschmann"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO"
-      ],
-      "published": "2026-03-25T14:40:49+00:00",
-      "link": "https://arxiv.org/pdf/2603.24357v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "design and control of anthropomorphic musculoskeletal hand for manipulation",
-      "llm_evidence_cn": "仿人肌肉骨骼手的操作设计与控制",
-      "llm_evidence": "仿人肌肉骨骼手的操作设计与控制",
-      "canonical_evidence": "仿人肌肉骨骼手的操作设计与控制",
-      "llm_tldr_en": "Presents a sensorless, compliant musculoskeletal robotic hand driven by electrohydraulic actuators for safe manipulation.",
-      "llm_tldr_cn": "设计并评估了一种由电液驱动器驱动的无传感器、柔性仿人肌肉骨骼手，用于安全操作。",
-      "llm_tldr": "设计并评估了一种由电液驱动器驱动的无传感器、柔性仿人肌肉骨骼手，用于安全操作。",
-      "llm_tags": [
-        "query:q2"
-      ],
-      "matched_query_tag": "query:q2",
-      "matched_query_text": "robotic arm manipulation tasks and control",
-      "matched_requirement_id": "req-2",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.24357v1",
       "carry_days": 1
     },
     {
@@ -385,13 +262,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "text-driven immersive 3D scene synthesis for world modeling",
-      "llm_evidence_cn": "文本驱动的沉浸式3D场景合成，用于世界建模",
-      "llm_evidence": "文本驱动的沉浸式3D场景合成，用于世界建模",
-      "canonical_evidence": "文本驱动的沉浸式3D场景合成，用于世界建模",
-      "llm_tldr_en": "Stepper uses a multi-view diffusion model for high-resolution, consistent 3D scene expansion from text.",
-      "llm_tldr_cn": "Stepper利用多视图扩散模型实现高分辨率、一致性的文本驱动3D场景扩展。",
-      "llm_tldr": "Stepper利用多视图扩散模型实现高分辨率、一致性的文本驱动3D场景扩展。",
+      "llm_evidence_en": "immersive 3D scene generation for world modeling",
+      "llm_evidence_cn": "用于世界建模的沉浸式3D场景生成",
+      "llm_evidence": "用于世界建模的沉浸式3D场景生成",
+      "canonical_evidence": "用于世界建模的沉浸式3D场景生成",
+      "llm_tldr_en": "A framework for stepwise text-driven immersive 3D scene synthesis using multi-view diffusion models.",
+      "llm_tldr_cn": "一个利用多视角扩散模型进行逐步文本驱动沉浸式3D场景合成的框架。",
+      "llm_tldr": "一个利用多视角扩散模型进行逐步文本驱动沉浸式3D场景合成的框架。",
       "llm_tags": [
         "query:q9"
       ],
@@ -429,13 +306,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "robotic manipulation tasks involving multi-step stroke planning and control",
-      "llm_evidence_cn": "涉及多步笔触规划与控制的机械臂操作任务",
-      "llm_evidence": "涉及多步笔触规划与控制的机械臂操作任务",
-      "canonical_evidence": "涉及多步笔触规划与控制的机械臂操作任务",
-      "llm_tldr_en": "Integrates learned dynamics with model-based planning for complex robotic oil painting manipulation.",
-      "llm_tldr_cn": "将学习到的动力学与基于模型的规划相结合，用于复杂的机器人油画操作。",
-      "llm_tldr": "将学习到的动力学与基于模型的规划相结合，用于复杂的机器人油画操作。",
+      "llm_evidence_en": "Robotic manipulation and task planning for oil painting",
+      "llm_evidence_cn": "油画创作的机器人操作与任务规划",
+      "llm_evidence": "油画创作的机器人操作与任务规划",
+      "canonical_evidence": "油画创作的机器人操作与任务规划",
+      "llm_tldr_en": "Presents IMPASTO, a system integrating dynamics models and planning for complex robotic manipulation tasks.",
+      "llm_tldr_cn": "提出IMPASTO系统，集成动力学模型与规划，用于复杂的机器人油画操作任务。",
+      "llm_tldr": "提出IMPASTO系统，集成动力学模型与规划，用于复杂的机器人油画操作任务。",
       "llm_tags": [
         "query:q2"
       ],
@@ -444,90 +321,6 @@
       "matched_requirement_id": "req-2",
       "selection_source": "carryover_cache",
       "paper_id": "2603.29315v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.27507v1",
-      "title": "Chat-Scene++: Exploiting Context-Rich Object Identification for 3D LLM",
-      "abstract": "Recent advancements in multi-modal large language models (MLLMs) have shown strong potential for 3D scene understanding. However, existing methods struggle with fine-grained object grounding and contextual reasoning, limiting their ability to interpret and interact with complex 3D environments. In this paper, we present Chat-Scene++, an MLLM framework that represents 3D scenes as context-rich object sequences. By structuring scenes as sequences of objects with contextual semantics, Chat-Scene++ enables object-centric representation and interaction. It decomposes a 3D scene into object representations paired with identifier tokens, allowing LLMs to follow instructions across diverse 3D vision-language tasks. To capture inter-object relationships and global semantics, Chat-Scene++ extracts context-rich object features using large-scale pre-trained 3D scene-level and 2D image-level encoders, unlike the isolated per-object features in Chat-Scene. Its flexible object-centric design also supports grounded chain-of-thought (G-CoT) reasoning, enabling the model to distinguish objects at both category and spatial levels during multi-step inference. Without the need for additional task-specific heads or fine-tuning, Chat-Scene++ achieves state-of-the-art performance on five major 3D vision-language benchmarks: ScanRefer, Multi3DRefer, Scan2Cap, ScanQA, and SQA3D. These results highlight its effectiveness in scene comprehension, object grounding, and spatial reasoning. Additionally, without reconstructing 3D worlds through computationally expensive processes, we demonstrate its applicability to real-world scenarios using only 2D inputs.",
-      "authors": [
-        "Haifeng Huang",
-        "Yilun Chen",
-        "Zehan Wang",
-        "Jiangmiao Pang",
-        "Zhou Zhao"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV"
-      ],
-      "published": "2026-03-29T04:16:04+00:00",
-      "link": "https://arxiv.org/pdf/2603.27507v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "3D scene representation and interaction for MLLMs",
-      "llm_evidence_cn": "多模态大模型的3D场景表示与交互",
-      "llm_evidence": "多模态大模型的3D场景表示与交互",
-      "canonical_evidence": "多模态大模型的3D场景表示与交互",
-      "llm_tldr_en": "Chat-Scene++ structures 3D scenes as context-rich object sequences to improve grounding and interaction.",
-      "llm_tldr_cn": "Chat-Scene++将3D场景构建为富含上下文的物体序列，提升了定位与交互能力。",
-      "llm_tldr": "Chat-Scene++将3D场景构建为富含上下文的物体序列，提升了定位与交互能力。",
-      "llm_tags": [
-        "query:q9"
-      ],
-      "matched_query_tag": "query:q9",
-      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
-      "matched_requirement_id": "req-9",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.27507v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2604.01224v1",
-      "title": "Functional Force-Aware Retargeting from Virtual Human Demos to Soft Robot Policies",
-      "abstract": "We introduce SoftAct, a framework for teaching soft robot hands to perform human-like manipulation skills by explicitly reasoning about contact forces. Leveraging immersive virtual reality, our system captures rich human demonstrations, including hand kinematics, object motion, dense contact patches, and detailed contact force information. Unlike conventional approaches that retarget human joint trajectories, SoftAct employs a two-stage, force-aware retargeting algorithm. The first stage attributes demonstrated contact forces to individual human fingers and allocates robot fingers proportionally, establishing a force-balanced mapping between human and robot hands. The second stage performs online retargeting by combining baseline end-effector pose tracking with geodesic-weighted contact refinements, using contact geometry and force magnitude to adjust robot fingertip targets in real time. This formulation enables soft robotic hands to reproduce the functional intent of human demonstrations while naturally accommodating extreme embodiment mismatch and nonlinear compliance. We evaluate SoftAct on a suite of contact-rich manipulation tasks using a custom non-anthropomorphic pneumatic soft robot hand. SoftAct's controller reduces fingertip trajectory tracking RMSE by up to 55 percent and reduces tracking variance by up to 69 percent compared to kinematic and learning-based baselines. At the policy level, SoftAct achieves consistently higher success in zero-shot real-world deployment and in simulation. These results demonstrate that explicitly modeling contact geometry and force distribution is essential for effective skill transfer to soft robotic hands, and cannot be recovered through kinematic imitation alone. Project videos and additional details are available at https://soft-act.github.io/.",
-      "authors": [
-        "Uksang Yoo",
-        "Mengjia Zhu",
-        "Evan Pezent",
-        "Jom Preechayasomboon",
-        "Jean Oh",
-        "Jeffrey Ichnowski",
-        "Amir Memar",
-        "Ben Abbatematteo",
-        "Homanga Bharadhwaj",
-        "Ashish Deshpande",
-        "Harsha Prahlad"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO"
-      ],
-      "published": "2026-04-01T17:59:35+00:00",
-      "link": "https://arxiv.org/pdf/2604.01224v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "teaching soft robot hands manipulation skills from virtual demos",
-      "llm_evidence_cn": "从虚拟演示中教授软体机器人手操作技能",
-      "llm_evidence": "从虚拟演示中教授软体机器人手操作技能",
-      "canonical_evidence": "从虚拟演示中教授软体机器人手操作技能",
-      "llm_tldr_en": "SoftAct retargets human demonstrations to soft robot policies using force-aware reasoning.",
-      "llm_tldr_cn": "SoftAct利用力感知推理将人类演示重定向为软体机器人策略。",
-      "llm_tldr": "SoftAct利用力感知推理将人类演示重定向为软体机器人策略。",
-      "llm_tags": [
-        "query:q2"
-      ],
-      "matched_query_tag": "query:q2",
-      "matched_query_text": "robotic arm manipulation tasks and control",
-      "matched_requirement_id": "req-2",
-      "selection_source": "carryover_cache",
-      "paper_id": "2604.01224v1",
       "carry_days": 1
     },
     {
@@ -552,13 +345,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "robotic control and policy learning for trajectories",
-      "llm_evidence_cn": "机器人控制与轨迹策略学习",
-      "llm_evidence": "机器人控制与轨迹策略学习",
-      "canonical_evidence": "机器人控制与轨迹策略学习",
+      "llm_evidence_en": "analytical policy gradient for robotic reinforcement learning control",
+      "llm_evidence_cn": "用于机器人强化学习控制的解析策略梯度",
+      "llm_evidence": "用于机器人强化学习控制的解析策略梯度",
+      "canonical_evidence": "用于机器人强化学习控制的解析策略梯度",
       "llm_tldr_en": "Proposes a directed exploration method using analytical policy gradients to improve robotic reinforcement learning.",
-      "llm_tldr_cn": "提出一种利用解析策略梯度的定向探索方法，以改进机器人强化学习效率。",
-      "llm_tldr": "提出一种利用解析策略梯度的定向探索方法，以改进机器人强化学习效率。",
+      "llm_tldr_cn": "提出一种利用解析策略梯度进行定向探索的方法，以改进机器人强化学习控制。",
+      "llm_tldr": "提出一种利用解析策略梯度进行定向探索的方法，以改进机器人强化学习控制。",
       "llm_tags": [
         "query:q2"
       ],
@@ -591,13 +384,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "3D spatial reasoning for embodied and physical AI systems",
-      "llm_evidence_cn": "具身智能与物理 AI 系统的 3D 空间推理",
-      "llm_evidence": "具身智能与物理 AI 系统的 3D 空间推理",
-      "canonical_evidence": "具身智能与物理 AI 系统的 3D 空间推理",
-      "llm_tldr_en": "Proposes SpatialStack to enhance 3D spatial reasoning in VLMs for embodied AI through hierarchical fusion.",
-      "llm_tldr_cn": "提出 SpatialStack 框架，通过分层融合增强具身智能中 VLM 的 3D 空间推理能力。",
-      "llm_tldr": "提出 SpatialStack 框架，通过分层融合增强具身智能中 VLM 的 3D 空间推理能力。",
+      "llm_evidence_en": "3D spatial reasoning for embodied AI and VLMs",
+      "llm_evidence_cn": "具身智能与视觉语言模型的3D空间推理",
+      "llm_evidence": "具身智能与视觉语言模型的3D空间推理",
+      "canonical_evidence": "具身智能与视觉语言模型的3D空间推理",
+      "llm_tldr_en": "Introduces a hierarchical fusion framework to improve 3D spatial reasoning in vision-language models.",
+      "llm_tldr_cn": "引入分层融合框架，提升视觉语言模型在具身智能中的3D空间推理能力。",
+      "llm_tldr": "引入分层融合框架，提升视觉语言模型在具身智能中的3D空间推理能力。",
       "llm_tags": [
         "query:q4"
       ],
@@ -606,83 +399,6 @@
       "matched_requirement_id": "req-4",
       "selection_source": "carryover_cache",
       "paper_id": "2603.27437v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.28489v1",
-      "title": "Video Generation Models as World Models: Efficient Paradigms, Architectures and Algorithms",
-      "abstract": "The rapid evolution of video generation has enabled models to simulate complex physical dynamics and long-horizon causalities, positioning them as potential world simulators. However, a critical gap still remains between the theoretical capacity for world simulation and the heavy computational costs of spatiotemporal modeling. To address this, we comprehensively and systematically review video generation frameworks and techniques that consider efficiency as a crucial requirement for practical world modeling. We introduce a novel taxonomy in three dimensions: efficient modeling paradigms, efficient network architectures, and efficient inference algorithms. We further show that bridging this efficiency gap directly empowers interactive applications such as autonomous driving, embodied AI, and game simulation. Finally, we identify emerging research frontiers in efficient video-based world modeling, arguing that efficiency is a fundamental prerequisite for evolving video generators into general-purpose, real-time, and robust world simulators.",
-      "authors": [
-        "Muyang He",
-        "Hanzhong Guo",
-        "Junxiong Lin",
-        "Yizhou Yu"
-      ],
-      "primary_category": "eess.IV",
-      "categories": [
-        "eess.IV"
-      ],
-      "published": "2026-03-30T14:23:45+00:00",
-      "link": "https://arxiv.org/pdf/2603.28489v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "video generation models as world simulators for physical dynamics",
-      "llm_evidence_cn": "视频生成模型作为物理动力学的世界模拟器",
-      "llm_evidence": "视频生成模型作为物理动力学的世界模拟器",
-      "canonical_evidence": "视频生成模型作为物理动力学的世界模拟器",
-      "llm_tldr_en": "Reviews efficient video generation paradigms for practical world modeling and physical simulation.",
-      "llm_tldr_cn": "系统综述了用于实际世界建模和物理仿真的高效视频生成范式。",
-      "llm_tldr": "系统综述了用于实际世界建模和物理仿真的高效视频生成范式。",
-      "llm_tags": [
-        "query:q9"
-      ],
-      "matched_query_tag": "query:q9",
-      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
-      "matched_requirement_id": "req-9",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.28489v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.23964v1",
-      "title": "From Pixels to Digital Agents: An Empirical Study on the Taxonomy and Technological Trends of Reinforcement Learning Environments",
-      "abstract": "The remarkable progress of reinforcement learning (RL) is intrinsically tied to the environments used to train and evaluate artificial agents. Moving beyond traditional qualitative reviews, this work presents a large-scale, data-driven empirical investigation into the evolution of RL environments. By programmatically processing a massive corpus of academic literature and rigorously distilling over 2,000 core publications, we propose a quantitative methodology to map the transition from isolated physical simulations to generalist, language-driven foundation agents. Implementing a novel, multi-dimensional taxonomy, we systematically analyze benchmarks against diverse application domains and requisite cognitive capabilities. Our automated semantic and statistical analysis reveals a profound, data-verified paradigm shift: the bifurcation of the field into a \"Semantic Prior\" ecosystem dominated by Large Language Models (LLMs) and a \"Domain-Specific Generalization\" ecosystem. Furthermore, we characterize the \"cognitive fingerprints\" of these distinct domains to uncover the underlying mechanisms of cross-task synergy, multi-domain interference, and zero-shot generalization. Ultimately, this study offers a rigorous, quantitative roadmap for designing the next generation of Embodied Semantic Simulators, bridging the gap between continuous physical control and high-level logical reasoning.",
-      "authors": [
-        "Lijing Luo",
-        "Yiben Luo",
-        "Alexey Gorbatovski",
-        "Sergey Kovalchuk",
-        "Xiaodan Liang"
-      ],
-      "primary_category": "cs.AI",
-      "categories": [
-        "cs.AI"
-      ],
-      "published": "2026-03-25T05:56:54+00:00",
-      "link": "https://arxiv.org/pdf/2603.23964v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "taxonomy and trends of RL environments for training generalist agents",
-      "llm_evidence_cn": "用于训练通用智能体的强化学习环境分类与趋势",
-      "llm_evidence": "用于训练通用智能体的强化学习环境分类与趋势",
-      "canonical_evidence": "用于训练通用智能体的强化学习环境分类与趋势",
-      "llm_tldr_en": "Analyzes the evolution of RL environments from physical simulations to language-driven foundation agents.",
-      "llm_tldr_cn": "分析了强化学习环境从物理仿真到语言驱动基础智能体的演进过程。",
-      "llm_tldr": "分析了强化学习环境从物理仿真到语言驱动基础智能体的演进过程。",
-      "llm_tags": [
-        "query:q11"
-      ],
-      "matched_query_tag": "query:q11",
-      "matched_query_text": "automated environment synthesis for training robotic agents",
-      "matched_requirement_id": "req-11",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.23964v1",
       "carry_days": 1
     },
     {
@@ -710,13 +426,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "expanding 3D scenes for simulation and world building",
-      "llm_evidence_cn": "为仿真和世界构建扩展3D场景",
-      "llm_evidence": "为仿真和世界构建扩展3D场景",
-      "canonical_evidence": "为仿真和世界构建扩展3D场景",
-      "llm_tldr_en": "Introduces a method for iterative 3D scene expansion using generative models for simulation content.",
-      "llm_tldr_cn": "介绍了一种利用生成模型进行迭代式3D场景扩展的方法，用于仿真内容创作。",
-      "llm_tldr": "介绍了一种利用生成模型进行迭代式3D场景扩展的方法，用于仿真内容创作。",
+      "llm_evidence_en": "expanding 3D scenes for simulation and content creation",
+      "llm_evidence_cn": "为仿真和内容创作扩展3D场景",
+      "llm_evidence": "为仿真和内容创作扩展3D场景",
+      "canonical_evidence": "为仿真和内容创作扩展3D场景",
+      "llm_tldr_en": "SceneExpander enables iterative 3D scene expansion by inserting synthesized views into existing reconstructions.",
+      "llm_tldr_cn": "SceneExpander通过在现有重建中插入合成视图，实现迭代式的3D场景扩展。",
+      "llm_tldr": "SceneExpander通过在现有重建中插入合成视图，实现迭代式的3D场景扩展。",
       "llm_tags": [
         "query:q3"
       ],
@@ -725,49 +441,6 @@
       "matched_requirement_id": "req-3",
       "selection_source": "carryover_cache",
       "paper_id": "2603.27084v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.27287v1",
-      "title": "Uni-World VLA: Interleaved World Modeling and Planning for Autonomous Driving",
-      "abstract": "Autonomous driving requires reasoning about how the environment evolves and planning actions accordingly. Existing world-model-based approaches typically predict future scenes first and plan afterwards, resulting in open-loop imagination that may drift from the actual decision process. In this paper, we present Uni-World VLA, a unified vision-language-action (VLA) model that tightly interleaves future frame prediction and trajectory planning. Instead of generating a full world rollout before planning, our model alternates between predicting future frames and ego actions step by step, allowing planning decisions to be continuously conditioned on the imagined future observations. This interleaved generation forms a closed-loop interaction between world modeling and control, enabling more adaptive decision-making in dynamic traffic scenarios. In addition, we incorporate monocular depth information into frames to provide stronger geometric cues for world modeling, improving long-horizon scene prediction. Experiments on the NAVSIM benchmark show that our approach achieves competitive closed-loop planning performance while producing high-fidelity future frame predictions. These results demonstrate that tightly coupling world prediction and planning is a promising direction for scalable VLA driving systems.",
-      "authors": [
-        "Qiqi Liu",
-        "Huan Xu",
-        "Jingyu Li",
-        "Bin Sun",
-        "Zhihui Hao",
-        "Dangen She",
-        "Xiatian Zhu",
-        "Li Zhang"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO",
-        "cs.CV"
-      ],
-      "published": "2026-03-28T14:39:51+00:00",
-      "link": "https://arxiv.org/pdf/2603.27287v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "unified vision-language-action model for world modeling",
-      "llm_evidence_cn": "用于世界建模的统一视觉-语言-动作模型",
-      "llm_evidence": "用于世界建模的统一视觉-语言-动作模型",
-      "canonical_evidence": "用于世界建模的统一视觉-语言-动作模型",
-      "llm_tldr_en": "Develops Uni-World VLA, interleaving future frame prediction and planning for autonomous driving tasks.",
-      "llm_tldr_cn": "开发Uni-World VLA，将自动驾驶任务中的未来帧预测与规划交织在一起。",
-      "llm_tldr": "开发Uni-World VLA，将自动驾驶任务中的未来帧预测与规划交织在一起。",
-      "llm_tags": [
-        "query:q4"
-      ],
-      "matched_query_tag": "query:q4",
-      "matched_query_text": "Vision-Language-Action models for robotics",
-      "matched_requirement_id": "req-4",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.27287v1",
       "carry_days": 1
     },
     {
@@ -792,13 +465,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "visuomotor trajectories for long-horizon tasks",
-      "llm_evidence_cn": "长程任务的视觉运动轨迹",
-      "llm_evidence": "长程任务的视觉运动轨迹",
-      "canonical_evidence": "长程任务的视觉运动轨迹",
-      "llm_tldr_en": "Introduces ENAP to learn symbolic structures from visuomotor data for long-horizon robot manipulation.",
-      "llm_tldr_cn": "引入ENAP框架，从视觉运动演示中学习符号结构，以解决长程机器人操作任务。",
-      "llm_tldr": "引入ENAP框架，从视觉运动演示中学习符号结构，以解决长程机器人操作任务。",
+      "llm_evidence_en": "learning symbolic structure from visuomotor trajectories",
+      "llm_evidence_cn": "从视觉运动轨迹中学习符号结构",
+      "llm_evidence": "从视觉运动轨迹中学习符号结构",
+      "canonical_evidence": "从视觉运动轨迹中学习符号结构",
+      "llm_tldr_en": "Introduces ENAP to learn interpretable high-level planners from demonstrations for long-horizon tasks.",
+      "llm_tldr_cn": "引入ENAP框架，从演示中学习可解释的高层规划器以处理长程机器人任务。",
+      "llm_tldr": "引入ENAP框架，从演示中学习可解释的高层规划器以处理长程机器人任务。",
       "llm_tags": [
         "query:q2"
       ],
@@ -807,85 +480,6 @@
       "matched_requirement_id": "req-2",
       "selection_source": "carryover_cache",
       "paper_id": "2603.25903v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.27449v1",
-      "title": "LOME: Learning Human-Object Manipulation with Action-Conditioned Egocentric World Model",
-      "abstract": "Learning human-object manipulation presents significant challenges due to its fine-grained and contact-rich nature of the motions involved. Traditional physics-based animation requires extensive modeling and manual setup, and more importantly, it neither generalizes well across diverse object morphologies nor scales effectively to real-world environment. To address these limitations, we introduce LOME, an egocentric world model that can generate realistic human-object interactions as videos conditioned on an input image, a text prompt, and per-frame human actions, including both body poses and hand gestures. LOME injects strong and precise action guidance into object manipulation by jointly estimating spatial human actions and the environment contexts during training. After finetuning a pretrained video generative model on videos of diverse egocentric human-object interactions, LOME demonstrates not only high action-following accuracy and strong generalization to unseen scenarios, but also realistic physical consequences of hand-object interactions, e.g., liquid flowing from a bottle into a mug after executing a ``pouring'' action. Extensive experiments demonstrate that our video-based framework significantly outperforms state-of-the-art image based and video-based action-conditioned methods and Image/Text-to-Video (I/T2V) generative model in terms of both temporal consistency and motion control. LOME paves the way for photorealistic AR/VR experiences and scalable robotic training, without being limited to simulated environments or relying on explicit 3D/4D modeling.",
-      "authors": [
-        "Quankai Gao",
-        "Jiawei Yang",
-        "Qiangeng Xu",
-        "Le Chen",
-        "Yue Wang"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV"
-      ],
-      "published": "2026-03-28T23:58:29+00:00",
-      "link": "https://arxiv.org/pdf/2603.27449v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "generative world model for manipulation interactions",
-      "llm_evidence_cn": "用于操作交互的生成式世界模型",
-      "llm_evidence": "用于操作交互的生成式世界模型",
-      "canonical_evidence": "用于操作交互的生成式世界模型",
-      "llm_tldr_en": "LOME generates realistic human-object interaction videos conditioned on actions and text prompts.",
-      "llm_tldr_cn": "LOME根据动作和文本提示生成逼真的人机交互视频。",
-      "llm_tldr": "LOME根据动作和文本提示生成逼真的人机交互视频。",
-      "llm_tags": [
-        "query:q13"
-      ],
-      "matched_query_tag": "query:q13",
-      "matched_query_text": "generative models for robotic simulation and task planning",
-      "matched_requirement_id": "req-13",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.27449v1",
-      "carry_days": 1
-    },
-    {
-      "id": "2603.24257v1",
-      "title": "Memory-Augmented Vision-Language Agents for Persistent and Semantically Consistent Object Captioning",
-      "abstract": "Vision-Language Models (VLMs) often yield inconsistent descriptions of the same object across viewpoints, hindering the ability of embodied agents to construct consistent semantic representations over time. Previous methods resolved inconsistencies using offline multi-view aggregation or multi-stage pipelines that decouple exploration, data association, and caption learning, with limited capacity to reason over previously observed objects. In this paper, we introduce a unified, memory-augmented Vision-Language agent that simultaneously handles data association, object captioning, and exploration policy within a single autoregressive framework. The model processes the current RGB observation, a top-down explored map, and an object-level episodic memory serialized into object-level tokens, ensuring persistent object identity and semantic consistency across extended sequences. To train the model in a self-supervised manner, we collect a dataset in photorealistic 3D environments using a disagreement-based policy and a pseudo-captioning model that enforces consistency across multi-view caption histories. Extensive evaluation on a manually annotated object-level test set, demonstrate improvements of up to +11.86% in standard captioning scores and +7.39% in caption self-similarity over baseline models, while enabling scalable performance through a compact scene representation. Code, model weights, and data are available at https://github.com/hsp-iit/epos-vlm",
-      "authors": [
-        "Tommaso Galliena",
-        "Stefano Rosa",
-        "Tommaso Apicella",
-        "Pietro Morerio",
-        "Alessio Del Bue",
-        "Lorenzo Natale"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV"
-      ],
-      "published": "2026-03-25T12:52:32+00:00",
-      "link": "https://arxiv.org/pdf/2603.24257v1",
-      "tags": [
-        "keyword:具身智能",
-        "query:具身智能"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "memory-augmented vision-language agent for embodied exploration",
-      "llm_evidence_cn": "用于具身探索的记忆增强视觉语言智能体",
-      "llm_evidence": "用于具身探索的记忆增强视觉语言智能体",
-      "canonical_evidence": "用于具身探索的记忆增强视觉语言智能体",
-      "llm_tldr_en": "Introduces a memory-augmented VLM agent for consistent object captioning and exploration in embodied AI.",
-      "llm_tldr_cn": "引入记忆增强的视觉语言智能体，解决具身AI中跨视角语义一致性与探索问题。",
-      "llm_tldr": "引入记忆增强的视觉语言智能体，解决具身AI中跨视角语义一致性与探索问题。",
-      "llm_tags": [
-        "query:q4"
-      ],
-      "matched_query_tag": "query:q4",
-      "matched_query_text": "Vision-Language-Action models for robotics",
-      "matched_requirement_id": "req-4",
-      "selection_source": "carryover_cache",
-      "paper_id": "2603.24257v1",
       "carry_days": 1
     },
     {
@@ -914,13 +508,13 @@
         "query:具身智能"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "generative diffusion priors for humanoid loco-manipulation skills",
-      "llm_evidence_cn": "用于人形机器人移动操作技能的生成式扩散先验",
-      "llm_evidence": "用于人形机器人移动操作技能的生成式扩散先验",
-      "canonical_evidence": "用于人形机器人移动操作技能的生成式扩散先验",
-      "llm_tldr_en": "Uses guided diffusion models as generative priors to improve RL for complex humanoid manipulation tasks.",
-      "llm_tldr_cn": "利用引导扩散模型作为生成先验，改进了复杂人形机器人操作任务的强化学习。",
-      "llm_tldr": "利用引导扩散模型作为生成先验，改进了复杂人形机器人操作任务的强化学习。",
+      "llm_evidence_en": "generative prior to guide RL policies for complex manipulation tasks",
+      "llm_evidence_cn": "生成式先验引导复杂操作任务的强化学习策略",
+      "llm_evidence": "生成式先验引导复杂操作任务的强化学习策略",
+      "canonical_evidence": "生成式先验引导复杂操作任务的强化学习策略",
+      "llm_tldr_en": "Uses diffusion models as generative priors to improve humanoid loco-manipulation skill learning.",
+      "llm_tldr_cn": "利用扩散模型作为生成先验，提升人形机器人运动操作技能的学习。",
+      "llm_tldr": "利用扩散模型作为生成先验，提升人形机器人运动操作技能的学习。",
       "llm_tags": [
         "query:q13"
       ],
@@ -929,6 +523,502 @@
       "matched_requirement_id": "req-13",
       "selection_source": "carryover_cache",
       "paper_id": "2604.00202v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01169v1",
+      "title": "Bridging the Simulation-to-Experiment Gap with Generative Models using Adversarial Distribution Alignment",
+      "abstract": "A fundamental challenge in science and engineering is the simulation-to-experiment gap. While we often possess prior knowledge of physical laws, these physical laws can be too difficult to solve exactly for complex systems. Such systems are commonly modeled using simulators, which impose computational approximations. Meanwhile, experimental measurements more faithfully represent the real world, but experimental data typically consists of observations that only partially reflect the system's full underlying state. We propose a data-driven distribution alignment framework that bridges this simulation-to-experiment gap by pre-training a generative model on fully observed (but imperfect) simulation data, then aligning it with partial (but real) observations of experimental data. While our method is domain-agnostic, we ground our approach in the physical sciences by introducing Adversarial Distribution Alignment (ADA). This method aligns a generative model of atomic positions -- initially trained on a simulated Boltzmann distribution -- with the distribution of experimental observations. We prove that our method recovers the target observable distribution, even with multiple, potentially correlated observables. We also empirically validate our framework on synthetic, molecular, and experimental protein data, demonstrating that it can align generative models with diverse observables. Our code is available at https://kaityrusnelson.com/ada/.",
+      "authors": [
+        "Kai Nelson",
+        "Tobias Kreiman",
+        "Sergey Levine",
+        "Aditi S. Krishnapriyan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cond-mat.mtrl-sci",
+        "q-bio.BM"
+      ],
+      "published": "2026-04-01T17:21:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.01169v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "bridging simulation-to-experiment gap using generative models",
+      "llm_evidence_cn": "利用生成模型弥合仿真与实验之间的差距",
+      "llm_evidence": "利用生成模型弥合仿真与实验之间的差距",
+      "canonical_evidence": "利用生成模型弥合仿真与实验之间的差距",
+      "llm_tldr_en": "A distribution alignment framework using generative models to bridge the gap between simulation and real data.",
+      "llm_tldr_cn": "一种利用生成模型进行分布对齐以弥合仿真与真实实验数据差距的框架。",
+      "llm_tldr": "一种利用生成模型进行分布对齐以弥合仿真与真实实验数据差距的框架。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "sim-to-real transfer for robotic arm manipulation",
+      "matched_requirement_id": "req-8",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01169v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01421v1",
+      "title": "EgoFlow: Gradient-Guided Flow Matching for Egocentric 6DoF Object Motion Generation",
+      "abstract": "Understanding and predicting object motion from egocentric video is fundamental to embodied perception and interaction. However, generating physically consistent 6DoF trajectories remains challenging due to occlusions, fast motion, and the lack of explicit physical reasoning in existing generative models. We present EgoFlow, a flow-matching framework that synthesizes realistic and physically plausible trajectories conditioned on multimodal egocentric observations. EgoFlow employs a hybrid Mamba-Transformer-Perceiver architecture to jointly model temporal dynamics, scene geometry, and semantic intent, while a gradient-guided inference process enforces differentiable physical constraints such as collision avoidance and motion smoothness. This combination yields coherent and controllable motion generation without post-hoc filtering or additional supervision. Experiments on real-world datasets HD-EPIC, EgoExo4D, and HOT3D show that EgoFlow outperforms diffusion-based and transformer baselines in accuracy, generalization, and physical realism, reducing collision rates by up to 79%, and strong generalization to unseen scenes. Our results highlight the promise of flow-based generative modeling for scalable and physically grounded egocentric motion understanding.",
+      "authors": [
+        "Abhishek Saroha",
+        "Huajian Zeng",
+        "Xingxing Zuo",
+        "Daniel Cremers",
+        "Xi Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-01T21:43:57+00:00",
+      "link": "https://arxiv.org/pdf/2604.01421v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "generative model for physically consistent 6DoF object motion",
+      "llm_evidence_cn": "物理一致的6自由度物体运动生成模型",
+      "llm_evidence": "物理一致的6自由度物体运动生成模型",
+      "canonical_evidence": "物理一致的6自由度物体运动生成模型",
+      "llm_tldr_en": "A flow-matching framework for generating physically plausible 6DoF object trajectories from egocentric video.",
+      "llm_tldr_cn": "一种基于流匹配的框架，用于从第一视角视频生成符合物理规律的6自由度物体轨迹。",
+      "llm_tldr": "一种基于流匹配的框架，用于从第一视角视频生成符合物理规律的6自由度物体轨迹。",
+      "llm_tags": [
+        "query:q13"
+      ],
+      "matched_query_tag": "query:q13",
+      "matched_query_text": "generative models for robotic simulation and task planning",
+      "matched_requirement_id": "req-13",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01421v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.27084v2",
+      "title": "SceneExpander: Expanding 3D Scenes with Free-Form Inserted Views",
+      "abstract": "World building with 3D scene representations is increasingly important for content creation, simulation, and interactive experiences, yet real workflows are inherently iterative: creators must repeatedly extend an existing scene under user control. Motivated by this research gap, we study 3D scene expansion in a user-centric workflow: starting from a real scene captured by multi-view images, we extend its coverage by inserting an additional view synthesized by a generative model. Unlike simple object editing or style transfer in a fixed scene, the inserted view is often 3D-misaligned with the original reconstruction, introducing geometry shifts, hallucinated content, or view-dependent artifacts that break global multi-view consistency. To address the challenge, we propose SceneExpander, which applies test-time adaptation to a parametric feed-forward 3D reconstruction model with two complementary distillation signals: anchor distillation stabilizes the original scene by distilling geometric cues from the captured views, while inserted-view self-distillation preserves observation-supported predictions yet adapts latent geometry and appearance to accommodate the misaligned inserted view. Experiments on ETH scenes and online data demonstrate improved expansion behavior and reconstruction quality under misalignment.",
+      "authors": [
+        "Zijian He",
+        "Renjie Liu",
+        "Yihao Wang",
+        "Weizhi Zhong",
+        "Huan Yuan",
+        "Kun Gai",
+        "Guangrun Wang",
+        "Guanbin Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-28T02:04:48+00:00",
+      "link": "https://arxiv.org/pdf/2603.27084v2",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "expanding 3D scenes for simulation and world building",
+      "llm_evidence_cn": "为仿真和世界构建扩展3D场景",
+      "llm_evidence": "为仿真和世界构建扩展3D场景",
+      "canonical_evidence": "为仿真和世界构建扩展3D场景",
+      "llm_tldr_en": "A method for expanding 3D scenes by inserting generative views while maintaining multi-view consistency.",
+      "llm_tldr_cn": "一种通过插入生成视图来扩展3D场景并保持多视角一致性的方法。",
+      "llm_tldr": "一种通过插入生成视图来扩展3D场景并保持多视角一致性的方法。",
+      "llm_tags": [
+        "query:q9"
+      ],
+      "matched_query_tag": "query:q9",
+      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
+      "matched_requirement_id": "req-9",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.27084v2",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.27317v2",
+      "title": "Where-to-Learn: Analytical Policy Gradient Directed Exploration for On-Policy Robotic Reinforcement Learning",
+      "abstract": "On-policy reinforcement learning (RL) algorithms have demonstrated great potential in robotic control, where effective exploration is crucial for efficient and high-quality policy learning. However, how to encourage the agent to explore the better trajectories efficiently remains a challenge. Most existing methods incentivize exploration by maximizing the policy entropy or encouraging novel state visiting regardless of the potential state value. We propose a new form of directed exploration that uses analytical policy gradients from a differentiable dynamics model to inject task-aware, physics-guided guidance, thereby steering the agent towards high-reward regions for accelerated and more effective policy learning.",
+      "authors": [
+        "Leixin Chang",
+        "Xinchen Yao",
+        "Ben Liu",
+        "Liangjing Yang",
+        "Hua Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-28T15:50:54+00:00",
+      "link": "https://arxiv.org/pdf/2603.27317v2",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "physics-guided guidance for robotic reinforcement learning control",
+      "llm_evidence_cn": "机器人强化学习控制的物理引导",
+      "llm_evidence": "机器人强化学习控制的物理引导",
+      "canonical_evidence": "机器人强化学习控制的物理引导",
+      "llm_tldr_en": "A directed exploration method using analytical policy gradients to accelerate robotic reinforcement learning.",
+      "llm_tldr_cn": "一种利用解析策略梯度进行定向探索的方法，旨在加速机器人强化学习。",
+      "llm_tldr": "一种利用解析策略梯度进行定向探索的方法，旨在加速机器人强化学习。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.27317v2",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01641v1",
+      "title": "LivingWorld: Interactive 4D World Generation with Environmental Dynamics",
+      "abstract": "We introduce LivingWorld, an interactive framework for generating 4D worlds with environmental dynamics from a single image. While recent advances in 3D scene generation enable large-scale environment creation, most approaches focus primarily on reconstructing static geometry, leaving scene-scale environmental dynamics such as clouds, water, or smoke largely unexplored. Modeling such dynamics is challenging because motion must remain coherent across an expanding scene while supporting low-latency user feedback. LivingWorld addresses this challenge by progressively constructing a globally coherent motion field as the scene expands. To maintain global consistency during expansion, we introduce a geometry-aware alignment module that resolves directional and scale ambiguities across views. We further represent motion using a compact hash-based motion field, enabling efficient querying and stable propagation of dynamics throughout the scene. This representation also supports bidirectional motion propagation during rendering, producing long and temporally coherent 4D sequences without relying on expensive video-based refinement. On a single RTX 5090 GPU, generating each new scene expansion step requires 9 seconds, followed by 3 seconds for motion alignment and motion field updates, enabling interactive 4D world generation with globally coherent environmental dynamics. Video demonstrations are available at cvsp-lab.github.io/LivingWorld.",
+      "authors": [
+        "Hyeongju Mun",
+        "In-Hwan Jin",
+        "Sohyeong Kim",
+        "Kyeongbo Kong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-02T05:38:48+00:00",
+      "link": "https://arxiv.org/pdf/2604.01641v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "interactive 4D world generation with environmental dynamics",
+      "llm_evidence_cn": "具有环境动力学的交互式4D世界生成",
+      "llm_evidence": "具有环境动力学的交互式4D世界生成",
+      "canonical_evidence": "具有环境动力学的交互式4D世界生成",
+      "llm_tldr_en": "Introduces LivingWorld for generating interactive 4D environments with coherent motion from single images.",
+      "llm_tldr_cn": "引入LivingWorld，从单张图像生成具有连贯运动的交互式4D环境。",
+      "llm_tldr": "引入LivingWorld，从单张图像生成具有连贯运动的交互式4D环境。",
+      "llm_tags": [
+        "query:q9"
+      ],
+      "matched_query_tag": "query:q9",
+      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
+      "matched_requirement_id": "req-9",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01641v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.25887v1",
+      "title": "World Reasoning Arena",
+      "abstract": "World models (WMs) are intended to serve as internal simulators of the real world that enable agents to understand, anticipate, and act upon complex environments. Existing WM benchmarks remain narrowly focused on next-state prediction and visual fidelity, overlooking the richer simulation capabilities required for intelligent behavior. To address this gap, we introduce WR-Arena, a comprehensive benchmark for evaluating WMs along three fundamental dimensions of next world simulation: (i) Action Simulation Fidelity, the ability to interpret and follow semantically meaningful, multi-step instructions and generate diverse counterfactual rollouts; (ii) Long-horizon Forecast, the ability to sustain accurate, coherent, and physically plausible simulations across extended interactions; and (iii) Simulative Reasoning and Planning, the ability to support goal-directed reasoning by simulating, comparing, and selecting among alternative futures in both structured and open-ended environments. We build a task taxonomy and curate diverse datasets designed to probe these capabilities, moving beyond single-turn and perceptual evaluations. Through extensive experiments with state-of-the-art WMs, our results expose a substantial gap between current models and human-level hypothetical reasoning, and establish WR-Arena as both a diagnostic tool and a guideline for advancing next-generation world models capable of robust understanding, forecasting, and purposeful action. The code is available at https://github.com/MBZUAI-IFM/WR-Arena.",
+      "authors": [
+        "PAN Team",
+        "Qiyue Gao",
+        "Kun Zhou",
+        "Jiannan Xiang",
+        "Zihan Liu",
+        "Dequan Yang",
+        "Junrong Chen",
+        "Arif Ahmad",
+        "Cong Zeng",
+        "Ganesh Bannur",
+        "Xinqi Huang",
+        "Zheqi Liu",
+        "Yi Gu",
+        "Yichi Yang",
+        "Guangyi Liu",
+        "Zhiting Hu",
+        "Zhengzhong Liu",
+        "Eric Xing"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T20:22:52+00:00",
+      "link": "https://arxiv.org/pdf/2603.25887v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for evaluating world models in simulation",
+      "llm_evidence_cn": "评估仿真中世界模型的基准",
+      "llm_evidence": "评估仿真中世界模型的基准",
+      "canonical_evidence": "评估仿真中世界模型的基准",
+      "llm_tldr_en": "A benchmark for evaluating world models on action simulation fidelity and long-horizon forecasting.",
+      "llm_tldr_cn": "一个用于评估世界模型在动作仿真保真度和长程预测能力的基准。",
+      "llm_tldr": "一个用于评估世界模型在动作仿真保真度和长程预测能力的基准。",
+      "llm_tags": [
+        "query:q13"
+      ],
+      "matched_query_tag": "query:q13",
+      "matched_query_text": "generative models for robotic simulation and task planning",
+      "matched_requirement_id": "req-13",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.25887v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01972v1",
+      "title": "SDesc3D: Towards Layout-Aware 3D Indoor Scene Generation from Short Descriptions",
+      "abstract": "3D indoor scene generation conditioned on short textual descriptions provides a promising avenue for interactive 3D environment construction without the need for labor-intensive layout specification. Despite recent progress in text-conditioned 3D scene generation, existing works suffer from poor physical plausibility and insufficient detail richness in such semantic condensation cases, largely due to their reliance on explicit semantic cues about compositional objects and their spatial relationships. This limitation highlights the need for enhanced 3D reasoning capabilities, particularly in terms of prior integration and spatial anchoring.Motivated by this, we propose SDesc3D, a short-text conditioned 3D indoor scene generation framework, that leverages multi-view structural priors and regional functionality implications to enable 3D layout reasoning under sparse textual guidance.Specifically, we introduce a Multi-view scene prior augmentation that enriches underspecified textual inputs with aggregated multi-view structural knowledge, shifting from inaccessible semantic relation cues to multi-view relational prior aggregation. Building on this, we design a Functionality-aware layout grounding, employing regional functionality grounding for implicit spatial anchors and conducting hierarchical layout reasoning to enhance scene organization and semantic plausibility.Furthermore, an Iterative reflection-rectification scheme is employed for progressive structural plausibility refinement via self-rectification.Extensive experiments show that our method outperforms existing approaches on short-text conditioned 3D indoor scene generation.Code will be publicly available.",
+      "authors": [
+        "Jie Feng",
+        "Jiawei Shen",
+        "Junjia Huang",
+        "Junpeng Zhang",
+        "Mingtao Feng",
+        "Weisheng Dong",
+        "Guanbin Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-02T12:33:01+00:00",
+      "link": "https://arxiv.org/pdf/2604.01972v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D indoor scene generation from short textual descriptions for environment construction",
+      "llm_evidence_cn": "基于短文本描述的3D室内场景生成，用于环境构建",
+      "llm_evidence": "基于短文本描述的3D室内场景生成，用于环境构建",
+      "canonical_evidence": "基于短文本描述的3D室内场景生成，用于环境构建",
+      "llm_tldr_en": "Presents SDesc3D for generating physically plausible 3D indoor scenes from concise text descriptions.",
+      "llm_tldr_cn": "提出SDesc3D框架，通过简短文本描述生成具有物理合理性的3D室内场景。",
+      "llm_tldr": "提出SDesc3D框架，通过简短文本描述生成具有物理合理性的3D室内场景。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "automated scene generation for robotic simulation",
+      "matched_requirement_id": "req-3",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01972v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.02241v1",
+      "title": "UAV-Track VLA: Embodied Aerial Tracking via Vision-Language-Action Models",
+      "abstract": "Embodied visual tracking is crucial for Unmanned Aerial Vehicles (UAVs) executing complex real-world tasks. In dynamic urban scenarios with complex semantic requirements, Vision-Language-Action (VLA) models show great promise due to their cross-modal fusion and continuous action generation capabilities. To benchmark multimodal tracking in such environments, we construct a dedicated evaluation benchmark and a large-scale dataset encompassing over 890K frames, 176 tasks, and 85 diverse objects. Furthermore, to address temporal feature redundancy and the lack of spatial geometric priors in existing VLA models, we propose an improved VLA tracking model, UAV-Track VLA. Built upon the $π_{0.5}$ architecture, our model introduces a temporal compression net to efficiently capture inter-frame dynamics. Additionally, a parallel dual-branch decoder comprising a spatial-aware auxiliary grounding head and a flow matching action expert is designed to decouple cross-modal features and generate fine-grained continuous actions. Systematic experiments in the CARLA simulator validate the superior end-to-end performance of our method. Notably, in challenging long-distance pedestrian tracking tasks, UAV-Track VLA achieves a 61.76\\% success rate and 269.65 average tracking frames, significantly outperforming existing baselines. Furthermore, it demonstrates robust zero-shot generalization in unseen environments and reduces single-step inference latency by 33.4\\% (to 0.0571s) compared to the original $π_{0.5}$, enabling highly efficient, real-time UAV control. Data samples and demonstration videos are available at: https://github.com/Hub-Tian/UAV-Track\\_VLA.",
+      "authors": [
+        "Qiyao Zhang",
+        "Shuhua Zheng",
+        "Jianli Sun",
+        "Chengxiang Li",
+        "Xianke Wu",
+        "Zihan Song",
+        "Zhiyong Cui",
+        "Yisheng Lv",
+        "Yonglin Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-04-02T16:33:38+00:00",
+      "link": "https://arxiv.org/pdf/2604.02241v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Vision-Language-Action models for embodied aerial tracking and continuous action generation",
+      "llm_evidence_cn": "用于具身空中追踪和连续动作生成的视觉-语言-动作模型",
+      "llm_evidence": "用于具身空中追踪和连续动作生成的视觉-语言-动作模型",
+      "canonical_evidence": "用于具身空中追踪和连续动作生成的视觉-语言-动作模型",
+      "llm_tldr_en": "Proposes UAV-Track VLA for aerial tracking, introducing a benchmark and improved VLA architecture.",
+      "llm_tldr_cn": "提出UAV-Track VLA模型用于无人机追踪，并构建了大规模多模态评估基准。",
+      "llm_tldr": "提出UAV-Track VLA模型用于无人机追踪，并构建了大规模多模态评估基准。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "Vision-Language-Action models for robotics",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.02241v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01681v1",
+      "title": "Bridging Large-Model Reasoning and Real-Time Control via Agentic Fast-Slow Planning",
+      "abstract": "Large foundation models enable powerful reasoning for autonomous systems, but mapping semantic intent to reliable real-time control remains challenging. Existing approaches either (i) let Large Language Models (LLMs) generate trajectories directly - brittle, hard to verify, and latency-prone - or (ii) adjust Model Predictive Control (MPC) objectives online - mixing slow deliberation with fast control and blurring interfaces. We propose Agentic Fast-Slow Planning, a hierarchical framework that decouples perception, reasoning, planning, and control across natural timescales. The framework contains two bridges. Perception2Decision compresses scenes into ego-centric topologies using an on-vehicle Vision-Language Model (VLM) detector, then maps them to symbolic driving directives in the cloud with an LLM decision maker - reducing bandwidth and delay while preserving interpretability. Decision2Trajectory converts directives into executable paths: Semantic-Guided A* embeds language-derived soft costs into classical search to bias solutions toward feasible trajectories, while an Agentic Refinement Module adapts planner hyperparameters using feedback and memory. Finally, MPC tracks the trajectories in real time, with optional cloud-guided references for difficult cases. Experiments in CARLA show that Agentic Fast-Slow Planning improves robustness under perturbations, reducing lateral deviation by up to 45% and completion time by over 12% compared to pure MPC and an A*-guided MPC baseline. Code is available at https://github.com/cjychenjiayi/icra2026_AFSP.",
+      "authors": [
+        "Jiayi Chen",
+        "Shuai Wang",
+        "Guangxu Zhu",
+        "Chengzhong Xu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-04-02T06:34:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.01681v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Agentic fast-slow planning bridging large-model reasoning and real-time control",
+      "llm_evidence_cn": "智能体快慢规划，连接大模型推理与实时控制",
+      "llm_evidence": "智能体快慢规划，连接大模型推理与实时控制",
+      "canonical_evidence": "智能体快慢规划，连接大模型推理与实时控制",
+      "llm_tldr_en": "Decouples reasoning and control via a hierarchical framework for reliable autonomous system operation.",
+      "llm_tldr_cn": "提出分层框架解耦推理与控制，实现大模型在自主系统中的可靠实时应用。",
+      "llm_tldr": "提出分层框架解耦推理与控制，实现大模型在自主系统中的可靠实时应用。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 机械臂操作任务相关的场景生成、仿真及VLA模型论文检索, especially work that connects or combines: E; robotic arm manipulation tasks and control; automated scene generation for robotic simulation; Vision-Language-Action models for robotics; synthetic data generation for robotic training; digital twin environments for robotic manipulation; robotic foundation models for manipulation; sim-to-real transfer for robotic arm manipulation; recent advances in scene generation for embodied AI simulation; Vision Language Action models for robotic arm manipulation tasks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01681v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.28032v1",
+      "title": "CARLA-Air: Fly Drones Inside a CARLA World -- A Unified Infrastructure for Air-Ground Embodied Intelligence",
+      "abstract": "The convergence of low-altitude economies, embodied intelligence, and air-ground cooperative systems creates growing demand for simulation infrastructure capable of jointly modeling aerial and ground agents within a single physically coherent environment. Existing open-source platforms remain domain-segregated: driving simulators lack aerial dynamics, while multirotor simulators lack realistic ground scenes. Bridge-based co-simulation introduces synchronization overhead and cannot guarantee strict spatial-temporal consistency.   We present CARLA-Air, an open-source infrastructure that unifies high-fidelity urban driving and physics-accurate multirotor flight within a single Unreal Engine process. The platform preserves both CARLA and AirSim native Python APIs and ROS 2 interfaces, enabling zero-modification code reuse. Within a shared physics tick and rendering pipeline, CARLA-Air delivers photorealistic environments with rule-compliant traffic, socially-aware pedestrians, and aerodynamically consistent UAV dynamics, synchronously capturing up to 18 sensor modalities across all platforms at each tick. The platform supports representative air-ground embodied intelligence workloads spanning cooperation, embodied navigation and vision-language action, multi-modal perception and dataset construction, and reinforcement-learning-based policy training. An extensible asset pipeline allows integration of custom robot platforms into the shared world. By inheriting AirSim's aerial capabilities -- whose upstream development has been archived -- CARLA-Air ensures this widely adopted flight stack continues to evolve within a modern infrastructure.   Released with prebuilt binaries and full source: https://github.com/louiszengCN/CarlaAir",
+      "authors": [
+        "Tianle Zeng",
+        "Hanxuan Chen",
+        "Yanci Wen",
+        "Hong Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.HC"
+      ],
+      "published": "2026-03-30T04:49:29+00:00",
+      "link": "https://arxiv.org/pdf/2603.28032v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "simulation infrastructure for embodied intelligence and scenes",
+      "llm_evidence_cn": "具身智能与场景的仿真基础设施",
+      "llm_evidence": "具身智能与场景的仿真基础设施",
+      "canonical_evidence": "具身智能与场景的仿真基础设施",
+      "llm_tldr_en": "Unifies aerial and ground simulation in CARLA-Air for embodied intelligence research.",
+      "llm_tldr_cn": "在 CARLA-Air 中统一了空地仿真，为具身智能研究提供物理一致的环境。",
+      "llm_tldr": "在 CARLA-Air 中统一了空地仿真，为具身智能研究提供物理一致的环境。",
+      "llm_tags": [
+        "query:q9"
+      ],
+      "matched_query_tag": "query:q9",
+      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
+      "matched_requirement_id": "req-9",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.28032v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.01179v1",
+      "title": "A ROS 2 Wrapper for Florence-2: Multi-Mode Local Vision-Language Inference for Robotic Systems",
+      "abstract": "Foundation vision-language models are becoming increasingly relevant to robotics because they can provide richer semantic perception than narrow task-specific pipelines. However, their practical adoption in robot software stacks still depends on reproducible middleware integrations rather than on model quality alone. Florence-2 is especially attractive in this regard because it unifies captioning, optical character recognition, open-vocabulary detection, grounding and related vision-language tasks within a comparatively manageable model size. This article presents a ROS 2 wrapper for Florence-2 that exposes the model through three complementary interaction modes: continuous topic-driven processing, synchronous service calls and asynchronous actions. The wrapper is designed for local execution and supports both native installation and Docker container deployment. It also combines generic JSON outputs with standard ROS 2 message bindings for detection-oriented tasks. A functional validation is reported together with a throughput study on several GPUs, showing that local deployment is feasible with consumer grade hardware. The repository is publicly available here: https://github.com/JEDominguezVidal/florence2_ros2_wrapper",
+      "authors": [
+        "J. E. Domínguez-Vidal"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-04-01T17:29:59+00:00",
+      "link": "https://arxiv.org/pdf/2604.01179v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "ROS 2 wrapper for vision-language foundation models",
+      "llm_evidence_cn": "视觉语言基础模型的ROS 2封装",
+      "llm_evidence": "视觉语言基础模型的ROS 2封装",
+      "canonical_evidence": "视觉语言基础模型的ROS 2封装",
+      "llm_tldr_en": "Provides a ROS 2 integration for Florence-2 to enable semantic perception in robotic systems.",
+      "llm_tldr_cn": "为Florence-2提供ROS 2集成，使机器人系统能够具备丰富的语义感知能力。",
+      "llm_tldr": "为Florence-2提供ROS 2集成，使机器人系统能够具备丰富的语义感知能力。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "Vision-Language-Action models for robotics",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.01179v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2604.02108v1",
+      "title": "Cross-Modal Visuo-Tactile Object Perception",
+      "abstract": "Estimating physical properties is critical for safe and efficient autonomous robotic manipulation, particularly during contact-rich interactions. In such settings, vision and tactile sensing provide complementary information about object geometry, pose, inertia, stiffness, and contact dynamics, such as stick-slip behavior. However, these properties are only indirectly observable and cannot always be modeled precisely (e.g., deformation in non-rigid objects coupled with nonlinear contact friction), making the estimation problem inherently complex and requiring sustained exploitation of visuo-tactile sensory information during action. Existing visuo-tactile perception frameworks have primarily emphasized forceful sensor fusion or static cross-modal alignment, with limited consideration of how uncertainty and beliefs about object properties evolve over time. Inspired by human multi-sensory perception and active inference, we propose the Cross-Modal Latent Filter (CMLF) to learn a structured, causal latent state-space of physical object properties. CMLF supports bidirectional transfer of cross-modal priors between vision and touch and integrates sensory evidence through a Bayesian inference process that evolves over time. Real-world robotic experiments demonstrate that CMLF improves the efficiency and robustness of latent physical properties estimation under uncertainty compared to baseline approaches. Beyond performance gains, the model exhibits perceptual coupling phenomena analogous to those observed in humans, including susceptibility to cross-modal illusions and similar trajectories in learning cross-sensory associations. Together, these results constitutes a significant step toward generalizable, robust and physically consistent cross-modal integration for robotic multi-sensory perception.",
+      "authors": [
+        "Anirvan Dutta",
+        "Simone Tasciotti",
+        "Claudia Cusseddu",
+        "Ang Li",
+        "Panayiota Poirazi",
+        "Julijana Gjorgjieva",
+        "Etienne Burdet",
+        "Patrick van der Smagt",
+        "Mohsen Kaboli"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-04-02T14:41:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.02108v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "autonomous robotic manipulation during contact-rich interactions",
+      "llm_evidence_cn": "接触密集型交互中的自主机器人操作",
+      "llm_evidence": "接触密集型交互中的自主机器人操作",
+      "canonical_evidence": "接触密集型交互中的自主机器人操作",
+      "llm_tldr_en": "Explores visuo-tactile perception for estimating physical properties during robotic manipulation.",
+      "llm_tldr_cn": "探索视觉-触觉感知，用于在机器人操作过程中估计物理属性。",
+      "llm_tldr": "探索视觉-触觉感知，用于在机器人操作过程中估计物理属性。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.02108v1",
       "carry_days": 1
     }
   ]

@@ -6,82 +6,85 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-02
-- 运行时间：2026-04-02 19:54:39 UTC
+- 最新运行日期：2026-04-03
+- 运行时间：2026-04-03 19:27:12 UTC
 - 运行状态：成功
-- 本次总论文数：20
-- 精读区：9
+- 本次总论文数：21
+- 精读区：10
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选 20 篇机器人前沿论文，重点突破了足式机械臂协作推车与模型驱动操控的效率瓶颈。
-核心看点在于通过局部动作模仿实现复杂推车任务，以及利用逆动力学谱分解显著加速操控探索。
-建议关注强化学习与物理约束结合的闭环规划，以提升机器人在非结构化环境中的部署安全性。
-- 详情：[/202604/02/README](/202604/02/README)
+今日深度解析 21 篇前沿论文，两篇 10 分满分论文领衔 VLA 模型在移动操控与微调效率上的重大突破。
+重点关注 AnchorVLA 的锚定扩散技术与动作邻域先验方法，它们显著提升了端到端机器人控制的精准度与执行效率。
+建议优先研读 VLA 模型的动作优化策略，这是理解智能体如何在复杂现实环境中实现高效决策的关键。
+- 详情：[/202604/03/README](/202604/03/README)
 
 ### 精读区论文标签
-1. [Partial Motion Imitation for Learning Cart Pushing with Legged Manipulators](/202604/02/2603.26659v1-partial-motion-imitation-for-learning-cart-pushing-with-legged-manipulators)  
+1. [AnchorVLA: Anchored Diffusion for Efficient End-to-End Mobile Manipulation](/202604/03/2604.01567v1-anchorvla-anchored-diffusion-for-efficient-end-to-end-mobile-manipulation)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于移动操作的基于扩散模型的VLA策略
+2. [Boosting Vision-Language-Action Finetuning with Feasible Action Neighborhood Prior](/202604/03/2604.01570v1-boosting-vision-language-action-finetuning-with-feasible-action-neighborhood-prior)  
+   标签：评分：10.0/10、query:q10
+   evidence：针对机器人操作的视觉-语言-动作模型微调
+3. [Adapt as You Say: Online Interactive Bimanual Skill Adaptation via Human Language Feedback](/202604/03/2603.26466v1-adapt-as-you-say-online-interactive-bimanual-skill-adaptation-via-human-language-feedback)  
+   标签：评分：9.0/10、query:q10
+   evidence：通过交互式语言反馈进行双臂技能自适应
+4. [D-SPEAR: Dual-Stream Prioritized Experience Adaptive Replay for Stable Reinforcement Learning in Robotic Manipulation](/202604/03/2603.27346v2-d-spear-dual-stream-prioritized-experience-adaptive-replay-for-stable-reinforcement-learning-in-robotic-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：学习足式机械臂的移动操作技能
-2. [Spectral Decomposition of Inverse Dynamics for Fast Exploration in Model-Based Manipulation](/202604/02/2603.27796v1-spectral-decomposition-of-inverse-dynamics-for-fast-exploration-in-model-based-manipulation)  
+   evidence：机器人操作任务的强化学习
+5. [Probe-to-Grasp Manipulation Using Self-Sensing Pneumatic Variable-Stiffness Joints](/202604/03/2603.27808v1-probe-to-grasp-manipulation-using-self-sensing-pneumatic-variable-stiffness-joints)  
    标签：评分：9.0/10、query:q2
-   evidence：机器人操作序列与逆动力学
-3. [WorldFlow3D: Flowing Through 3D Distributions for Unbounded World Generation](/202604/02/2603.29089v1-worldflow3d-flowing-through-3d-distributions-for-unbounded-world-generation)  
-   标签：评分：9.0/10、query:q9
-   evidence：用于机器人场景建模的无边界3D世界生成
-4. [SuperGrasp: Single-View Object Grasping via Superquadric Similarity Matching, Evaluation, and Refinement](/202604/02/2603.29254v1-supergrasp-single-view-object-grasping-via-superquadric-similarity-matching-evaluation-and-refinement)  
+   evidence：机械臂操作与抓取框架
+6. [PRISM: A Multi-View Multi-Capability Retail Video Dataset for Embodied Vision-Language Models](/202604/03/2603.29281v1-prism-a-multi-view-multi-capability-retail-video-dataset-for-embodied-vision-language-models)  
+   标签：评分：9.0/10、query:q10
+   evidence：具身视觉语言模型与动作的数据集
+7. [AffordTissue: Dense Affordance Prediction for Tool-Action Specific Tissue Interaction](/202604/03/2604.01371v1-affordtissue-dense-affordance-prediction-for-tool-action-specific-tissue-interaction)  
+   标签：评分：9.0/10、query:q10
+   evidence：用于手术器械动作控制的视觉-语言-动作模型
+8. [Learning When to See and When to Feel: Adaptive Vision-Torque Fusion for Contact-Aware Manipulation](/202604/03/2604.01414v1-learning-when-to-see-and-when-to-feel-adaptive-vision-torque-fusion-for-contact-aware-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：机械臂操作与物体抓取
-5. [SceneTeract: Agentic Functional Affordances and VLM Grounding in 3D Scenes](/202604/02/2603.29798v1-sceneteract-agentic-functional-affordances-and-vlm-grounding-in-3d-scenes)  
-   标签：评分：9.0/10、query:q14
-   evidence：具身智能体3D场景功能性的基准测试与验证
-6. [Generalizable Dense Reward for Long-Horizon Robotic Tasks](/202604/02/2604.00055v1-generalizable-dense-reward-for-long-horizon-robotic-tasks)  
-   标签：评分：9.0/10、query:q7
-   evidence：机器人基础策略的稠密奖励框架
-7. [Multi-Camera View Scaling for Data-Efficient Robot Imitation Learning](/202604/02/2604.00557v1-multi-camera-view-scaling-for-data-efficient-robot-imitation-learning)  
-   标签：评分：9.0/10、query:q5
-   evidence：通过多摄像头视角缩放生成机器人模仿学习的合成数据
-8. [EgoSim: Egocentric World Simulator for Embodied Interaction Generation](/202604/02/2604.01001v1-egosim-egocentric-world-simulator-for-embodied-interaction-generation)  
-   标签：评分：9.0/10、query:q9
-   evidence：用于具身交互的自我中心世界模拟器
-9. [Deep Reinforcement Learning for Robotic Manipulation under Distribution Shift with Bounded Extremum Seeking](/202604/02/2604.01142v1-deep-reinforcement-learning-for-robotic-manipulation-under-distribution-shift-with-bounded-extremum-seeking)  
+   evidence：接触感知操作的自适应视觉-力矩融合
+9. [Tex3D: Objects as Attack Surfaces via Adversarial 3D Textures for Vision-Language-Action Models](/202604/03/2604.01618v1-tex3d-objects-as-attack-surfaces-via-adversarial-3d-textures-for-vision-language-action-models)  
+   标签：评分：9.0/10、query:q10
+   evidence：针对视觉-语言-动作模型的对抗性3D纹理
+10. [Posterior Optimization with Clipped Objective for Bridging Efficiency and Stability in Generative Policy Learning](/202604/03/2604.01860v1-posterior-optimization-with-clipped-objective-for-bridging-efficiency-and-stability-in-generative-policy-learning)  
    标签：评分：9.0/10、query:q2
-   evidence：诸如推拉和取放之类的机器人操作任务
+   evidence：针对机器人操作的生成式策略学习，采用时间动作块
 
 ### 速读区论文标签
-1. [MineRobot: A Unified Framework for Kinematics Modeling and Solving of Underground Mining Robots in Virtual Environments](/202604/02/2603.22055v1-minerobot-a-unified-framework-for-kinematics-modeling-and-solving-of-underground-mining-robots-in-virtual-environments)  
-   标签：评分：8.0/10、query:q6
-   evidence：虚拟环境和数字孪生中采矿机器人的运动学建模
-2. [ROBOGATE: Adaptive Failure Discovery for Safe Robot Policy Deployment via Two-Stage Boundary-Focused Sampling](/202604/02/2603.22126v2-robogate-adaptive-failure-discovery-for-safe-robot-policy-deployment-via-two-stage-boundary-focused-sampling)  
-   标签：评分：8.0/10、query:q14
-   evidence：用于机器人操作策略验证的物理仿真
-3. [Closed-Loop Verbal Reinforcement Learning for Task-Level Robotic Planning](/202604/02/2603.22169v1-closed-loop-verbal-reinforcement-learning-for-task-level-robotic-planning)  
-   标签：评分：8.0/10、query:q13
-   evidence：使用VLM评论者的任务级机器人规划
-4. [RealMaster: Lifting Rendered Scenes into Photorealistic Video](/202604/02/2603.23462v1-realmaster-lifting-rendered-scenes-into-photorealistic-video)  
-   标签：评分：8.0/10、query:q8
-   evidence：通过逼真视频生成弥合仿真与现实的差距
-5. [See, Remember, Explore: A Benchmark and Baselines for Streaming Spatial Reasoning](/202604/02/2603.23864v1-see-remember-explore-a-benchmark-and-baselines-for-streaming-spatial-reasoning)  
-   标签：评分：7.0/10、query:q14
-   evidence：使用可扩展仿真器的空间推理基准测试
-6. [SafeFlow: Real-Time Text-Driven Humanoid Whole-Body Control via Physics-Guided Rectified Flow and Selective Safety Gating](/202604/02/2603.23983v1-safeflow-real-time-text-driven-humanoid-whole-body-control-via-physics-guided-rectified-flow-and-selective-safety-gating)  
+1. [From Pixels to Digital Agents: An Empirical Study on the Taxonomy and Technological Trends of Reinforcement Learning Environments](/202604/03/2603.23964v1-from-pixels-to-digital-agents-an-empirical-study-on-the-taxonomy-and-technological-trends-of-reinforcement-learning-environments)  
+   标签：评分：8.0/10、query:q11
+   evidence：用于训练通用智能体的强化学习环境分类与趋势
+2. [Memory-Augmented Vision-Language Agents for Persistent and Semantically Consistent Object Captioning](/202604/03/2603.24257v1-memory-augmented-vision-language-agents-for-persistent-and-semantically-consistent-object-captioning)  
+   标签：评分：8.0/10、query:q4
+   evidence：用于具身探索的记忆增强视觉语言智能体
+3. [A Sensorless, Inherently Compliant Anthropomorphic Musculoskeletal Hand Driven by Electrohydraulic Actuators](/202604/03/2603.24357v1-a-sensorless-inherently-compliant-anthropomorphic-musculoskeletal-hand-driven-by-electrohydraulic-actuators)  
+   标签：评分：8.0/10、query:q2
+   evidence：仿人肌肉骨骼手的操作设计与控制
+4. [How Far Are Vision-Language Models from Constructing the Real World? A Benchmark for Physical Generative Reasoning](/202604/03/2603.24866v1-how-far-are-vision-language-models-from-constructing-the-real-world-a-benchmark-for-physical-generative-reasoning)  
+   标签：评分：8.0/10、query:q11
+   evidence：物理生成推理与环境合成的基准测试
+5. [Trace2Skill: Distill Trajectory-Local Lessons into Transferable Agent Skills](/202604/03/2603.25158v3-trace2skill-distill-trajectory-local-lessons-into-transferable-agent-skills)  
+   标签：评分：7.0/10、query:q5
+   evidence：从执行轨迹中自动生成技能
+6. [Towards Foundation Models for 3D Scene Understanding: Instance-Aware Self-Supervised Learning for Point Clouds](/202604/03/2603.25165v2-towards-foundation-models-for-3d-scene-understanding-instance-aware-self-supervised-learning-for-point-clouds)  
+   标签：评分：7.0/10、query:q7
+   evidence：用于3D场景理解和感知的基座模型
+7. [System Design for Maintaining Internal State Consistency in Long-Horizon Robotic Tabletop Games](/202604/03/2603.25405v1-system-design-for-maintaining-internal-state-consistency-in-long-horizon-robotic-tabletop-games)  
    标签：评分：7.0/10、query:q2
-   evidence：文本驱动的人形机器人全身控制与运动生成
-7. [MIRROR: Visual Motion Imitation via Real-time Retargeting and Teleoperation with Parallel Differential Inverse Kinematics](/202604/02/2603.23995v1-mirror-visual-motion-imitation-via-real-time-retargeting-and-teleoperation-with-parallel-differential-inverse-kinematics)  
-   标签：评分：7.0/10、query:q2
-   evidence：类人机器人操作的实时重定向与遥操作
-8. [Goal-Oriented Reactive Simulation for Closed-Loop Trajectory Prediction](/202604/02/2603.24155v1-goal-oriented-reactive-simulation-for-closed-loop-trajectory-prediction)  
-   标签：评分：7.0/10、query:q13
-   evidence：基于Transformer场景解码器的反应式训练仿真
-9. [Object Search in Partially-Known Environments via LLM-informed Model-based Planning and Prompt Selection](/202604/02/2603.23800v1-object-search-in-partially-known-environments-via-llm-informed-model-based-planning-and-prompt-selection)  
+   evidence：用于机器人桌面游戏感知的集成架构与控制
+8. [Modernising Reinforcement Learning-Based Navigation for Embodied Semantic Scene Graph Generation](/202604/03/2603.25415v1-modernising-reinforcement-learning-based-navigation-for-embodied-semantic-scene-graph-generation)  
+   标签：评分：7.0/10、query:q9
+   evidence：具身智能体的语义场景图生成
+9. [Trace2Skill: Distill Trajectory-Local Lessons into Transferable Agent Skills](/202604/03/2603.25158v1-trace2skill-distill-trajectory-local-lessons-into-transferable-agent-skills)  
    标签：评分：6.0/10、query:q13
-   evidence：大语言模型告知的基于模型的物体搜索规划
-10. [DUPLEX: Agentic Dual-System Planning via LLM-Driven Information Extraction](/202604/02/2603.23909v1-duplex-agentic-dual-system-planning-via-llm-driven-information-extraction)  
-   标签：评分：6.0/10、query:q13
-   evidence：大模型驱动的机器人任务规划信息提取
-11. [GameplayQA: A Benchmarking Framework for Decision-Dense POV-Synced Multi-Video Understanding of 3D Virtual Agents](/202604/02/2603.24329v1-gameplayqa-a-benchmarking-framework-for-decision-dense-pov-synced-multi-video-understanding-of-3d-virtual-agents)  
-   标签：评分：6.0/10、query:q14
-   evidence：3D虚拟智能体与机器人的基准测试框架
+   evidence：从轨迹中为LLM智能体自动生成技能
+10. [AutoB2G: A Large Language Model-Driven Agentic Framework For Automated Building-Grid Co-Simulation](/202604/03/2603.26005v1-autob2g-a-large-language-model-driven-agentic-framework-for-automated-building-grid-co-simulation)  
+   标签：评分：6.0/10、query:q11
+   evidence：基于自然语言描述的自动化仿真工作流
+11. [HandVQA: Diagnosing and Improving Fine-Grained Spatial Reasoning about Hands in Vision-Language Models](/202604/03/2603.26362v1-handvqa-diagnosing-and-improving-fine-grained-spatial-reasoning-about-hands-in-vision-language-models)  
+   标签：评分：6.0/10、query:q4
+   evidence：诊断视觉语言模型中关于手的空间推理能力
 
 
 <div class="dpr-home-promo-card">
