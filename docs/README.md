@@ -6,82 +6,109 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-07
-- 运行时间：2026-04-07 20:00:08 UTC
+- 最新运行日期：2026-04-08
+- 运行时间：2026-04-08 20:08:55 UTC
 - 运行状态：成功
-- 本次总论文数：20
-- 精读区：9
+- 本次总论文数：29
+- 精读区：18
 - 速读区：11
 
 ### 今日简报（AI）
-今日聚焦机器人双臂协作与高效学习，深度解析了 CRAFT 等 20 篇前沿成果。
-视频扩散模型生成双臂数据与视觉语言引导的神经符号学习成为提升操作效率的关键突破。
-建议重点关注生成式 AI 如何破解机器人数据荒，并探索 Florence-2 等视觉大模型在 ROS 2 中的实战应用。
-- 详情：[/202604/07/README](/202604/07/README)
+今日精选 29 篇前沿论文，重点攻克具身智能中 VLA 模型的模块化构建与高效推理难题。
+满分成果 StarVLA 实现了乐高式模型开发，VLA-InfoEntropy 则通过信息熵技术在无需训练的情况下大幅提升推理速度。
+建议深入探索 VLA 模型的工程化框架及 4D 交互式世界生成等具身智能前沿方向。
+- 详情：[/202604/08/README](/202604/08/README)
 
 ### 精读区论文标签
-1. [CRAFT: Video Diffusion for Bimanual Robot Data Generation](/202604/07/2604.03552v1-craft-video-diffusion-for-bimanual-robot-data-generation)  
-   标签：评分：10.0/10、query:q13
-   evidence：用于可扩展双臂机器人数据生成和任务规划的视频扩散模型
-2. [Build on Priors: Vision--Language--Guided Neuro-Symbolic Imitation Learning for Data-Efficient Real-World Robot Manipulation](/202604/07/2604.03759v1-build-on-priors-vision--language--guided-neuro-symbolic-imitation-learning-for-data-efficient-real-world-robot-manipulation)  
-   标签：评分：10.0/10、query:q10
-   evidence：视觉语言引导的机器人操作模仿学习
-3. [VLA-Forget: Vision-Language-Action Unlearning for Embodied Foundation Models](/202604/07/2604.03956v1-vla-forget-vision-language-action-unlearning-for-embodied-foundation-models)  
+1. [StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing](/202604/08/2604.05014v1-starvla-a-lego-like-codebase-for-vision-language-action-model-developing)  
    标签：评分：10.0/10、query:q12
-   evidence：具身基础模型的视觉-语言-动作（VLA）遗忘学习
-4. [Adaptive Action Chunking at Inference-time for Vision-Language-Action Models](/202604/07/2604.04161v1-adaptive-action-chunking-at-inference-time-for-vision-language-action-models)  
+   evidence：视觉-语言-动作（VLA）模型开发的基准代码库
+2. [VLA-InfoEntropy: A Training-Free Vision-Attention Information Entropy Approach for Vision-Language-Action Models Inference Acceleration and Success](/202604/08/2604.05323v1-vla-infoentropy-a-training-free-vision-attention-information-entropy-approach-for-vision-language-action-models-inference-acceleration-and-success)  
+   标签：评分：10.0/10、query:q12
+   evidence：利用信息熵加速视觉-语言-动作 (VLA) 模型的推理
+3. [Uncovering Linguistic Fragility in Vision-Language-Action Models via Diversity-Aware Red Teaming](/202604/08/2604.05595v1-uncovering-linguistic-fragility-in-vision-language-action-models-via-diversity-aware-red-teaming)  
    标签：评分：10.0/10、query:q10
-   evidence：视觉-语言-动作 (VLA) 模型在操作任务中的自适应动作分块
-5. [E-VLA: Event-Augmented Vision-Language-Action Model for Dark and Blurred Scenes](/202604/07/2604.04834v1-e-vla-event-augmented-vision-language-action-model-for-dark-and-blurred-scenes)  
-   标签：评分：10.0/10、query:q10
-   evidence：用于操作任务的事件增强型VLA模型
-6. [Drift-Based Policy Optimization: Native One-Step Policy Learning for Online Robot Control](/202604/07/2604.03540v1-drift-based-policy-optimization-native-one-step-policy-learning-for-online-robot-control)  
+   evidence：机器人操作中VLA模型的鲁棒性
+4. [Grounding Hierarchical Vision-Language-Action Models Through Explicit Language-Action Alignment](/202604/08/2604.05614v1-grounding-hierarchical-vision-language-action-models-through-explicit-language-action-alignment)  
+   标签：评分：10.0/10、query:q12
+   evidence：用于机器人任务的分层视觉-语言-动作模型
+5. [SnapFlow: One-Step Action Generation for Flow-Matching VLAs via Progressive Self-Distillation](/202604/08/2604.05656v1-snapflow-one-step-action-generation-for-flow-matching-vlas-via-progressive-self-distillation)  
+   标签：评分：10.0/10、query:q12
+   evidence：流匹配VLA模型的加速
+6. [A1: A Fully Transparent Open-Source, Adaptive and Efficient Truncated Vision-Language-Action Model](/202604/08/2604.05672v1-a1-a-fully-transparent-open-source-adaptive-and-efficient-truncated-vision-language-action-model)  
+   标签：评分：10.0/10、query:q12
+   evidence：用于机器人操作的高效截断式视觉-语言-动作模型
+7. [BiCoord: A Bimanual Manipulation Benchmark towards Long-Horizon Spatial-Temporal Coordination](/202604/08/2604.05831v1-bicoord-a-bimanual-manipulation-benchmark-towards-long-horizon-spatial-temporal-coordination)  
+   标签：评分：10.0/10、query:q14
+   evidence：仿真环境中的双臂操作基准测试
+8. [Primitive-based Truncated Diffusion for Efficient Trajectory Generation of Differential Drive Mobile Manipulators](/202604/08/2604.04166v1-primitive-based-truncated-diffusion-for-efficient-trajectory-generation-of-differential-drive-mobile-manipulators)  
    标签：评分：9.0/10、query:q2
-   evidence：机器人操作中的生成式策略
-7. [Learning Dexterous Grasping from Sparse Taxonomy Guidance](/202604/07/2604.04138v1-learning-dexterous-grasping-from-sparse-taxonomy-guidance)  
+   evidence：移动操作机械臂的轨迹生成
+9. [AnyUser: Translating Sketched User Intent into Domestic Robots](/202604/08/2604.04811v1-anyuser-translating-sketched-user-intent-into-domestic-robots)  
    标签：评分：9.0/10、query:q2
-   evidence：灵巧操作与多指协调控制
-8. [Veo-Act: How Far Can Frontier Video Models Advance Generalizable Robot Manipulation?](/202604/07/2604.04502v1-veo-act-how-far-can-frontier-video-models-advance-generalizable-robot-manipulation)  
+   evidence：通过草图和语言指令进行机械臂操作
+10. [From Video to Control: A Survey of Learning Manipulation Interfaces from Temporal Visual Data](/202604/08/2604.04974v1-from-video-to-control-a-survey-of-learning-manipulation-interfaces-from-temporal-visual-data)  
    标签：评分：9.0/10、query:q10
-   evidence：用于通用机器人操作和动作恢复的视频模型
-9. [ROSClaw: A Hierarchical Semantic-Physical Framework for Heterogeneous Multi-Agent Collaboration](/202604/07/2604.04664v1-rosclaw-a-hierarchical-semantic-physical-framework-for-heterogeneous-multi-agent-collaboration)  
+   evidence：从时序视觉数据（视频到控制）学习操作接口的综述
+11. [RoboPlayground: Democratizing Robotic Evaluation through Structured Physical Domains](/202604/08/2604.05226v1-roboplayground-democratizing-robotic-evaluation-through-structured-physical-domains)  
+   标签：评分：9.0/10、query:q14
+   evidence：通过语言驱动的结构化物理域对机器人操作进行基准测试
+12. [ExpressMM: Expressive Mobile Manipulation Behaviors in Human-Robot Interactions](/202604/08/2604.05320v1-expressmm-expressive-mobile-manipulation-behaviors-in-human-robot-interactions)  
    标签：评分：9.0/10、query:q10
-   evidence：使VLA系统能够根据自然语言指令执行操作任务的框架
+   evidence：用于移动操作感知和高级规划的视觉语言模型
+13. [CoEnv: Driving Embodied Multi-Agent Collaboration via Compositional Environment](/202604/08/2604.05484v1-coenv-driving-embodied-multi-agent-collaboration-via-compositional-environment)  
+   标签：评分：9.0/10、query:q6
+   evidence：整合现实与仿真的组合式环境
+14. [FunRec: Reconstructing Functional 3D Scenes from Egocentric Interaction Videos](/202604/08/2604.05621v1-funrec-reconstructing-functional-3d-scenes-from-egocentric-interaction-videos)  
+   标签：评分：9.0/10、query:q6
+   evidence：从交互视频中重建用于仿真的功能性3D数字孪生
+15. [GraspSense: Physically Grounded Grasp and Grip Planning for a Dexterous Robotic Hand via Language-Guided Perception and Force Maps](/202604/08/2604.05697v1-graspsense-physically-grounded-grasp-and-grip-planning-for-a-dexterous-robotic-hand-via-language-guided-perception-and-force-maps)  
+   标签：评分：9.0/10、query:q2
+   evidence：灵巧机器人操作及在Isaac Sim中的仿真
+16. [You're Pushing My Buttons: Instrumented Learning of Gentle Button Presses](/202604/08/2604.05954v1-youre-pushing-my-buttons-instrumented-learning-of-gentle-button-presses)  
+   标签：评分：9.0/10、query:q2
+   evidence：学习按钮按下等接触密集型操作任务
+17. [Learning-Guided Force-Feedback Model Predictive Control with Obstacle Avoidance for Robotic Deburring](/202604/08/2604.06133v1-learning-guided-force-feedback-model-predictive-control-with-obstacle-avoidance-for-robotic-deburring)  
+   标签：评分：9.0/10、query:q2
+   evidence：结合力反馈MPC与扩散运动先验的机器人去毛刺任务
+18. [Action Images: End-to-End Policy Learning via Multiview Video Generation](/202604/08/2604.06168v1-action-images-end-to-end-policy-learning-via-multiview-video-generation)  
+   标签：评分：9.0/10、query:q10
+   evidence：通过多视角视频生成的VLA模型
 
 ### 速读区论文标签
-1. [HandX: Scaling Bimanual Motion and Interaction Generation](/202604/07/2603.28766v1-handx-scaling-bimanual-motion-and-interaction-generation)  
-   标签：评分：8.0/10、query:q5
-   evidence：扩展双臂运动数据与交互生成
-2. [Bridging the Simulation-to-Experiment Gap with Generative Models using Adversarial Distribution Alignment](/202604/07/2604.01169v1-bridging-the-simulation-to-experiment-gap-with-generative-models-using-adversarial-distribution-alignment)  
-   标签：评分：8.0/10、query:q8
-   evidence：利用生成模型弥合仿真与实验之间的差距
-3. [A ROS 2 Wrapper for Florence-2: Multi-Mode Local Vision-Language Inference for Robotic Systems](/202604/07/2604.01179v1-a-ros-2-wrapper-for-florence-2-multi-mode-local-vision-language-inference-for-robotic-systems)  
+1. [LivingWorld: Interactive 4D World Generation with Environmental Dynamics](/202604/08/2604.01641v1-livingworld-interactive-4d-world-generation-with-environmental-dynamics)  
+   标签：评分：8.0/10、query:q9
+   evidence：具身智能中的环境动力学4D场景生成
+2. [DriveDreamer-Policy: A Geometry-Grounded World-Action Model for Unified Generation and Planning](/202604/08/2604.01765v1-drivedreamer-policy-a-geometry-grounded-world-action-model-for-unified-generation-and-planning)  
    标签：评分：8.0/10、query:q4
-   evidence：用于机器人系统的Florence-2视觉语言模型ROS 2封装
-4. [Functional Force-Aware Retargeting from Virtual Human Demos to Soft Robot Policies](/202604/07/2604.01224v1-functional-force-aware-retargeting-from-virtual-human-demos-to-soft-robot-policies)  
-   标签：评分：8.0/10、query:q2
-   evidence：通过虚拟演示教授软体机器人手部操作技能
-5. [CARLA-Air: Fly Drones Inside a CARLA World -- A Unified Infrastructure for Air-Ground Embodied Intelligence](/202604/07/2603.28032v1-carla-air-fly-drones-inside-a-carla-world----a-unified-infrastructure-for-air-ground-embodied-intelligence)  
+   evidence：连接VLA与世界模型的动作模型用于规划
+3. [Lifting Unlabeled Internet-level Data for 3D Scene Understanding](/202604/08/2604.01907v1-lifting-unlabeled-internet-level-data-for-3d-scene-understanding)  
+   标签：评分：8.0/10、query:q5
+   evidence：自动生成3D场景理解的训练数据
+4. [Generative World Renderer](/202604/08/2604.02329v1-generative-world-renderer)  
+   标签：评分：8.0/10、query:q5
+   evidence：用于弥合领域差距的合成数据生成
+5. [Kernel-SDF: An Open-Source Library for Real-Time Signed Distance Function Estimation using Kernel Regression](/202604/08/2603.29227v1-kernel-sdf-an-open-source-library-for-real-time-signed-distance-function-estimation-using-kernel-regression)  
+   标签：评分：7.0/10、query:q6
+   evidence：用于机器人运动规划和操作的环境表示
+6. [IMPASTO: Integrating Model-Based Planning with Learned Dynamics Models for Robotic Oil Painting Reproduction](/202604/08/2603.29315v1-impasto-integrating-model-based-planning-with-learned-dynamics-models-for-robotic-oil-painting-reproduction)  
+   标签：评分：7.0/10、query:q2
+   evidence：利用学习动力学与规划实现变形工具的机器人操作
+7. [OmniRoam: World Wandering via Long-Horizon Panoramic Video Generation](/202604/08/2603.30045v1-omniroam-world-wandering-via-long-horizon-panoramic-video-generation)  
    标签：评分：7.0/10、query:q9
-   evidence：具身智能和地面智能体的仿真基础设施
-6. [RAD-LAD: Rule and Language Grounded Autonomous Driving in Real-Time](/202604/07/2603.28522v1-rad-lad-rule-and-language-grounded-autonomous-driving-in-real-time)  
-   标签：评分：7.0/10、query:q4
-   evidence：自动驾驶的实时语言-动作规划器
-7. [HCLSM: Hierarchical Causal Latent State Machines for Object-Centric World Modeling](/202604/07/2603.29090v1-hclsm-hierarchical-causal-latent-state-machines-for-object-centric-world-modeling)  
+   evidence：用于场景漫游的全景视频生成
+8. [Behavioral Score Diffusion: Model-Free Trajectory Planning via Kernel-Based Score Estimation from Data](/202604/08/2604.00391v1-behavioral-score-diffusion-model-free-trajectory-planning-via-kernel-based-score-estimation-from-data)  
    标签：评分：7.0/10、query:q13
-   evidence：用于预测未来状态和物理特性的以物体为中心的世界建模
-8. [LatentPilot: Scene-Aware Vision-and-Language Navigation by Dreaming Ahead with Latent Visual Reasoning](/202604/07/2603.29165v1-latentpilot-scene-aware-vision-and-language-navigation-by-dreaming-ahead-with-latent-visual-reasoning)  
-   标签：评分：7.0/10、query:q4
-   evidence：具有潜视觉推理的视觉语言导航
-9. [HeteroHub: An Applicable Data Management Framework for Heterogeneous Multi-Embodied Agent System](/202604/07/2603.28010v1-heterohub-an-applicable-data-management-framework-for-heterogeneous-multi-embodied-agent-system)  
-   标签：评分：6.0/10、query:q11
-   evidence：多具身智能体系统的训练语料与数据管理框架
-10. [Reducing Oracle Feedback with Vision-Language Embeddings for Preference-Based RL](/202604/07/2603.28053v1-reducing-oracle-feedback-with-vision-language-embeddings-for-preference-based-rl)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于机器人偏好强化学习的视觉语言嵌入
-11. [GEMS: Agent-Native Multimodal Generation with Memory and Skills](/202604/07/2603.28088v1-gems-agent-native-multimodal-generation-with-memory-and-skills)  
-   标签：评分：6.0/10、query:q4
-   evidence：具有记忆和技能的智能体原生多模态生成
+   evidence：基于扩散模型的机器人任务轨迹规划
+9. [AutoWorld: Scaling Multi-Agent Traffic Simulation with Self-Supervised World Models](/202604/08/2603.28963v1-autoworld-scaling-multi-agent-traffic-simulation-with-self-supervised-world-models)  
+   标签：评分：6.0/10、query:q9
+   evidence：用于交通模拟和场景建模的世界模型
+10. [CoRe-DA: Contrastive Regression for Unsupervised Domain Adaptation in Surgical Skill Assessment](/202604/08/2603.29666v1-core-da-contrastive-regression-for-unsupervised-domain-adaptation-in-surgical-skill-assessment)  
+   标签：评分：6.0/10、query:q14
+   evidence：跨领域的机器人手术技能评估基准测试
+11. [Benchmarking Interaction, Beyond Policy: a Reproducible Benchmark for Collaborative Instance Object Navigation](/202604/08/2604.00265v1-benchmarking-interaction-beyond-policy-a-reproducible-benchmark-for-collaborative-instance-object-navigation)  
+   标签：评分：6.0/10、query:q14
+   evidence：在仿真环境中对具身导航进行基准测试
 
 
 <div class="dpr-home-promo-card">
