@@ -6,79 +6,109 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-09
-- 运行时间：2026-04-09 20:01:41 UTC
+- 最新运行日期：2026-04-10
+- 运行时间：2026-04-10 19:50:12 UTC
 - 运行状态：成功
-- 本次总论文数：19
-- 精读区：8
+- 本次总论文数：29
+- 精读区：18
 - 速读区：11
 
 ### 今日简报（AI）
-今日精选19篇前沿成果，深度解析全透明开源VLA模型与单图沉浸式场景生成技术。
-重点关注满分论文A1对视觉-语言-动作的高效整合，以及Genie Sim在快速3D世界建模上的突破。
-建议关注具身智能与代码生成在3D建模中的结合，探索AI如何更真实地理解与构建物理空间。
-- 详情：[/202604/09/README](/202604/09/README)
+今日深度解析 29 篇前沿论文，重点聚焦人形机器人全身操控与视频生成驱动的强化学习突破。
+满分成果 HEX 与 ViVa 揭示了跨形态具身智能新范式，通过视频生成模型显著提升了机器人复杂任务的决策效能。
+建议优先关注视频生成技术在具身智能中的跨界应用，以及 OpenRC 等开源框架为医疗机器人研究带来的新机遇。
+- 详情：[/202604/10/README](/202604/10/README)
 
 ### 精读区论文标签
-1. [A1: A Fully Transparent Open-Source, Adaptive and Efficient Truncated Vision-Language-Action Model](/202604/09/2604.05672v2-a1-a-fully-transparent-open-source-adaptive-and-efficient-truncated-vision-language-action-model)  
-   标签：评分：10.0/10、query:q12
-   evidence：用于机器人操作的高效截断式VLA模型
-2. [Genie Sim PanoRecon: Fast Immersive Scene Generation from Single-View Panorama](/202604/09/2604.07105v1-genie-sim-panorecon-fast-immersive-scene-generation-from-single-view-panorama)  
-   标签：评分：10.0/10、query:q3
-   evidence：用于机器人操作仿真的3D场景生成
-3. [Differentiable SpaTiaL: Symbolic Learning and Reasoning with Geometric Temporal Logic for Manipulation Tasks](/202604/09/2604.02643v2-differentiable-spatial-symbolic-learning-and-reasoning-with-geometric-temporal-logic-for-manipulation-tasks)  
+1. [HEX: Humanoid-Aligned Experts for Cross-Embodiment Whole-Body Manipulation](/202604/10/2604.07993v1-hex-humanoid-aligned-experts-for-cross-embodiment-whole-body-manipulation)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于人形机器人全身协调操作的VLA模型
+2. [ViVa: A Video-Generative Value Model for Robot Reinforcement Learning](/202604/10/2604.08168v1-viva-a-video-generative-value-model-for-robot-reinforcement-learning)  
+   标签：评分：10.0/10、query:q10
+   evidence：用于机器人操作强化学习的视频生成VLA模型
+3. [SIM1: Physics-Aligned Simulator as Zero-Shot Data Scaler in Deformable Worlds](/202604/10/2604.08544v1-sim1-physics-aligned-simulator-as-zero-shot-data-scaler-in-deformable-worlds)  
+   标签：评分：10.0/10、query:q8
+   evidence：用于操作任务的物理对齐实-虚-实数据引擎
+4. [Drift-Based Policy Optimization: Native One-Step Policy Learning for Online Robot Control](/202604/10/2604.03540v2-drift-based-policy-optimization-native-one-step-policy-learning-for-online-robot-control)  
    标签：评分：9.0/10、query:q2
-   evidence：杂乱环境中操作任务的几何和时间约束
-4. [VA-FastNavi-MARL: Real-Time Robot Control with Multimedia-Driven Meta-Reinforcement Learning](/202604/09/2604.03998v1-va-fastnavi-marl-real-time-robot-control-with-multimedia-driven-meta-reinforcement-learning)  
+   evidence：用于高频机器人操作控制的一步生成式策略
+5. [Belief Dynamics for Detecting Behavioral Shifts in Safe Collaborative Manipulation](/202604/10/2604.04967v1-belief-dynamics-for-detecting-behavioral-shifts-in-safe-collaborative-manipulation)  
    标签：评分：9.0/10、query:q2
-   evidence：多臂工作空间中的实时机器人控制
-5. [Referring-Aware Visuomotor Policy Learning for Closed-Loop Manipulation](/202604/09/2604.05544v1-referring-aware-visuomotor-policy-learning-for-closed-loop-manipulation)  
-   标签：评分：9.0/10、query:q2
-   evidence：用于操作任务的视觉运动策略
-6. [Sustainable Transfer Learning for Adaptive Robot Skills](/202604/09/2604.06943v1-sustainable-transfer-learning-for-adaptive-robot-skills)  
-   标签：评分：9.0/10、query:q8
-   evidence：机械臂插拔任务的策略迁移与微调
-7. [KITE: Keyframe-Indexed Tokenized Evidence for VLM-Based Robot Failure Analysis](/202604/09/2604.07034v1-kite-keyframe-indexed-tokenized-evidence-for-vlm-based-robot-failure-analysis)  
+   evidence：ManiSkill任务中的安全协作机械臂操作
+6. [TRACE: Capability-Targeted Agentic Training](/202604/10/2604.05336v1-trace-capability-targeted-agentic-training)  
+   标签：评分：9.0/10、query:q11
+   evidence：自动合成用于智能体训练的环境
+7. [JailWAM: Jailbreaking World Action Models in Robot Control](/202604/10/2604.05498v1-jailwam-jailbreaking-world-action-models-in-robot-control)  
    标签：评分：9.0/10、query:q10
-   evidence：基于VLM的机器人故障分析与轨迹解释
-8. [Flow Motion Policy: Manipulator Motion Planning with Flow Matching Models](/202604/09/2604.07084v1-flow-motion-policy-manipulator-motion-planning-with-flow-matching-models)  
+   evidence：用于机械臂运动的世界动作模型
+8. [BiDexGrasp: Coordinated Bimanual Dexterous Grasps across Object Geometries and Sizes](/202604/10/2604.06589v1-bidexgrasp-coordinated-bimanual-dexterous-grasps-across-object-geometries-and-sizes)  
    标签：评分：9.0/10、query:q2
-   evidence：基于流匹配的机械臂运动规划
+   evidence：双臂灵巧抓取数据集和生成模型
+9. [RichMap: A Reachability Map Balancing Precision, Efficiency, and Flexibility for Rich Robot Manipulation Tasks](/202604/10/2604.06778v1-richmap-a-reachability-map-balancing-precision-efficiency-and-flexibility-for-rich-robot-manipulation-tasks)  
+   标签：评分：9.0/10、query:q2
+   evidence：用于通用机器人操作任务的可达性地图
+10. [TAMEn: Tactile-Aware Manipulation Engine for Closed-Loop Data Collection in Contact-Rich Tasks](/202604/10/2604.07335v1-tamen-tactile-aware-manipulation-engine-for-closed-loop-data-collection-in-contact-rich-tasks)  
+   标签：评分：9.0/10、query:q2
+   evidence：用于机器人数据采集的触觉感知操作引擎
+11. [A Physical Agentic Loop for Language-Guided Grasping with Execution-State Monitoring](/202604/10/2604.07395v1-a-physical-agentic-loop-for-language-guided-grasping-with-execution-state-monitoring)  
+   标签：评分：9.0/10、query:q2
+   evidence：带有执行状态监测的语言引导抓取操作
+12. [HY-Embodied-0.5: Embodied Foundation Models for Real-World Agents](/202604/10/2604.07430v1-hy-embodied-05-embodied-foundation-models-for-real-world-agents)  
+   标签：评分：9.0/10、query:q7
+   evidence：用于预测、交互和规划的具身基础模型
+13. [Grasp as You Dream: Imitating Functional Grasping from Generated Human Demonstrations](/202604/10/2604.07517v1-grasp-as-you-dream-imitating-functional-grasping-from-generated-human-demonstrations)  
+   标签：评分：9.0/10、query:q5
+   evidence：利用生成模型合成人类演示数据用于机器人抓取训练
+14. [EgoVerse: An Egocentric Human Dataset for Robot Learning from Around the World](/202604/10/2604.07607v1-egoverse-an-egocentric-human-dataset-for-robot-learning-from-around-the-world)  
+   标签：评分：9.0/10、query:q5
+   evidence：用于机器人学习和操作行为的人类数据集
+15. [BLaDA: Bridging Language to Functional Dexterous Actions within 3DGS Fields](/202604/10/2604.08410v1-blada-bridging-language-to-functional-dexterous-actions-within-3dgs-fields)  
+   标签：评分：9.0/10、query:q2
+   evidence：功能性灵巧操作与控制
+16. [LAMP: Lift Image-Editing as General 3D Priors for Open-world Manipulation](/202604/10/2604.08475v1-lamp-lift-image-editing-as-general-3d-priors-for-open-world-manipulation)  
+   标签：评分：9.0/10、query:q10
+   evidence：将图像编辑作为 3D 先验用于开放世界机器人操作和 VLA 模型
+17. [Sumo: Dynamic and Generalizable Whole-Body Loco-Manipulation](/202604/10/2604.08508v1-sumo-dynamic-and-generalizable-whole-body-loco-manipulation)  
+   标签：评分：9.0/10、query:q8
+   evidence：用于动态全身移动操作的仿真到现实迁移方法
+18. [ActiveGlasses: Learning Manipulation with Active Vision from Ego-centric Human Demonstration](/202604/10/2604.08534v1-activeglasses-learning-manipulation-with-active-vision-from-ego-centric-human-demonstration)  
+   标签：评分：9.0/10、query:q8
+   evidence：从人类演示中学习操作以实现零样本迁移
 
 ### 速读区论文标签
-1. [Mitigating Data Scarcity in Spaceflight Applications for Offline Reinforcement Learning Using Physics-Informed Deep Generative Models](/202604/09/2604.02438v1-mitigating-data-scarcity-in-spaceflight-applications-for-offline-reinforcement-learning-using-physics-informed-deep-generative-models)  
-   标签：评分：8.0/10、query:q8
-   evidence：用于仿真到现实迁移的物理信息生成模型
-2. [VoxelCodeBench: Benchmarking 3D World Modeling Through Code Generation](/202604/09/2604.02580v1-voxelcodebench-benchmarking-3d-world-modeling-through-code-generation)  
-   标签：评分：8.0/10、query:q11
-   evidence：通过代码生成进行环境创建以支持3D推理
-3. [ExploreVLA: Dense World Modeling and Exploration for End-to-End Autonomous Driving](/202604/09/2604.02714v1-explorevla-dense-world-modeling-and-exploration-for-end-to-end-autonomous-driving)  
+1. [SDesc3D: Towards Layout-Aware 3D Indoor Scene Generation from Short Descriptions](/202604/10/2604.01972v3-sdesc3d-towards-layout-aware-3d-indoor-scene-generation-from-short-descriptions)  
+   标签：评分：8.0/10、query:q3
+   evidence：基于短文本描述的3D室内场景生成，用于环境构建
+2. [HVG-3D: Bridging Real and Simulation Domains for 3D-Conditional Hand-Object Interaction Video Synthesis](/202604/10/2604.03305v1-hvg-3d-bridging-real-and-simulation-domains-for-3d-conditional-hand-object-interaction-video-synthesis)  
+   标签：评分：8.0/10、query:q13
+   evidence：用于连接现实与仿真领域的3D感知手物交互视频合成
+3. [OpenRC: An Open-Source Robotic Colonoscopy Framework for Multimodal Data Acquisition and Autonomy Research](/202604/10/2604.03781v1-openrc-an-open-source-robotic-colonoscopy-framework-for-multimodal-data-acquisition-and-autonomy-research)  
    标签：评分：8.0/10、query:q4
-   evidence：用于自动驾驶的VLA架构
-4. [OMNI-PoseX: A Fast Vision Model for 6D Object Pose Estimation in Embodied Tasks](/202604/09/2604.02759v1-omni-posex-a-fast-vision-model-for-6d-object-pose-estimation-in-embodied-tasks)  
-   标签：评分：8.0/10、query:q7
-   evidence：用于具身任务中6D物体位姿估计的视觉基础模型
-5. [Sampling-based Task and Kinodynamic Motion Planning under Semantic Uncertainty](/202604/09/2604.00401v1-sampling-based-task-and-kinodynamic-motion-planning-under-semantic-uncertainty)  
+   evidence：支持视觉-语言-动作 (VLA) 学习的机器人框架
+4. [RESCORE: LLM-Driven Simulation Recovery in Control Systems Research Papers](/202604/10/2604.04324v1-rescore-llm-driven-simulation-recovery-in-control-systems-research-papers)  
+   标签：评分：8.0/10、query:q11
+   evidence：从研究论文中自动生成可执行的仿真代码
+5. [Safety, Security, and Cognitive Risks in World Models](/202604/10/2604.01346v2-safety-security-and-cognitive-risks-in-world-models)  
    标签：评分：7.0/10、query:q13
-   evidence：语义不确定性下的任务与运动规划
-6. [Think, Act, Build: An Agentic Framework with Vision Language Models for Zero-Shot 3D Visual Grounding](/202604/09/2604.00528v1-think-act-build-an-agentic-framework-with-vision-language-models-for-zero-shot-3d-visual-grounding)  
-   标签：评分：7.0/10、query:q4
-   evidence：用于3D场景定位和重建的视觉语言模型
-7. [Think, Act, Build: An Agentic Framework with Vision Language Models for Zero-Shot 3D Visual Grounding](/202604/09/2604.00528v2-think-act-build-an-agentic-framework-with-vision-language-models-for-zero-shot-3d-visual-grounding)  
-   标签：评分：7.0/10、query:q9
-   evidence：用于场景中3D视觉定位的生成式2D到3D重建
-8. [How to Train your Tactile Model: Tactile Perception with Multi-fingered Robot Hands](/202604/09/2604.00744v1-how-to-train-your-tactile-model-tactile-perception-with-multi-fingered-robot-hands)  
-   标签：评分：7.0/10、query:q2
-   evidence：多指机器人操作的触觉感知
-9. [Benchmarking and Mechanistic Analysis of Vision-Language Models for Cross-Depiction Assembly Instruction Alignment](/202604/09/2604.00913v1-benchmarking-and-mechanistic-analysis-of-vision-language-models-for-cross-depiction-assembly-instruction-alignment)  
-   标签：评分：6.0/10、query:q14
-   evidence：评估视觉语言模型在组装指令对齐中的表现
-10. [Safety, Security, and Cognitive Risks in World Models](/202604/09/2604.01346v1-safety-security-and-cognitive-risks-in-world-models)  
-   标签：评分：6.0/10、query:q13
    evidence：用于机器人自主决策的世界模型
-11. [AURA: Multimodal Shared Autonomy for Real-World Urban Navigation](/202604/09/2604.01659v1-aura-multimodal-shared-autonomy-for-real-world-urban-navigation)  
+6. [EgoFlow: Gradient-Guided Flow Matching for Egocentric 6DoF Object Motion Generation](/202604/10/2604.01421v1-egoflow-gradient-guided-flow-matching-for-egocentric-6dof-object-motion-generation)  
+   标签：评分：7.0/10、query:q13
+   evidence：用于生成物理一致的6自由度物体运动轨迹的生成模型
+7. [F3DGS: Federated 3D Gaussian Splatting for Decentralized Multi-Agent World Modeling](/202604/10/2604.01605v1-f3dgs-federated-3d-gaussian-splatting-for-decentralized-multi-agent-world-modeling)  
+   标签：评分：7.0/10、query:q9
+   evidence：多智能体世界建模与3D重建
+8. [A3R: Agentic Affordance Reasoning via Cross-Dimensional Evidence in 3D Gaussian Scenes](/202604/10/2604.01882v1-a3r-agentic-affordance-reasoning-via-cross-dimensional-evidence-in-3d-gaussian-scenes)  
+   标签：评分：7.0/10、query:q9
+   evidence：具身智能 3D 高斯场景中的示能推理和任务相关证据获取
+9. [Robust Embodied Perception in Dynamic Environments via Disentangled Weight Fusion](/202604/10/2604.01669v1-robust-embodied-perception-in-dynamic-environments-via-disentangled-weight-fusion)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：具身感知与环境自适应
+10. [Hi-LOAM: Hierarchical Implicit Neural Fields for LiDAR Odometry and Mapping](/202604/10/2604.01720v1-hi-loam-hierarchical-implicit-neural-fields-for-lidar-odometry-and-mapping)  
+   标签：评分：6.0/10、query:q9
+   evidence：用于复杂场景建图和重建的神经场
+11. [Causal Scene Narration with Runtime Safety Supervision for Vision-Language-Action Driving](/202604/10/2604.01723v1-causal-scene-narration-with-runtime-safety-supervision-for-vision-language-action-driving)  
    标签：评分：6.0/10、query:q4
-   evidence：用于多模态共享自主的视觉语言AI智能体
+   evidence：用于自动驾驶和场景叙述的视觉-语言-动作模型
 
 
 <div class="dpr-home-promo-card">
