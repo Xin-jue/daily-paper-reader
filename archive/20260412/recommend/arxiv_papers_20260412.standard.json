@@ -1,0 +1,703 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-12T19:28:58.976764+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 15,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 70,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2604.04843v1",
+      "title": "InfBaGel: Human-Object-Scene Interaction Generation with Dynamic Perception and Iterative Refinement",
+      "abstract": "Human-object-scene interactions (HOSI) generation has broad applications in embodied AI, simulation, and animation. Unlike human-object interaction (HOI) and human-scene interaction (HSI), HOSI generation requires reasoning over dynamic object-scene changes, yet suffers from limited annotated data. To address these issues, we propose a coarse-to-fine instruction-conditioned interaction generation framework that is explicitly aligned with the iterative denoising process of a consistency model. In particular, we adopt a dynamic perception strategy that leverages trajectories from the preceding refinement to update scene context and condition subsequent refinement at each denoising step of consistency model, yielding consistent interactions. To further reduce physical artifacts, we introduce a bump-aware guidance that mitigates collisions and penetrations during sampling without requiring fine-grained scene geometry, enabling real-time generation. To overcome data scarcity, we design a hybrid training startegy that synthesizes pseudo-HOSI samples by injecting voxelized scene occupancy into HOI datasets and jointly trains with high-fidelity HSI data, allowing interaction learning while preserving realistic scene awareness. Extensive experiments demonstrate that our method achieves state-of-the-art performance in both HOSI and HOI generation, and strong generalization to unseen scenes. Project page: https://yudezou.github.io/InfBaGel-page/",
+      "authors": [
+        "Yude Zou",
+        "Junji Gong",
+        "Xing Gao",
+        "Zixuan Li",
+        "Tianxing Chen",
+        "Guanjie Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-04-06T16:44:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.04843v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "human-object-scene interaction generation for embodied AI simulation",
+      "llm_evidence_cn": "用于具身智能仿真的人-物-场景交互生成",
+      "llm_evidence": "用于具身智能仿真的人-物-场景交互生成",
+      "canonical_evidence": "用于具身智能仿真的人-物-场景交互生成",
+      "llm_tldr_en": "InfBaGel generates complex human-object-scene interactions for embodied AI and simulation applications.",
+      "llm_tldr_cn": "InfBaGel为具身智能和仿真应用生成复杂的人-物-场景交互内容。",
+      "llm_tldr": "InfBaGel为具身智能和仿真应用生成复杂的人-物-场景交互内容。",
+      "llm_tags": [
+        "query:q9"
+      ],
+      "matched_query_tag": "query:q9",
+      "matched_query_text": "recent advances in scene generation for embodied AI simulation",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.07230v1",
+      "title": "PhyEdit: Towards Real-World Object Manipulation via Physically-Grounded Image Editing",
+      "abstract": "Achieving physically accurate object manipulation in image editing is essential for its potential applications in interactive world models. However, existing visual generative models often fail at precise spatial manipulation, resulting in incorrect scaling and positioning of objects. This limitation primarily stems from the lack of explicit mechanisms to incorporate 3D geometry and perspective projection. To achieve accurate manipulation, we develop PhyEdit, an image editing framework that leverages explicit geometric simulation as contextual 3D-aware visual guidance. By combining this plug-and-play 3D prior with joint 2D--3D supervision, our method effectively improves physical accuracy and manipulation consistency. To support this method and evaluate performance, we present a real-world dataset, RealManip-10K, for 3D-aware object manipulation featuring paired images and depth annotations. We also propose ManipEval, a benchmark with multi-dimensional metrics to evaluate 3D spatial control and geometric consistency. Extensive experiments show that our approach outperforms existing methods, including strong closed-source models, in both 3D geometric accuracy and manipulation consistency.",
+      "authors": [
+        "Ruihang Xu",
+        "Dewei Zhou",
+        "Xiaolong Shen",
+        "Fan Ma",
+        "Yi Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-08T15:53:57+00:00",
+      "link": "https://arxiv.org/pdf/2604.07230v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "physically-grounded image editing for object manipulation using geometric simulation",
+      "llm_evidence_cn": "利用几何仿真进行物理对齐的物体操作图像编辑",
+      "llm_evidence": "利用几何仿真进行物理对齐的物体操作图像编辑",
+      "canonical_evidence": "利用几何仿真进行物理对齐的物体操作图像编辑",
+      "llm_tldr_en": "PhyEdit uses 3D geometric simulation to improve physical accuracy in generative models for object manipulation.",
+      "llm_tldr_cn": "PhyEdit利用3D几何仿真提高生成模型在物体操作中的物理准确性。",
+      "llm_tldr": "PhyEdit利用3D几何仿真提高生成模型在物体操作中的物理准确性。",
+      "llm_tags": [
+        "query:q13"
+      ],
+      "matched_query_tag": "query:q13",
+      "matched_query_text": "generative models for robotic simulation and task planning",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.05377v1",
+      "title": "UAVReason: A Unified, Large-Scale Benchmark for Multimodal Aerial Scene Reasoning and Generation",
+      "abstract": "Vision-Language models (VLMs) have demonstrated remarkable capability in ground-view visual understanding but often fracture when deployed on high-altitude Unmanned Aerial Vehicles (UAVs). The failure largely stems from a pronounced domain shift, characterized by tiny and densely packed objects, repetitive textures, and ambiguous top-down orientations. These factors severely disrupt semantic grounding and hinder both spatial reasoning and controllable generation. To bridge this critical gap, we introduce UAVReason, the first unified large-scale multi-modal benchmark dedicated to nadir-view UAV scenarios, derived from a high-fidelity UAV simulation platform. In contrast to existing UAV benchmarks, which are largely siloed and focus on single tasks like object detection or segmentation, UAVReason uniquely consolidates over 273K Visual Question Answering (VQA) pairs, including 23.6K single frames with detailed captions, 68.2K 2-frame temporal sequences, and 188.8K cross-modal generation samples. The benchmark probes 22 diverse reasoning types across spatial and temporal axes while simultaneously evaluating high-fidelity generation across RGB, depth, and segmentation modalities. We further establish a strong, unified baseline model via multi-task learning. Extensive experiments validate the efficacy of our unified approach across diverse metrics, such as EM/F1 for VQA, mIoU for segmentation, and CLIP Score for generation. These results indicate limitations of general-domain vision-language models and show that unified multi-task learning substantially improves UAV-native performance. All data, code, and evaluation tools will be publicly released to advance UAV multimodal research.",
+      "authors": [
+        "Jintao Sun",
+        "Hu Zhang",
+        "Donglin Di",
+        "Gangyi Ding",
+        "Zhedong Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T03:23:30+00:00",
+      "link": "https://arxiv.org/pdf/2604.05377v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for multimodal scene reasoning and generation in simulation",
+      "llm_evidence_cn": "仿真中多模态场景推理与生成的基准测试",
+      "llm_evidence": "仿真中多模态场景推理与生成的基准测试",
+      "canonical_evidence": "仿真中多模态场景推理与生成的基准测试",
+      "llm_tldr_en": "UAVReason provides a large-scale benchmark for aerial scene reasoning and generation in simulation.",
+      "llm_tldr_cn": "UAVReason 为仿真环境下的无人机场景推理与生成提供了大规模基准测试。",
+      "llm_tldr": "UAVReason 为仿真环境下的无人机场景推理与生成提供了大规模基准测试。",
+      "llm_tags": [
+        "query:q14"
+      ],
+      "matched_query_tag": "query:q14",
+      "matched_query_text": "benchmarking robotic manipulation in simulated environments",
+      "matched_requirement_id": "req-14",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.04233v1",
+      "title": "Precise Robot Command Understanding Using Grammar-Constrained Large Language Models",
+      "abstract": "Human-robot collaboration in industrial settings requires precise and reliable communication to enhance operational efficiency. While Large Language Models (LLMs) understand general language, they often lack the domain-specific rigidity needed for safe and executable industrial commands. To address this gap, this paper introduces a novel grammar-constrained LLM that integrates a grammar-driven Natural Language Understanding (NLU) system with a fine-tuned LLM, which enables both conversational flexibility and the deterministic precision required in robotics. Our method employs a two-stage process. First, a fine-tuned LLM performs high-level contextual reasoning and parameter inference on natural language inputs. Second, a Structured Language Model (SLM) and a grammar-based canonicalizer constrain the LLM's output, forcing it into a standardized symbolic format composed of valid action frames and command elements. This process guarantees that generated commands are valid and structured in a robot-readable JSON format. A key feature of the proposed model is a validation and feedback loop. A grammar parser validates the output against a predefined list of executable robotic actions. If a command is invalid, the system automatically generates corrective prompts and re-engages the LLM. This iterative self-correction mechanism allows the model to recover from initial interpretation errors to improve system robustness. We evaluate our grammar-constrained hybrid model against two baselines: a fine-tuned API-based LLM and a standalone grammar-driven NLU model. Using the Human Robot Interaction Corpus (HuRIC) dataset, we demonstrate that the hybrid approach achieves superior command validity, which promotes safer and more effective industrial human-robot collaboration.",
+      "authors": [
+        "Xinyun Huo",
+        "Raghav Gnanasambandam",
+        "Xinyao Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CL"
+      ],
+      "published": "2026-04-05T19:30:54+00:00",
+      "link": "https://arxiv.org/pdf/2604.04233v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Grammar-constrained LLMs for precise robot command understanding",
+      "llm_evidence_cn": "语法约束的LLM用于精确机器人指令理解",
+      "llm_evidence": "语法约束的LLM用于精确机器人指令理解",
+      "canonical_evidence": "语法约束的LLM用于精确机器人指令理解",
+      "llm_tldr_en": "Combines LLMs with grammar constraints to ensure precise and executable commands for industrial robots.",
+      "llm_tldr_cn": "结合LLM与语法约束，确保工业机器人指令的精确性和可执行性。",
+      "llm_tldr": "结合LLM与语法约束，确保工业机器人指令的精确性和可执行性。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.06949v1",
+      "title": "Learning-Based Strategy for Composite Robot Assembly Skill Adaptation",
+      "abstract": "Contact-rich robotic skills remain challenging for industrial robots due to tight geometric tolerances, frictional variability, and uncertain contact dynamics, particularly when using position-controlled manipulators. This paper presents a reusable and encapsulated skill-based strategy for peg-in-hole assembly, in which adaptation is achieved through Residual Reinforcement Learning (RRL). The assembly process is represented using composite skills with explicit pre-, post-, and invariant conditions, enabling modularity, reusability, and well-defined execution semantics across task variations. Safety and sample efficiency are promoted through RRL by restricting adaptation to residual refinements within each skill during contact-rich interactions, while the overall skill structure and execution flow remain invariant. The proposed approach is evaluated in MuJoCo simulation on a UR5e robot equipped with a Robotiq gripper and trained using SAC and JAX. Results demonstrate that the proposed formulation enables robust execution of assembly skills, highlighting its suitability for industrial automation.",
+      "authors": [
+        "Khalil Abuibaid",
+        "Aleksandr Sidorenko",
+        "Achim Wagner",
+        "Martin Ruskowski"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-08T11:13:00+00:00",
+      "link": "https://arxiv.org/pdf/2604.06949v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "composite robot assembly skill adaptation",
+      "llm_evidence_cn": "复合机器人装配技能自适应",
+      "llm_evidence": "复合机器人装配技能自适应",
+      "canonical_evidence": "复合机器人装配技能自适应",
+      "llm_tldr_en": "Presents a skill-based strategy for contact-rich assembly tasks using residual reinforcement learning.",
+      "llm_tldr_cn": "提出了一种利用残差强化学习处理接触密集型装配任务的技能策略。",
+      "llm_tldr": "提出了一种利用残差强化学习处理接触密集型装配任务的技能策略。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.06949v1"
+    },
+    {
+      "id": "2604.07457v1",
+      "title": "CMP: Robust Whole-Body Tracking for Loco-Manipulation via Competence Manifold Projection",
+      "abstract": "While decoupled control schemes for legged mobile manipulators have shown robustness, learning holistic whole-body control policies for tracking global end-effector poses remains fragile against Out-of-Distribution (OOD) inputs induced by sensor noise or infeasible user commands. To improve robustness against these perturbations without sacrificing task performance and continuity, we propose Competence Manifold Projection (CMP). Specifically, we utilize a Frame-Wise Safety Scheme that transforms the infinite-horizon safety constraint into a computationally efficient single-step manifold inclusion. To instantiate this competence manifold, we employ a Lower-Bounded Safety Estimator that distinguishes unmastered intentions from the training distribution. We then introduce an Isomorphic Latent Space (ILS) that aligns manifold geometry with safety probability, enabling efficient O(1) seamless defense against arbitrary OOD intents. Experiments demonstrate that CMP achieves up to a 10-fold survival rate improvement in typical OOD scenarios where baselines suffer catastrophic failure, incurring under 10% tracking degradation. Notably, the system exhibits emergent ``best-effort'' generalization behaviors to progressively accomplish OOD goals by adhering to the competence boundaries. Result videos are available at: https://shepherd1226.github.io/CMP.",
+      "authors": [
+        "Ziyang Cheng",
+        "Haoyu Wei",
+        "Hang Yin",
+        "Xiuwei Xu",
+        "Bingyao Yu",
+        "Jie Zhou",
+        "Jiwen Lu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-04-08T18:00:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.07457v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "whole-body tracking for loco-manipulation control",
+      "llm_evidence_cn": "移动操作控制的全身跟踪",
+      "llm_evidence": "移动操作控制的全身跟踪",
+      "canonical_evidence": "移动操作控制的全身跟踪",
+      "llm_tldr_en": "Proposes a safety scheme for robust whole-body control in legged mobile manipulators against OOD inputs.",
+      "llm_tldr_cn": "提出了一种针对腿式移动操作机器人的安全方案，以增强全身控制对分布外输入的鲁棒性。",
+      "llm_tldr": "提出了一种针对腿式移动操作机器人的安全方案，以增强全身控制对分布外输入的鲁棒性。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2604.07457v1"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.04539v1",
+      "title": "FlashSAC: Fast and Stable Off-Policy Reinforcement Learning for High-Dimensional Robot Control",
+      "abstract": "Reinforcement learning (RL) is a core approach for robot control when expert demonstrations are unavailable. On-policy methods such as Proximal Policy Optimization (PPO) are widely used for their stability, but their reliance on narrowly distributed on-policy data limits accurate policy evaluation in high-dimensional state and action spaces. Off-policy methods can overcome this limitation by learning from a broader state-action distribution, yet suffer from slow convergence and instability, as fitting a value function over diverse data requires many gradient updates, causing critic errors to accumulate through bootstrapping. We present FlashSAC, a fast and stable off-policy RL algorithm built on Soft Actor-Critic. Motivated by scaling laws observed in supervised learning, FlashSAC sharply reduces gradient updates while compensating with larger models and higher data throughput. To maintain stability at increased scale, FlashSAC explicitly bounds weight, feature, and gradient norms, curbing critic error accumulation. Across over 60 tasks in 10 simulators, FlashSAC consistently outperforms PPO and strong off-policy baselines in both final performance and training efficiency, with the largest gains on high-dimensional tasks such as dexterous manipulation. In sim-to-real humanoid locomotion, FlashSAC reduces training time from hours to minutes, demonstrating the promise of off-policy RL for sim-to-real transfer.",
+      "authors": [
+        "Donghu Kim",
+        "Youngdo Lee",
+        "Minho Park",
+        "Kinam Kim",
+        "I Made Aswin Nahendra",
+        "Takuma Seno",
+        "Sehee Min",
+        "Daniel Palenicek",
+        "Florian Vogt",
+        "Danica Kragic",
+        "Jan Peters",
+        "Jaegul Choo",
+        "Hojoon Lee"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-04-06T09:03:41+00:00",
+      "link": "https://arxiv.org/pdf/2604.04539v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "high-dimensional robot control and off-policy reinforcement learning",
+      "llm_evidence_cn": "高维机器人控制与离线强化学习",
+      "llm_evidence": "高维机器人控制与离线强化学习",
+      "canonical_evidence": "高维机器人控制与离线强化学习",
+      "llm_tldr_en": "FlashSAC improves off-policy RL stability and speed for high-dimensional robot control tasks.",
+      "llm_tldr_cn": "FlashSAC 提升了高维机器人控制任务中离线强化学习的稳定性和收敛速度。",
+      "llm_tldr": "FlashSAC 提升了高维机器人控制任务中离线强化学习的稳定性和收敛速度。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.03696v1",
+      "title": "FunFact: Building Probabilistic Functional 3D Scene Graphs via Factor-Graph Reasoning",
+      "abstract": "Recent work in 3D scene understanding is moving beyond purely spatial analysis toward functional scene understanding. However, existing methods often consider functional relationships between object pairs in isolation, failing to capture the scene-wide interdependence that humans use to resolve ambiguity. We introduce FunFact, a framework for constructing probabilistic open-vocabulary functional 3D scene graphs from posed RGB-D images. FunFact first builds an object- and part-centric 3D map and uses foundation models to propose semantically plausible functional relations. These candidates are converted into factor graph variables and constrained by both LLM-derived common-sense priors and geometric priors. This formulation enables joint probabilistic inference over all functional edges and their marginals, yielding substantially better calibrated confidence scores. To benchmark this setting, we introduce FunThor, a synthetic dataset based on AI2-THOR with part-level geometry and rule-based functional annotations. Experiments on SceneFun3D, FunGraph3D, and FunThor show that FunFact improves node and relation discovery recall and significantly reduces calibration error for ambiguous relations, highlighting the benefits of holistic probabilistic modeling for functional scene understanding. See our project page at https://funfact-scenegraph.github.io/",
+      "authors": [
+        "Zhengyu Fu",
+        "René Zurbrügg",
+        "Kaixian Qu",
+        "Marc Pollefeys",
+        "Marco Hutter",
+        "Hermann Blum",
+        "Zuria Bauer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-04T11:53:12+00:00",
+      "link": "https://arxiv.org/pdf/2604.03696v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "probabilistic functional 3D scene graphs",
+      "llm_evidence_cn": "概率功能性3D场景图",
+      "llm_evidence": "概率功能性3D场景图",
+      "canonical_evidence": "概率功能性3D场景图",
+      "llm_tldr_en": "Constructs functional 3D scene graphs using foundation models to capture object-level interdependencies.",
+      "llm_tldr_cn": "利用基础模型构建功能性3D场景图，捕捉物体间的相互依赖关系。",
+      "llm_tldr": "利用基础模型构建功能性3D场景图，捕捉物体间的相互依赖关系。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "automated scene generation for robotic simulation",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.03723v1",
+      "title": "SymphoMotion: Joint Control of Camera Motion and Object Dynamics for Coherent Video Generation",
+      "abstract": "Controlling both camera motion and object dynamics is essential for coherent and expressive video generation, yet current methods typically handle only one motion type or rely on ambiguous 2D cues that entangle camera-induced parallax with true object movement. We present SymphoMotion, a unified motion-control framework that jointly governs camera trajectories and object dynamics within a single model. SymphoMotion features a Camera Trajectory Control mechanism that integrates explicit camera paths with geometry-aware cues to ensure stable, structurally consistent viewpoint transitions, and an Object Dynamics Control mechanism that combines 2D visual guidance with 3D trajectory embeddings to enable depth-aware, spatially coherent object manipulation. To support large-scale training and evaluation, we further construct RealCOD-25K, a comprehensive real-world dataset containing paired camera poses and object-level 3D trajectories across diverse indoor and outdoor scenes, addressing a key data gap in unified motion control. Extensive experiments and user studies show that SymphoMotion significantly outperforms existing methods in visual fidelity, camera controllability, and object-motion accuracy, establishing a new benchmark for unified motion control in video generation.Codes and data are publicly available at https://grenoble-zhang.github.io/SymphoMotion/.",
+      "authors": [
+        "Guiyu Zhang",
+        "Yabo Chen",
+        "Xunzhi Xiang",
+        "Junchao Huang",
+        "Zhongyu Wang",
+        "Li Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-04T12:59:24+00:00",
+      "link": "https://arxiv.org/pdf/2604.03723v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative model for object dynamics and 3D trajectory embeddings",
+      "llm_evidence_cn": "用于物体动力学和3D轨迹嵌入的生成模型",
+      "llm_evidence": "用于物体动力学和3D轨迹嵌入的生成模型",
+      "canonical_evidence": "用于物体动力学和3D轨迹嵌入的生成模型",
+      "llm_tldr_en": "SymphoMotion jointly controls camera and object motion for coherent video generation using 3D trajectory embeddings.",
+      "llm_tldr_cn": "SymphoMotion通过3D轨迹嵌入联合控制摄像机和物体运动，实现连贯的视频生成。",
+      "llm_tldr": "SymphoMotion通过3D轨迹嵌入联合控制摄像机和物体运动，实现连贯的视频生成。",
+      "llm_tags": [
+        "query:q13"
+      ],
+      "matched_query_tag": "query:q13",
+      "matched_query_text": "generative models for robotic simulation and task planning",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.05427v1",
+      "title": "Pre-Execution Safety Gate & Task Safety Contracts for LLM-Controlled Robot Systems",
+      "abstract": "Large Language Models (LLMs) are increasingly used to convert task commands into robot-executable code, however this pipeline lacks validation gates to detect unsafe and defective commands before they are translated into robot code. Furthermore, even commands that appear safe at the outset can produce unsafe state transitions during execution in the absence of continuous constraint monitoring. In this research, we introduce SafeGate, a neurosymbolic safety architecture that prevents unsafe natural language task commands from reaching robot execution. Drawing from ISO 13482 safety standard, SafeGate extracts structured safety-relevant properties from natural language commands and applies a deterministic decision gate to authorize or reject execution. In addition, we introduce Task Safety Contracts, which decomposes commands that pass through the gate into invariants, guards, and abort conditions to prevent unsafe state transitions during execution. We further incorporate Z3 SMT solving to enforce constraint checking derived from the Task Safety Contracts. We evaluate SafeGate against existing LLM-based robot safety frameworks and baseline LLMs across 230 benchmark tasks, 30 AI2-THOR simulation scenarios, and real-world robot experiments. Results show that SafeGate significantly reduces the acceptance of defective commands while maintaining a high acceptance of benign tasks, demonstrating the importance of pre-execution safety gates for LLM-controlled robot systems",
+      "authors": [
+        "Ike Obi",
+        "Vishnunandan L. N. Venkatesh",
+        "Weizheng Wang",
+        "Ruiqi Wang",
+        "Dayoon Suh",
+        "Temitope I. Amosa",
+        "Wonse Jo",
+        "Byung-Cheol Min"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-07T04:46:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.05427v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LLM-controlled robot systems and natural language task commands",
+      "llm_evidence_cn": "大语言模型控制的机器人系统与自然语言任务指令",
+      "llm_evidence": "大语言模型控制的机器人系统与自然语言任务指令",
+      "canonical_evidence": "大语言模型控制的机器人系统与自然语言任务指令",
+      "llm_tldr_en": "SafeGate is a neurosymbolic safety architecture for validating LLM-generated robot task commands.",
+      "llm_tldr_cn": "SafeGate 是一种神经符号安全架构，用于验证大模型生成的机器人任务指令。",
+      "llm_tldr": "SafeGate 是一种神经符号安全架构，用于验证大模型生成的机器人任务指令。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "Vision-Language-Action models for robotics",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.03999v1",
+      "title": "Dynamic Whole-Body Dancing with Humanoid Robots -- A Model-Based Control Approach",
+      "abstract": "This paper presents an integrated model-based framework for generating and executing dynamic whole-body dance motions on humanoid robots. The framework operates in two stages: offline motion generation and online motion execution, both leveraging future state prediction to enable robust and dynamic dance motions in real-world environments. In the offline motion generation stage, human dance demonstrations are captured via a motion capture (MoCap) system, retargeted to the robot by solving a Quadratic Programming (QP) problem, and further refined using Trajectory Optimization (TO) to ensure dynamic feasibility. In the online motion execution stage, a centroidal dynamics-based Model Predictive Control (MPC) framework tracks the planned motions in real time and proactively adjusts swing foot placement to adapt to real world disturbances. We validate our framework on the full-size humanoid robot Kuavo 4Pro, demonstrating the dynamic dance motions both in simulation and in a four-minute live public performance with a team of four robots. Experimental results show that longer prediction horizons improve both motion expressiveness in planning and stability in execution.",
+      "authors": [
+        "Shibowen Zhang",
+        "Jiayang Wu",
+        "Guannan Liu",
+        "Helin Zhu",
+        "Junjie Liu",
+        "Zhehan Li",
+        "Junhong Guo",
+        "Xiaokun Leng",
+        "Hangxin Liu",
+        "Jingwen Zhang",
+        "Jikai Wang",
+        "Zonghai Chen",
+        "Zhicheng He",
+        "Jiayi Wang",
+        "Yao Su"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-05T07:17:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.03999v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Model-based control for dynamic whole-body motions on humanoid robots",
+      "llm_evidence_cn": "人形机器人全身动态运动的模型化控制",
+      "llm_evidence": "人形机器人全身动态运动的模型化控制",
+      "canonical_evidence": "人形机器人全身动态运动的模型化控制",
+      "llm_tldr_en": "Presents a model-based framework for generating and executing dynamic dance motions on humanoid robots.",
+      "llm_tldr_cn": "提出一种基于模型的框架，用于生成和执行人形机器人的动态舞蹈动作。",
+      "llm_tldr": "提出一种基于模型的框架，用于生成和执行人形机器人的动态舞蹈动作。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.03890v1",
+      "title": "From Prompt to Physical Action: Structured Backdoor Attacks on LLM-Mediated Robotic Control Systems",
+      "abstract": "The integration of large language models (LLMs) into robotic control pipelines enables natural language interfaces that translate user prompts into executable commands. However, this digital-to-physical interface introduces a critical and underexplored vulnerability: structured backdoor attacks embedded during fine-tuning. In this work, we experimentally investigate LoRA-based supply-chain backdoors in LLM-mediated ROS2 robotic control systems and evaluate their impact on physical robot execution. We construct two poisoned fine-tuning strategies targeting different stages of the command generation pipeline and reveal a key systems-level insight: back-doors embedded at the natural-language reasoning stage do not reliably propagate to executable control outputs, whereas backdoors aligned directly with structured JSON command formats successfully survive translation and trigger physical actions. In both simulation and real-world experiments, backdoored models achieve an average Attack Success Rate of 83% while maintaining over 93% Clean Performance Accuracy (CPA) and sub-second latency, demonstrating both reliability and stealth. We further implement an agentic verification defense using a secondary LLM for semantic consistency checking. Although this reduces the Attack Success Rate (ASR) to 20%, it increases end-to-end latency to 8-9 seconds, exposing a significant security-responsiveness trade-off in real-time robotic systems. These results highlight structural vulnerabilities in LLM-mediated robotic control architectures and underscore the need for robotics-aware defenses for embodied AI systems.",
+      "authors": [
+        "Mingyang Xie",
+        "Jin Wei-Kocsis"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-04T23:06:16+00:00",
+      "link": "https://arxiv.org/pdf/2604.03890v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "backdoor attacks on LLM-mediated robotic control systems",
+      "llm_evidence_cn": "对大语言模型介导的机器人控制系统的后门攻击",
+      "llm_evidence": "对大语言模型介导的机器人控制系统的后门攻击",
+      "canonical_evidence": "对大语言模型介导的机器人控制系统的后门攻击",
+      "llm_tldr_en": "Investigates security vulnerabilities in LLM-based robotic control pipelines during fine-tuning.",
+      "llm_tldr_cn": "研究了大语言模型驱动的机器人控制系统在微调阶段面临的后门攻击安全漏洞。",
+      "llm_tldr": "研究了大语言模型驱动的机器人控制系统在微调阶段面临的后门攻击安全漏洞。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.06832v1",
+      "title": "Fast-dVLM: Efficient Block-Diffusion VLM via Direct Conversion from Autoregressive VLM",
+      "abstract": "Vision-language models (VLMs) predominantly rely on autoregressive decoding, which generates tokens one at a time and fundamentally limits inference throughput. This limitation is especially acute in physical AI scenarios such as robotics and autonomous driving, where VLMs are deployed on edge devices at batch size one, making AR decoding memory-bandwidth-bound and leaving hardware parallelism underutilized. While block-wise discrete diffusion has shown promise for parallel text generation, extending it to VLMs remains challenging due to the need to jointly handle continuous visual representations and discrete text tokens while preserving pretrained multimodal capabilities. We present Fast-dVLM, a block-diffusion-based VLM that enables KV-cache-compatible parallel decoding and speculative block decoding for inference acceleration. We systematically compare two AR-to-diffusion conversion strategies: a two-stage approach that first adapts the LLM backbone with text-only diffusion fine-tuning before multimodal training, and a direct approach that converts the full AR VLM in one stage. Under comparable training budgets, direct conversion proves substantially more efficient by leveraging the already multimodally aligned VLM; we therefore adopt it as our recommended recipe. We introduce a suite of multimodal diffusion adaptations, block size annealing, causal context attention, auto-truncation masking, and vision efficient concatenation, that collectively enable effective block diffusion in the VLM setting. Extensive experiments across 11 multimodal benchmarks show Fast-dVLM matches its autoregressive counterpart in generation quality. With SGLang integration and FP8 quantization, Fast-dVLM achieves over 6x end-to-end inference speedup over the AR baseline.",
+      "authors": [
+        "Chengyue Wu",
+        "Shiyi Lan",
+        "Yonggan Fu",
+        "Sensen Gao",
+        "Jin Wang",
+        "Jincheng Yu",
+        "Jose M. Alvarez",
+        "Pavlo Molchanov",
+        "Ping Luo",
+        "Song Han",
+        "Ligeng Zhu",
+        "Enze Xie"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-08T08:50:08+00:00",
+      "link": "https://arxiv.org/pdf/2604.06832v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient VLM for physical AI and robotics",
+      "llm_evidence_cn": "用于物理AI和机器人的高效视觉语言模型",
+      "llm_evidence": "用于物理AI和机器人的高效视觉语言模型",
+      "canonical_evidence": "用于物理AI和机器人的高效视觉语言模型",
+      "llm_tldr_en": "Introduces Fast-dVLM, a block-diffusion VLM that improves inference speed for real-time robotics.",
+      "llm_tldr_cn": "提出Fast-dVLM，一种基于块扩散的视觉语言模型，提升了机器人实时推理速度。",
+      "llm_tldr": "提出Fast-dVLM，一种基于块扩散的视觉语言模型，提升了机器人实时推理速度。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "Vision-Language-Action models for robotics",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.04225v1",
+      "title": "Learning from Imperfect Demonstrations via Temporal Behavior Tree-Guided Trajectory Repair",
+      "abstract": "Learning robot control policies from demonstrations is a powerful paradigm, yet real-world data is often suboptimal, noisy, or otherwise imperfect, posing significant challenges for imitation and reinforcement learning. In this work, we present a formal framework that leverages Temporal Behavior Trees (TBT), an extension of Signal Temporal Logic (STL) with Behavior Tree semantics, to repair suboptimal trajectories prior to their use in downstream policy learning. Given demonstrations that violate a TBT specification, a model-based repair algorithm corrects trajectory segments to satisfy the formal constraints, yielding a dataset that is both logically consistent and interpretable. The repaired trajectories are then used to extract potential functions that shape the reward signal for reinforcement learning, guiding the agent toward task-consistent regions of the state space without requiring knowledge of the agent's kinematic model. We demonstrate the effectiveness of this framework on discrete grid-world navigation and continuous single and multi-agent reach-avoid tasks, highlighting its potential for data-efficient robot learning in settings where high-quality demonstrations cannot be assumed.",
+      "authors": [
+        "Aniruddh G. Puranic",
+        "Sebastian Schirmer",
+        "John S. Baras",
+        "Calin Belta"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-04-05T18:49:45+00:00",
+      "link": "https://arxiv.org/pdf/2604.04225v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "formal framework to repair suboptimal trajectories for robot control policy learning",
+      "llm_evidence_cn": "修复机器人控制策略学习中次优轨迹的形式化框架",
+      "llm_evidence": "修复机器人控制策略学习中次优轨迹的形式化框架",
+      "canonical_evidence": "修复机器人控制策略学习中次优轨迹的形式化框架",
+      "llm_tldr_en": "Uses Temporal Behavior Trees to repair imperfect robot demonstrations for improved policy learning.",
+      "llm_tldr_cn": "使用时序行为树修复不完美的机器人演示数据，以改进策略学习。",
+      "llm_tldr": "使用时序行为树修复不完美的机器人演示数据，以改进策略学习。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.04804v1",
+      "title": "SkillX: Automatically Constructing Skill Knowledge Bases for Agents",
+      "abstract": "Learning from experience is critical for building capable large language model (LLM) agents, yet prevailing self-evolving paradigms remain inefficient: agents learn in isolation, repeatedly rediscover similar behaviors from limited experience, resulting in redundant exploration and poor generalization. To address this problem, we propose SkillX, a fully automated framework for constructing a \\textbf{plug-and-play skill knowledge base} that can be reused across agents and environments. SkillX operates through a fully automated pipeline built on three synergistic innovations: \\textit{(i) Multi-Level Skills Design}, which distills raw trajectories into three-tiered hierarchy of strategic plans, functional skills, and atomic skills; \\textit{(ii) Iterative Skills Refinement}, which automatically revises skills based on execution feedback to continuously improve library quality; and \\textit{(iii) Exploratory Skills Expansion}, which proactively generates and validates novel skills to expand coverage beyond seed training data. Using a strong backbone agent (GLM-4.6), we automatically build a reusable skill library and evaluate its transferability on challenging long-horizon, user-interactive benchmarks, including AppWorld, BFCL-v3, and $τ^2$-Bench. Experiments show that SkillKB consistently improves task success and execution efficiency when plugged into weaker base agents, highlighting the importance of structured, hierarchical experience representations for generalizable agent learning. Our code will be publicly available soon at https://github.com/zjunlp/SkillX.",
+      "authors": [
+        "Chenxi Wang",
+        "Zhuoyun Yu",
+        "Xin Xie",
+        "Wuguannan Yao",
+        "Runnan Fang",
+        "Shuofei Qiao",
+        "Kexin Cao",
+        "Guozhou Zheng",
+        "Xiang Qi",
+        "Peng Zhang",
+        "Shumin Deng"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.IR",
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-04-06T16:09:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.04804v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automated framework for constructing skill knowledge bases across environments",
+      "llm_evidence_cn": "跨环境构建技能知识库的自动化框架",
+      "llm_evidence": "跨环境构建技能知识库的自动化框架",
+      "canonical_evidence": "跨环境构建技能知识库的自动化框架",
+      "llm_tldr_en": "SkillX automates skill discovery from trajectories to improve agent generalization across tasks.",
+      "llm_tldr_cn": "SkillX通过轨迹自动发现技能，以提高智能体在不同任务中的泛化能力。",
+      "llm_tldr": "SkillX通过轨迹自动发现技能，以提高智能体在不同任务中的泛化能力。",
+      "llm_tags": [
+        "query:q11"
+      ],
+      "matched_query_tag": "query:q11",
+      "matched_query_text": "automated environment synthesis for training robotic agents",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.07728v1",
+      "title": "GEAR: GEometry-motion Alternating Refinement for Articulated Object Modeling with Gaussian Splatting",
+      "abstract": "High-fidelity interactive digital assets are essential for embodied intelligence and robotic interaction, yet articulated objects remain challenging to reconstruct due to their complex structures and coupled geometry-motion relationships. Existing methods suffer from instability in geometry-motion joint optimization, while their generalization remains limited on complex multi-joint or out-of-distribution objects. To address these challenges, we propose GEAR, an EM-style alternating optimization framework that jointly models geometry and motion as interdependent components within a Gaussian Splatting representation. GEAR treats part segmentation as a latent variable and joint motion parameters as explicit variables, alternately refining them for improved convergence and geometric-motion consistency. To enhance part segmentation quality without sacrificing generalization, we leverage a vanilla 2D segmentation model to provide multi-view part priors, and employ a weakly supervised constraint to regularize the latent variable. Experiments on multiple benchmarks and our newly constructed dataset GEAR-Multi demonstrate that GEAR achieves state-of-the-art results in geometric reconstruction and motion parameters estimation, particularly on complex articulated objects with multiple movable parts.",
+      "authors": [
+        "Jialin Li",
+        "Bin Fu",
+        "Ruiping Wang",
+        "Xilin Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.RO"
+      ],
+      "published": "2026-04-09T02:24:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.07728v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "articulated object modeling for robotic interaction",
+      "llm_evidence_cn": "用于机器人交互的关节物体建模",
+      "llm_evidence": "用于机器人交互的关节物体建模",
+      "canonical_evidence": "用于机器人交互的关节物体建模",
+      "llm_tldr_en": "Proposes a framework for high-fidelity articulated object reconstruction using Gaussian Splatting.",
+      "llm_tldr_cn": "提出一种基于高斯泼溅的框架，用于高保真关节物体建模，支持机器人交互与仿真。",
+      "llm_tldr": "提出一种基于高斯泼溅的框架，用于高保真关节物体建模，支持机器人交互与仿真。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "digital twin environments for robotic manipulation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.04310v1",
+      "title": "frax: Fast Robot Kinematics and Dynamics in JAX",
+      "abstract": "In robot control, planning, and learning, there is a need for rigid-body dynamics libraries that are highly performant, easy to use, and compatible with CPUs and accelerators. While existing libraries often excel at either low-latency CPU execution or high-throughput GPU workloads, few provide a unified framework that targets multiple architectures without compromising performance or ease-of-use. To address this, we introduce frax, a JAX-based library for robot kinematics and dynamics, providing a high-performance, pure-Python interface across CPU, GPU, and TPU. Via a fully-vectorized approach to robot dynamics, frax enables efficient real-time control and parallelization, while supporting automatic differentiation for optimization-based methods. On CPU, frax achieves low-microsecond computation times suitable for kilohertz control rates, outperforming common libraries in Python and approaching optimized C++ implementations. On GPU, the same code scales to thousands of instances, reaching upwards of 100 million dynamics evaluations per second. We validate performance on a Franka Panda manipulator and a Unitree G1 humanoid, and release frax as an open-source library.",
+      "authors": [
+        "Daniel Morton",
+        "Marco Pavone"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-05T23:08:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.04310v1",
+      "tags": [
+        "keyword:具身智能",
+        "query:具身智能"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "JAX-based library for robot kinematics and dynamics for control and learning",
+      "llm_evidence_cn": "基于JAX的机器人运动学和动力学库，用于控制和学习",
+      "llm_evidence": "基于JAX的机器人运动学和动力学库，用于控制和学习",
+      "canonical_evidence": "基于JAX的机器人运动学和动力学库，用于控制和学习",
+      "llm_tldr_en": "Introduces frax, a high-performance JAX library for robot dynamics to accelerate control and simulation.",
+      "llm_tldr_cn": "推出了frax，一个高性能JAX机器人动力学库，旨在加速控制和仿真任务。",
+      "llm_tldr": "推出了frax，一个高性能JAX机器人动力学库，旨在加速控制和仿真任务。",
+      "llm_tags": [
+        "query:q2"
+      ],
+      "matched_query_tag": "query:q2",
+      "matched_query_text": "robotic arm manipulation tasks and control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
