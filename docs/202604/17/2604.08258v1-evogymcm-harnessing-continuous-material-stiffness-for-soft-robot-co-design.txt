@@ -1,0 +1,389 @@
+Title: EvoGymCM: Harnessing Continuous Material Stiffness for Soft Robot Co-Design
+
+URL Source: https://arxiv.org/pdf/2604.08258v1
+
+Published Time: Fri, 10 Apr 2026 01:08:03 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# EvoGymCM: Harnessing Continuous Material Stiffness for Soft Robot Co-Design 
+
+Le Shen 1, Kangyao Huang 2, Wentao Zhao 2, and Huaping Liu 2∗
+
+Abstract — In the automated co-design of soft robots, precisely adapting the material stiffness field to task environments is crucial for unlocking their full physical potential. However, mainstream platforms (e.g., EvoGym) strictly discretize the material dimension, artificially restricting the design space and performance of soft robots. To address this, we propose EvoGymCM (EvoGym with Continuous Materials) , a benchmark suite formally establishing continuous material stiffness as a first-class design variable alongside morphology and control. Aligning with real-world material mechanisms, EvoGymCM introduces two settings: (i) EvoGymCM-R (Reactive) , motivated by programmable materials with dynamically tunable stiffness; and (ii) EvoGymCM-I (Invariant) , motivated by traditional materials with invariant stiffness fields. To tackle the resulting high-dimensional coupling, we formulate two Morphology– Material–Control co-design paradigms: (i) Reactive-Material Co-Design , which learns real-time stiffness tuning policies to guide programmable materials; and (ii) Invariant-Material Co-Design , which jointly optimizes morphology and fixed material fields to guide traditional material fabrication. Systematic experiments across diverse tasks demonstrate that continuous material optimization boosts performance and unlocks synergy across morphology, material, and control. 
+
+I. I NTRODUCTION 
+
+Automated design is replacing manual approaches as the pivotal paradigm to develop high-performance soft robots [1], [2]. While their intrinsic compliance offers unique advan-tages in unstructured environments [3], it also introduces infi-nite degrees of freedom and highly nonlinear dynamics. This complexity renders traditional trial-and-error design labor-intensive and sub-optimal. Consequently, algorithm-driven optimization within simulation environments has become indispensable to navigate this vast design space [4], [5]. To unlock the full physical potential of soft robots, optimal design requires precisely tailoring the material stiffness field to the task environment [6], [7]. The stiffness distribution directly governs the system’s deformation patterns and force transmission. Even under fixed morphology and control policies, reconfiguring the material field can yield drastically different dynamic behaviors. Therefore, elevating material stiffness from a passive attribute to a first-class design vari-able is crucial to overcome existing performance bottlenecks. However, mainstream automated co-design platforms (e.g., EvoGym [8]) suffer from a fundamental bottleneck in ma-terial representation, artificially restricting the design space      
+
+> ∗Corresponding author: hpliu@tsinghua.edu.cn
+> 1College of Control Science and Engineering, Zhejiang University.
+> 2Department of Computer Science and Technology, Tsinghua University. Source code is available at: https://github.com/coke-2004/ EvoGymCM
+
+and performance of soft robots. For instance, while Evo-Gym has established a standardized evaluation framework for morphology-control co-design, it possesses an inherent limitation: robots are composed of a finite set of discrete voxel types (e.g., soft, rigid, and actuated) with strictly fixed stiffness properties. This paradigm reduces the natural continuum of physical materials to a discrete combinato-rial selection. Consequently, this coarse material resolution constrains the design space and prevents soft robots from unlocking their full potential. To bridge this critical gap, we introduce the continuous material stiffness dimension into EvoGym—a non-trivial expansion that gives rise to the EvoGymCM ( EvoGym with Continuous Material ) benchmark suite. As illustrated in Fig. 1(a), unlike standard EvoGym’s strict discretization of material stiffness, this novel suite formally establishes it as a first-class design variable alongside morphology and control. This integration drives a fundamental paradigm shift from discrete combinatorial search to continuous field optimiza-tion. Consequently, EvoGymCM exponentially expands the design space, unlocking unprecedented physical capabilities for soft robots. Furthermore, to align with real-world physical mech-anisms, EvoGymCM introduces two benchmark settings: (i) EvoGymCM-R (Reactive) , motivated by programmable materials: the material stiffness can be dynamically tuned during environmental interactions; and (ii) EvoGymCM-I (Invariant) , motivated by traditional materials: the optimized stiffness field remains invariant post-fabrication. To tackle the formidable challenge of high-dimensional and non-linear coupling across morphology, material, and control, we integrate these three facets into a unified bi-level optimization framework [9]. By structuring the problem into an outer loop for physical design and an inner loop for dynamic evaluation, we formulate two tailored Morphology– Material–Control co-design paradigms: (i) Reactive-Material Co-Design : As shown in Fig. 1(c), this paradigm, tailored for EvoGymCM-R , pairs outer-loop morphology evolution with an inner-loop Material– Control Co-Optimization module, learning real-time stiffness tuning policies during environmental interac-tions to guide programmable materials. (ii) Invariant-Material Co-Design : As shown in Fig. 1(d), this paradigm, tailored for EvoGymCM-I , jointly searches for optimal morphology and material stiffness fields in the outer loop, providing quantitative guidance for traditional material fabrication parameters (e.g., mix-ing ratios and infill densities).    
+
+> arXiv:2604.08258v1 [cs.RO] 9 Apr 2026 1
+> ..  ..
+> s = 0.5
+> s∈(0.5, 2)
+> s = 2.0
+> ..  ..
+> s = 0.5
+> s = 2.0
+> ..  ..
+> s = 0.5
+> s = 2.0
+> ..  ..
+> s = 0.5
+> s = 2.0
+> Rigid
+> Soft
+> Horizontal
+> Actuator
+> Vertical
+> Actuator
+> Original Extended
+
+Continuous Material 
+
+Stiffness ( S)                
+
+> Morphology-Material
+> Co-Optimization
+> Control Optimization
+> New Design
+> Control Optimization
+> Morphology Optimization
+> Morphology Optimization
+> Material-Control
+> Co-Optimization
+> New Design Final Reward
+> New Design Final Reward
+> Reactive-Material Co-Design
+> Invariant-Material Co-Design
+> Final Reward
+> 200 steps
+> 400 steps 999 steps
+> 200 steps
+> 400 steps 999 steps
+> 200 steps
+> 400 steps 999 steps
+> EvoGym (original)
+
+Morphology-Control Co-Design  
+
+> EvoGymCM-R (ours)
+
+(a) (d) 
+
+(c)  
+
+> EvoGymCM-I (ours)
+
+(b)       
+
+> s∈(0.5, 2)
+> s∈(0.5, 2)
+> s∈(0.5, 2)
+
+Morphology-Material-Control Co-Design Fig. 1. Overview of EvoGymCM and the proposed co-design paradigms. (a) EvoGymCM introduces continuous material stiffness, overcoming the discrete limitations of (b) standard EvoGym. This continuous formulation enables two distinct paradigms: (c) Reactive-Material Co-Design drives real-time stiffness tuning in the inner loop; whereas (d) Invariant-Material Co-Design optimizes stiffness configurations in the outer loop, keeping the material field strictly invariant during evaluation. 
+
+The main contributions are summarized as follows:  
+
+> •
+
+The EvoGymCM Benchmark Suite. We establish con-tinuous material stiffness as a first-class design variable alongside morphology and control, and introduce two settings: (i) EvoGymCM-R (Reactive) for dynamically programmable materials, and (ii) EvoGymCM-I (Invari-ant) for traditional fixed-stiffness materials.  
+
+> •
+
+Morphology–Material–Control Co-Design. We pro-pose two tailored paradigms: (i) Reactive-Material Co-Design for learning real-time stiffness-tuning policies to guide programmable materials, and (ii) Invariant-Material Co-Design for optimizing static stiffness fields to guide physical fabrication.  
+
+> •
+
+Systematic Validation. We conduct extensive experi-ments, demonstrating that continuous material optimiza-tion boosts performance and unlocks synergy across morphology, material, and control. The remainder of this paper is organized as follows. Section II reviews related work. Sections III and IV detail the EvoGymCM benchmark suite and the proposed co-design algorithmic paradigms, respectively. Section V presents the experimental results, followed by conclusions in Section VI. II. R ELATED WORK 
+
+A. Morphology and Control Co-Design in Soft Robotics 
+
+The co-design of morphology and control forms a fun-damental paradigm in soft robotics [10]. Early explorations in this domain successfully co-evolved the morphologies and neural controllers of virtual creatures [4]. Driven by the diverse capabilities of continuous deformations, this paradigm naturally expanded into soft robotics. Initial efforts in automated soft robot design focused on voxel-based struc-tures [11], which were later enhanced through generative encodings like CPPN-NEAT [1]. However, the reliance on customized physics engines initially hindered standardized comparisons across different methods. This bottleneck was ultimately resolved by the introduction of Evolution Gym (EvoGym), a large-scale benchmark specifically tailored for the co-optimization of soft robot morphology and control [8]. Building upon the EvoGym benchmark, recent advance-ments have significantly improved both the efficiency and effectiveness of the co-optimization process. To navigate vast structural search spaces, probabilistic generative models have gained considerable traction. For instance, continu-ous latent representations of voxel designs can now be learned via variational autoencoders like MorphVAE [12], and classifier-guided diffusion models have proven highly effective in generating high-fitness morphologies [13]. Be-yond traditional generative models, search paradigms have further expanded to incorporate Large Language Models as intelligent heuristic operators, exemplified by the LASeR framework [14]. To mitigate the computational cost of re-peatedly training controllers from scratch, current method-ologies place a strong emphasis on knowledge transfer and inheritance mechanisms. Notable strategies within this vein include curriculum-based approaches that progressively scale structures from small to large topologies [15], the deployment of Transformer-based universal controllers to en-able cross-task morphological knowledge transfer [16], and Lamarckian transfer learning frameworks that allow for the direct inheritance of neural network weights across genera-tions [17]. Complementing these transfer methodologies, pre-training paradigms have also been effectively leveraged; for example, brain-body pre-training designs now facilitate few-shot generalization across unseen environments [18]. Beyond training efficiency, optimizations at the evaluation level have significantly accelerated the design process through surrogate models based on action inheritance [19]. Furthermore, in the context of complex modular systems, multi-objective optimization frameworks have successfully guided the tran-sition of control strategies from simple isolated modules to serially connected tasks [20]. Despite these remarkable advancements, none of the aforementioned studies have considered the material dimension as a first-class design variable. 
+
+B. Policy Optimization in Deep Reinforcement Learning 
+
+Deep reinforcement learning provides a critical framework for evaluating soft robotic systems, successfully scaling traditional reward-maximizing processes to handle their in-herently high-dimensional, non-linear state spaces [21], [22]. To mitigate training instabilities in these complex continuous domains, contemporary approaches prioritize robust policy gradient methods. Most notably, Proximal Policy Optimiza-tion (PPO) utilizes a clipped surrogate objective to safely constrain policy updates [23]. These frameworks effectively facilitate the assessment and deployment of reactive, closed-loop control in compliant structures [24]. III. E VO GYM CM B ENCHMARK SUITE 
+
+To systematically address the limitations of discrete mate-rial representations, we propose the EvoGymCM benchmark suite. This section formally defines the underlying physical mechanics and introduces the two benchmark settings tai-lored for distinct real-world material properties. 
+
+A. Robot Representation 
+
+In the EvoGymCM benchmark suite, we fundamentally augment the conventional voxel-based soft robot repre-sentation by introducing a continuous material dimension. Physically, the robot executes tasks as the controller drives the rhythmic expansion and contraction of actuated voxels, which in turn induces passive deformation in the surrounding structural voxels. By making the stiffness of these structural elements continuously tunable, our framework breaks the native limitation of strictly fixed materials, transforming compliance from a predefined passive parameter into a highly dynamic design space. To systematically formalize this upgraded design space, we establish a 2D grid workspace with spatial dimensions 
+
+W × H. Within this space, we formulate the complete co-design problem into three orthogonal dimensions:  
+
+> •
+
+Morphology (M): Formulated as a discrete matrix 
+
+M ∈ { 0, 1, 2, 3, 4}W ×H , this dimension strictly dictates the macroscopic spatial distribution of voxel types. As illustrated in Fig. 2(a) (c), it categorizes each body voxel into one of four distinct types: rigid, soft, horizontal actuator, or vertical actuator. 4 Vertical Actuator                        
+
+> 3Horizontal Actuator
+> 2Soft
+> 1Rigid
+> 0.60 0.72 0.84
+> 1.70 1.82 1. 04
+> 1.22 1.00 0.61
+> 121
+> 434
+> 303
+> (a) Voxel-based Robot Representation (b) Mass-Spring Model
+> (c) Morphology Matrix (d) Material Matrix
+> Fig. 2. Robot Representation and Physical Modeling
+> •
+
+Material Stiffness (S): Formulated as a continuous matrix S ∈ [0.5, 2]W ×H (Fig. 2(d)), this newly introduced dimension governs physical compliance. Rather than encoding absolute stiffness, S acts as a relative scaling field. It assigns an independently searchable, continuous multiplier to the baseline stiffness of the structural voxels defined in M. 
+
+> •
+
+Control ( C): Parameterized as a learned neural policy, this dimension drives the robot’s dynamic behavior. At each time step, C maps real-time state observations to target expansion or contraction ratios for actuators. 
+
+B. Continuous Material Stiffness Dimension 
+
+The backend dynamics of the environment are governed by a 2D mass-spring physics engine. As illustrated in Fig. 2(b), the structural integrity of each voxel is maintained by an arrangement of point masses and elastic springs. Geometri-cally, each voxel is modeled as a cross-braced square, with its edges and diagonals acting as ideal springs that strictly obey Hooke’s law. In the standard EvoGym implementation, the baseline spring constant, denoted as kbase , is rigidly locked to a predefined discrete value dictated entirely by the voxel’s categorical type in the morphology matrix M.To physically realize the newly introduced continuous material stiffness dimension, EvoGymCM dynamically maps the relative scaling matrix S directly to the underlying spring constants. For an occupied voxel at spatial coordinates (i, j)
+
+with a continuous stiffness factor Si, j, the scaling is strictly local for internal diagonal springs, whereas boundary springs shared with an adjacent voxel at (i′, j′) adopt the average of their respective factors: 
+
+keffective =
+
+(
+
+Si, j · kbase , diagonal spring  
+
+> 12
+
+(Si, j + Si′, j′ ) · kbase , edge spring (1) By deeply embedding this continuous multiplier into the foundational dynamics, we successfully transition soft robot design from discrete combinatorial selection into searchable continuous field optimization. Material Local Search Start                    
+
+> Population
+> Select Top-k
+> End
+> Propose Material Candidates
+> by Adding Noise
+> Fine-Tune
+> Controller
+> for Body
+> Zero-Shot
+> Evaluation via
+> Original Controller
+> Stop ？
+> Evaluate via
+> Control Optimization
+> Output Optimal Design ×Ntimes
+> Optimal Candidate
+> Noise
+> Updated Body
+> Morphology
+> (Original)
+> Material
+> (New Best)
+> ∗⋯∗
+> ⋮⋱⋮
+> ∗⋯∗
+> ∗⋯∗
+> ⋮⋱⋮
+> ∗⋯∗
+> +
+> Create Offspring by Mutation
+> Inherit Material in Invariant Mode
+
+## . . . 
+
+> Evaluate via
+> Material-Control
+> Co-Optimization
+> Candidate
+> Optimal Material
+
+## . . . Reactive-Material Co-Design 
+
+> Invariant-Material Co-Design
+> Shared
+
+Fine-Tune 
+
+Controller Fig. 3. Algorithmic pipeline of the proposed morphology-material-control co-design paradigms, illustrating the distinct workflows for the Reactive-Material Co-Design (red arrows) and Invariant-Material Co-Design (blue arrows), alongside shared optimization processes (black arrows). 
+
+C. EvoGymCM-R: Benchmark for Programmable Materials 
+
+To physically align with smart programmable materials, we introduce EvoGymCM-R (Reactive) . This setting empow-ers soft robots to dynamically react to their surroundings. By formulating the stiffness field St as a time-variant state, the robot can sense environmental feedback and reactively modulate its physical compliance in real-time during envi-ronmental interactions. 
+
+Underlying Physics Implementation: Rather than per-manently overwriting the inherent baseline spring constants, EvoGymCM-R realizes this dynamic responsiveness by pass-ing a real-time material matrix St directly into the force calculation phase at each simulation step. Specifically, before computing the elastic forces, the effective spring constant for each voxel is transiently instantiated by multiplying its baseline constant by the corresponding real-time scaling fac-tor from St . This step-wise formulation precisely replicates the physical mechanics of reactive stiffness tuning, while ensuring absolute numerical stability within the mass-spring solver. 
+
+Augmented Action Space: To enable the intelligent reg-ulation of this reactive property, we integrate the material scaling factors directly into the Reinforcement Learning (RL) action space. In this formulation, the control policy outputs an augmented action vector at = [ ct , st ] at each time step, where ct represents the traditional motor actuation signals and st denotes the continuous stiffness modulation commands for the material matrix St . By coupling motor control with reactive material adaptation, the agent learns sophisticated strategies to actively exploit variable compli-ance on the fly. Ultimately, by integrating the real-time material matrix into the force calculation phase, we successfully realize pro-grammable materials capable of reactive stiffness modulation during environmental interactions. 
+
+D. EvoGymCM-I: Benchmark for Traditional Materials 
+
+To physically align with traditional material manufactur-ing, where physical properties must be fully determined prior to deployment, we introduce EvoGymCM-I (Invariant) . In this setting, the continuous stiffness field S serves as a highly searchable variable exclusively during the offline design phase. Once deployed, S becomes strictly time-invariant, and the robot leverages this pre-optimized static stiffness distribution for subsequent performance evaluation. 
+
+Underlying Physics Implementation: In contrast to the step-wise recalculation in EvoGymCM-R, EvoGymCM-I physically realizes the material properties solely during the initialization phase. The optimized continuous stiffness matrix S serves as a spatial mapping, directly scaling the baseline spring constants kbase to define the effective spring constants keffective for all occupied voxels. Once instantiated, this highly heterogeneous stiffness distribution remains fixed throughout the simulation, fundamentally governing the in-herent compliance and force transmission pathways of the soft robot. Ultimately, by integrating the time-invariant material ma-trix strictly during the initialization phase, we successfully establish material stiffness as an independently optimizable dimension within the design space. IV. M ORPHOLOGY -M ATERIAL -C ONTROL CO-D ESIGN 
+
+ALGORITHMIC PARADIGMS 
+
+To tackle the highly coupled morphology–material–control triad denoted as ⟨M, S,C⟩, we navigate this high-dimensional optimization challenge by proposing two distinct co-design algorithmic paradigms. These paradigms are specifically tai-lored to the EvoGymCM-R and EvoGymCM-I benchmarks. 
+
+A. Reactive-Material Co-Design (Under EvoGymCM-R) 
+
+In the context of smart programmable materials, the dynamic material stiffness field St is inherently coupled with real-time motion control Ct . At each time step t,the learned policy πθ outputs an augmented action vector at = [ ct , st ]. Consequently, the optimization objective is to discover the optimal morphology M∗ alongside a policy πθ ∗
+
+that maximizes the expected return by jointly controlling motor actuation and material stiffness: max  
+
+> M
+
+max  
+
+> θ
+
+Eτ∼πθ
+
+" T
+
+# ∑
+
+> t=0
+
+r(ct , st | M)
+
+#
+
+(2) Fig. 3 details Reactive-Material Co-Design paradigm. The framework operates through a nested bi-level optimization process. The outer loop is dedicated to morphological evo-lution. For every proposed morphology M, the inner loop employs Material-Control Co-Optimization. Here, a rein-forcement learning agent is trained to jointly execute motor control and real-time stiffness tuning for the given body, enabling the soft robot to dynamically react to environmental interactions. By alternating between these two loops, the algorithm efficiently identifies the optimal morphology and policy pair ⟨M∗, πθ ∗ ⟩.Ultimately, the resulting policy πθ ∗ serves as an adaptive modulation policy, guiding programmable materials to reac-tively regulate their stiffness in real-world applications. 
+
+B. Invariant-Material Co-Design (Under EvoGymCM-I) 
+
+In the context of traditional material manufacturing, the material stiffness field S and morphology M jointly con-stitute a time-invariant physical body B = ⟨M, S⟩. Unlike the reactive setting, S here is a fixed structural parameter. Consequently, the control policy πθ solely outputs motor actuation commands ct . The objective is to co-optimize this unified physical body alongside its corresponding control policy: max  
+
+> M,S
+
+max  
+
+> θ
+
+Eτ∼πθ
+
+" T
+
+# ∑
+
+> t=0
+
+r(ct | M, S)
+
+#
+
+(3) Fig. 3 details Invariant-Material Co-Design paradigm. In contrast to the reactive approach where material adaptation occurs within the inner RL loop, this paradigm elevates material optimization to the outer loop. This approach prioritizes structural evolution while uti-lizing a Material Local Search and a Fine-Tune Controller 
+
+phase to efficiently optimize the material distribution S
+
+within a fixed morphology. Specifically, the Material Local Search exclusively targets the top-performing survivors. For each surviving morphology, the algorithm iteratively adds noise to the original material matrix to generate new can-didates. These candidates then undergo zero-shot evalua-tions via the original controller. If a candidate achieves a higher reward, it immediately overwrites the current material matrix. After this iterative search concludes, the Fine-Tune Controller phase updates the inherited policy for this newly assembled embodiment directly. Through this decoupled process, the algorithm systemati-cally outputs the globally optimal physical body B = ⟨M∗, S∗⟩
+
+and its dedicated policy πθ ∗ .Ultimately, the optimized material stiffness distribution S
+
+provides quantitative guidance for physical fabrication (e.g., multi-material 3D printing infill densities and spatial mixing Walk_Bot Down_Bot Amax_Bot Bridge_Bot Cave_Bot Amin_Bot  
+
+> Fig. 4. Fixed Robot Set
+
+ratios), facilitating the realization of traditional material manufacturing. V. E XPERIMENTS AND RESULTS 
+
+To comprehensively evaluate the impact of introducing a continuous material stiffness dimension, we conducted systematic experiments across diverse task environments. Beyond quantifying pure performance improvements, our analysis deeply investigates the underlying mechanisms: specifically, the synergistic coupling between material prop-erties and the control policy, and how this expanded design space influences morphological evolution. 
+
+A. Experimental Setup 
+
+To verify the generalizability of our proposed algorithms, we selected six representative tasks, categorizing them by the specific physical challenges they impose on the soft robots:  
+
+> •
+
+Walking: Walker-v0 and BridgeWalker-v0 .These tasks evaluate the robot’s fundamental forward locomotion capabilities on relatively flat or gapped terrains.  
+
+> •
+
+Locomotion: DownStepper-v0 and CaveCrawler -v0 . These tasks evaluate the robot’s physical com-pliance and obstacle negotiation skills in constrained spaces and rugged, uneven topographies.  
+
+> •
+
+Shape Change: AreaMaximizer-v0 and 
+
+AreaMinimizer-v0 . These tasks evaluate the robot’s extreme deformation capabilities by requiring the maximization and minimization of its spatial occupancy. 
+
+B. Evaluation of Reactive-Material Co-Design 
+
+1) Material-Control Co-Optimization vs. Control-Only 
+
+To isolate the interference of outer-loop morphological evolution, we conducted an inner-loop ablation using fixed, pre-designed morphologies ( M) (as shown in Fig. 4). We compared our proposed Material-Control Co-Optimization against conventional Control Optimization, which operates under fixed material properties and generates purely kine-matic control signals. Table I summarizes the quantitative results averaged across three random seeds. As shown in Table I, introducing the continuous ma-terial dimension yields performance improvements closely tied to environmental complexity. In fundamental walking tasks (Walker-v0 ), gains are marginal as flat terrains impose minimal compliance demands, allowing the coun-terpart to perform near optimality. Conversely, in complex environments ( BridgeWalker-v0 , DownStepper-v0 )and extreme shape-change tasks ( AreaMaximizer-v0 ,
+
+AreaMinimizer-v0 ), Co-Adaptation achieves substantial TABLE I PERFORMANCE COMPARISON ACROSS DIFFERENT TASKS                       
+
+> Task Robot Control-only Co-Opt
+> Walker-v0 Walk Bot 9.46 (0.03) 9.55 (0.01)
+> BridgeWalker-v0 Bridge Bot 2.10 (0.23) 2.97 (0.24)
+> DownStepper-v0 Down Bot 3.25 (0.27) 3.92 (0.16)
+> CaveCrawler-v0 Cave Bot 2.02 (0.01) 2.03 (0.01) AreaMaximizer-v0 Amax Bot 0.62 (0.07) 0.74 (0.14)
+> AreaMinimizer-v0 Amin Bot 0.61 (0.04) 0.69 (0.04) R = 9.56
+> Fig. 5. Representative Case of Material-Control Co-Optimization
+
+score increases, demonstrating reactive material tuning sig-nificantly enhanced terrain adaptability and structural de-formability. Interestingly, CaveCrawler-v0 shows negli-gible improvement due to a hard physical bottleneck: the narrow gap requires a morphological volume reduction that stiffness modulation alone cannot achieve. 
+
+Reactive Behavioral Analysis. Beyond numerical gains, visual analysis confirms explicit reactive material behaviors, where the robot dynamically alters its physical properties to overcome environmental challenges. For instance, sequential snapshots in Fig. 5 (grey highlighted regions) show the robot autonomously increasing the stiffness of its “leg” voxels right before ground impact (darker colors indicate higher stiff-ness). This anticipatory stiffening ensures structural stability and prevents body collapse under impact forces. 1 
+
+> Fig. 6. Correlation between Material Stiffness and Control Signals
+
+Quantitative Analysis of Reactive Synergy. To uncover the underlying mechanism of this synergy, we analyzed the real-time signal outputs of two representative voxels (highlighted in red and blue boxes in Fig. 5), revealing a strong statistical correlation between motor actuation ( ct )and material stiffness ( st ) signals. As illustrated in Fig. 6, the time-series trajectories of both signals exhibit a strict frequency alignment, confirming a highly coupled cyclical response. While a consistent phase shift is observed between the two curves, this variance fundamentally stems from the inherent physical actuation lag —the natural delay between the issuance of a kinematic control command and the result-ing morphological deformation. Accounting for this mechan-ical delay, the precise frequency synchronization explicitly demonstrates their synergistic interplay. Ultimately, this ro-bust coupling verifies that the agent has successfully forged a unified control-material policy, genuinely realizing reactive material adaptation to optimize physical performance. 
+
+2) Impact of Reactive-Material on Co-Design 
+
+To evaluate the contribution of real-time stiffness mod-ulation, we conducted a bilevel ablation study focusing on the reactive-material dimension. Specifically, we compared our Reactive-Material Co-Design paradigm against a Fixed-Material variant. In this setting, the material dimension is restricted to a constant stiffness value throughout the task-environment interactions. This restriction effectively isolates the performance impact of continuous material stiffness tun-ing, highlighting how reactive adaptation to environmental stimuli serves as the primary driver of superior physical performance. As illustrated in Fig. 7, integrating continuous material tuning primarily elevates the performance upper bound of the evolved robots rather than altering the base efficiency of the morphological search. Because both methods share the same robust outer-loop exploration strategy, their initial convergence rates are naturally comparable; however, the inner-loop reactive co-adaptation fundamentally unlocks a higher physical potential for these morphologies, signifi-cantly raising the task-specific performance ceiling. This enhancement manifests differently depending on the tasks:  
+
+> •
+
+Walking: For Walker-v0 and BridgeWalker-v0 
+
+tasks, the performance gain is relatively modest, as basic walking relies more on overall stride scale rather than extreme structural deformation.  
+
+> •
+
+Locomotion: For CaveCrawler-v0 and 
+
+DownStepper-v0 tasks, enhanced deformability provides crucial terrain adaptability. It allows the agent to navigate narrow gaps and irregular steps, thereby substantially raising the fitness ceiling.  
+
+> •
+
+Shape Change: For AreaMaximizer-v0 and 
+
+AreaMinimizer-v0 tasks, variable stiffness explic-itly enhances physical deformation capabilities, leading to pronounced performance breakthroughs. 
+
+The reactive-material dimension reshapes the evo-lutionary landscape. Interestingly, we observed that the introduction of reactive materials encourages an evolutionary trend towards structurally narrower and seemingly more frag-1   
+
+> Reactive-Material Co-Design Fixed-Material Co-Design Fig. 7. Bilevel ablation results comparing Reactive-Material Co-Design and the Fixed-Material variant across six tasks. Generation 10 Generation 0 Generation 19
+
+DownStepper - v0  
+
+> Fig. 8. Evolution of Robot Designs via Reactive-Material Co-Design
+
+ile morphologies. As illustrated in the evolutionary trajectory of DownStepper-v0 (Fig. 8), the algorithm progressively drives the morphology towards a distinctly thin “leg” struc-ture (highlighted by the red box in Fig. 8). In traditional fixed-material evolution, such a slender limb would be heav-ily penalized or prematurely eliminated due to its inherent physical instability and vulnerability to impact. However, within our reactive framework, the agent can dynamically regulate its own structural stability by tuning its material stiffness in real-time, safely stabilizing the thin leg to prevent collapse. This dynamic compensation allows the slender morphology to achieve far greater physical compliance and perform exceptionally well in irregular environments, ulti-mately transforming a traditional structural liability into a highly adaptive morphological advantage. Invariant-Material Co-Design Prescribed-Material Co-Design  
+
+> Fig. 9. Bilevel Ablation Results comparing Invariant-Material Co-Design and the Prescribed-Material variant across six tasks.
+
+C. Evaluation of Invariant-Material Co-Design 
+
+Impact of Optimizable Invariant-Material on Co-Design 
+
+To evaluate the effectiveness of invariant-material opti-mization, we conducted a bilevel ablation study. To iso-late the impact of spatial material heterogeneity, we com-pared our joint optimization approach against a Prescribed-Material Co-Design variant. Rather than using a complex joint search space ( {M, S}), this restricted variant optimizes solely for the discrete morphological topology ( M) while locking the material dimension to a hard-coded, prescribed stiffness value throughout the evolutionary process. As illustrated in Fig. 9, integrating the invariant ma-terial dimension simultaneously accelerates evolutionary efficiency and elevates the performance upper bound. Specifically, across the two walking tasks ( Walker-v0 
+
+and BridgeWalker-v0 ) and the two locomotion tasks (CaveCrawler-v0 and DownStepper-v0 ), we observe substantial improvements in both convergence speed and terminal fitness. This demonstrates that discovering an op-timal spatial material distribution effectively unlocks the physical potential of the robots, validating that our Invariant-Material Co-Design paradigm successfully identifies syn-ergistic material fields that complement the evolved mor-phologies. Conversely, for the two shape-changing tasks (AreaMaximizer-v0 and AreaMinimizer-v0 ), the performance gains are relatively marginal. This plateau likely occurs because achieving extreme global deformation re-quires highly precise, voxel-specific stiffness tuning. The Generation 10 Generation 0 Generation 19 
+
+BridgeWalker- v0 Fig. 10. Evolution of Robot Designs via Invariant-Material Co-Design 
+
+current evolutionary paradigm, which optimizes a global spatial field, may lack the micro-level precision needed to isolate and drastically alter just a few critical voxels, rendering the performance improvements less pronounced in extreme morphing scenarios. 
+
+Coupled Regularities in Material-Morphology Synergy. 
+
+Rather than drastically altering the macroscopic shape, the introduction of the spatial material dimension reveals tightly coupled regularities between material distribution and the evolved morphology. Taking the task BridgeWalker-v0 
+
+as an illustrative example (Fig. 10), two distinct, synergistic material patterns emerge that directly contribute to task success. First, the central body voxel (highlighted by the red box in Fig. 10) exhibits a clear evolutionary trend toward lower stiffness. This localized softening minimizes internal mechanical constraints, granting the body superior deformability for complex maneuvers. Second, the robot consistently evolves a high-stiffness base (blue dashed box in Fig. 10) that acts as a structural “chassis”, significantly improving locomotion stability. Ultimately, these purposeful material-morphology couplings prove that optimizing spatial material fields is crucial for unlocking the full physical capabilities of soft robots. VI. C ONCLUSION AND FUTURE WORK 
+
+In conclusion, this paper introduces the EvoGymCM benchmark suite, formally establishing continuous material stiffness as a first-class design variable and proposed two settings— R and I—accompanied by the Reactive-Material and Invariant-Material co-design paradigms. Systematic ex-periments demonstrate that integrating the continuous mate-rial dimension elevates the performance ceiling of soft robots through deep synergy with morphology and control. For future work, we plan to develop more sample-efficient algorithms to navigate this expanded, high-dimensional de-sign space. Furthermore, we aim to bridge the Sim-to-Real gap, deploying the optimally evolved designs and policies onto physical robotic platforms. REFERENCES [1] N. Cheney, R. MacCurdy, J. Clune, and H. Lipson, “Unshackling evolution: Evolving soft robots with multiple materials and a powerful generative encoding,” SIGEVOlution , vol. 7, no. 1, pp. 11–23, Aug. 2014. [2] D. Howard, A. E. Eiben, D. F. Kennedy, J.-B. Mouret, P. Valencia, and D. Winkler, “Evolving embodied intelligence from materials to machines,” Nature Machine Intelligence , vol. 1, no. 1, pp. 12–19, Jan. 2019. [3] D. Trivedi, C. D. Rahn, W. M. Kier, and I. D. Walker, “Soft robotics: Biological inspiration, state of the art, and future research,” Applied bionics and biomechanics , vol. 5, no. 3, pp. 99–117, 2008. [4] K. Sims, “Evolving virtual creatures,” in Proc. 21st Annu. Conf. Comput. Graph. Interact. Tech. (SIGGRAPH ’94) , New York, NY, USA, July 1994, pp. 15–22. [5] H. Liu, D. Guo, and A. Cangelosi, “Embodied intelligence: A synergy of morphology, action, perception and learning,” ACM Computing Surveys , vol. 57, no. 7, pp. 1–36, 2025. [6] D. Rus and M. T. Tolley, “Design, fabrication and control of soft robots,” Nature , vol. 521, no. 7553, pp. 467–475, May 2015. [7] M. Manti, V. Cacucciolo, and M. Cianchetti, “Stiffening in soft robotics: A review of the state of the art,” IEEE Robotics & Automation Magazine , vol. 23, no. 3, pp. 93–106, 2016. [8] J. Bhatia, H. Jackson, Y. Tian, J. Xu, and W. Matusik, “Evolution gym: A large-scale benchmark for evolving soft robots,” in Proc. Adv. Neural Inform. Process. Syst. (NeurIPS) , vol. 34, 2021, pp. 2201–2214. [9] A. Sinha, P. Malo, and K. Deb, “A review on bilevel optimization: From classical to evolutionary approaches and applications,” IEEE transactions on evolutionary computation , vol. 22, no. 2, pp. 276– 295, 2017. [10] K. Huang, D. Guo, X. Zhang, X. Ji, and H. Liu, “Competevo: towards morphological evolution from competition,” arXiv preprint arXiv:2405.18300 , 2024. [11] J. Hiller and H. Lipson, “Automatic design and manufacture of soft robots,” IEEE Trans. Robot. , vol. 28, no. 2, pp. 457–466, Apr. 2012. [12] J. Song, Y. Yang, W. Peng, W. Zhou, F. Wang, and W. Yao, “Mor-phVAE: Advancing morphological design of voxel-based soft robots with variational autoencoders,” Proc. AAAI Conf. Artif. Intell. , vol. 38, no. 9, pp. 10 368–10 376, Mar. 2024. [13] S. Liu, J. Yan, H. Wang, and Y. Jin, “Morphology evolution for embodied robot design with a classifier-guided diffusion model,” IEEE Trans. Evol. Comput. , 2025, to be published. [14] J. Song, Y. Yang, H. Xiao, W. Peng, W. Yao, and F. Wang, “LASeR: Towards diversified and generalizable robot design with large language models,” in Proc. 13th Int. Conf. Learn. Represent. (ICLR) , Oct. 2024. [15] Y. Wang, S. Wu, H. Fu, Q. Fu, T. Zhang, Y. Chang, and X. Wang, “Curriculum-based co-design of morphology and control of voxel-based soft robots,” in Proc. 11th Int. Conf. Learn. Represent. (ICLR) ,Sept. 2022. [16] J. Zhao, W. Peng, H. Wang, W. Zhou, Y. Yang, and W. Yao, “Cross-task collaborative optimization based on knowledge transfer for soft robot design,” IEEE Trans. Evol. Comput. , 2025, to be published. [17] K. Harada and H. Iba, “Lamarckian co-design of soft robots via transfer learning,” in Proc. Genetic Evol. Comput. Conf. (GECCO) ,Melbourne, VIC, Australia, July 2024, pp. 832–840. [18] Y. Wang, S. Wu, T. Zhang, Y. Chang, H. Fu, Q. Fu, and X. Wang, “PreCo: Enhancing generalization in co-design of modular soft robots via brain-body pre-training,” in Proc. 7th Conf. Robot Learn. (CoRL) ,Dec. 2023, pp. 478–498. [19] S. Liu, W. Yao, H. Wang, W. Peng, and Y. Yang, “Rapidly evolving soft robots via action inheritance,” IEEE Trans. Evol. Comput. , vol. 28, no. 6, pp. 1674–1688, Dec. 2024. [20] J. Zhao, W. Peng, H. Wang, and W. Yao, “A multi-objective optimiza-tion framework based on information sharing for serially connected robot design,” Complex & Intelligent Systems , vol. 11, no. 9, p. 410, Sept. 2025. [21] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Veness, M. G. Bellemare, A. Graves, M. Riedmiller, A. K. Fidjeland, G. Ostrovski, S. Petersen, C. Beattie, A. Sadik, I. Antonoglou, H. King, D. Kumaran, D. Wierstra, S. Legg, and D. Hassabis, “Human-level control through deep reinforcement learning,” Nature , vol. 518, no. 7540, pp. 529–533, Feb. 2015. [22] R. S. Sutton, A. G. Barto, et al. , Reinforcement learning: An intro-duction . MIT press Cambridge, 1998, vol. 1, no. 1. [23] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov. (2017) Proximal policy optimization algorithms. arXiv:1707.06347. [24] T. Haarnoja, A. Zhou, P. Abbeel, and S. Levine, “Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor,” in International conference on machine learning . Pmlr, 2018, pp. 1861–1870.
